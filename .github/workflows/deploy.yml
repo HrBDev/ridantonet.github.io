@@ -5,6 +5,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# این permissions خیلی مهمه
 permissions:
   contents: read
   pages: write
@@ -18,18 +19,37 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
-      - uses: actions/checkout@v4
-      
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: 🔐 Inject GitHub Token
         run: |
-          sed -i "s|GITHUB_TOKEN_PLACEHOLDER|${{ secrets.DASHBOARD_TOKEN }}|g" index.html
-          echo "✅ Token injected securely"
-      
-      - uses: actions/configure-pages@v4
-      
-      - uses: actions/upload-pages-artifact@v3
+          echo "Checking for placeholder..."
+          if grep -q "GITHUB_TOKEN_PLACEHOLDER" index.html; then
+            echo "✅ Placeholder found, injecting token..."
+            sed -i "s|GITHUB_TOKEN_PLACEHOLDER|${{ secrets.DASHBOARD_TOKEN }}|g" index.html
+            echo "✅ Token injected successfully"
+          else
+            echo "⚠️ Placeholder not found. Token might already be injected or file structure changed."
+          fi
+          
+      - name: Verify token injection
+        run: |
+          if grep -q "GITHUB_TOKEN_PLACEHOLDER" index.html; then
+            echo "❌ ERROR: Token was NOT injected!"
+            exit 1
+          else
+            echo "✅ Token injection verified successfully"
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
-      
-      - uses: actions/deploy-pages@v4
+
+      - name: Deploy to GitHub Pages
         id: deployment
+        uses: actions/deploy-pages@v4
