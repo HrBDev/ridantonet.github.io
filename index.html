@@ -1,222 +1,415 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <!-- ────────────────────────────────────────────── -->
-  <!-- Meta Tags                                     -->
-  <!-- ────────────────────────────────────────────── -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0f172a" />
-  <meta name="color-scheme" content="dark light" />
-  <meta name="description" content="دانلودر حرفه‌ای ویدیوهای یوتیوب - سریع، امن، با کیفیت دلخواه. ساخته شده توسط Khashayar" />
-  <meta name="keywords" content="دانلود یوتیوب, youtube downloader, دانلود ویدیو, khashayar, یوتیوب" />
-  <meta name="author" content="Khashayar" />
-  <meta name="robots" content="index, follow" />
-
-  <!-- Open Graph / Social -->
-  <meta property="og:title" content="Khashayar YouTube Downloader" />
-  <meta property="og:description" content="دانلود ویدیوهای یوتیوب با بهترین کیفیت. سریع، امن، رایگان." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://khashayar.one" />
-  <meta property="og:image" content="https://khashayar.one/assets/img/og-image.png" />
-  <meta property="og:locale" content="fa_IR" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Khashayar YouTube Downloader" />
-  <meta name="twitter:description" content="دانلود ویدیوهای یوتیوب با بهترین کیفیت" />
-
-  <!-- Canonical -->
-  <link rel="canonical" href="https://khashayar.one" />
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="assets/img/logo.svg" />
-  <link rel="apple-touch-icon" href="assets/img/logo.svg" />
-
-  <!-- Preconnect for Performance -->
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-
-  <title>Khashayar YouTube Downloader</title>
-
-  <!-- ────────────────────────────────────────────── -->
-  <!-- All Libraries from jsDelivr (accessible via Shecan DNS) -->
-  <!-- ────────────────────────────────────────────── -->
-
-  <!-- Tailwind CSS v4 via jsDelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-
-  <!-- Vazirmatn Font -->
-  <link
-    href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
-    rel="stylesheet"
-    type="text/css"
-  />
-
-  <!-- GSAP via jsDelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-
-  <!-- Alpine.js via jsDelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.7/dist/cdn.min.js" defer></script>
-
-  <!-- Lucide Icons via jsDelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.454.0/dist/umd/lucide.min.js" defer></script>
-
-  <!-- SweetAlert2 via jsDelivr -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
-
-  <!-- ────────────────────────────────────────────── -->
-  <!-- Custom Stylesheets (relative paths)            -->
-  <!-- ────────────────────────────────────────────── -->
-  <link rel="stylesheet" href="assets/css/themes.css" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-
-  <!-- ────────────────────────────────────────────── -->
-  <!-- Inline Tailwind v4 Config                     -->
-  <!-- ────────────────────────────────────────────── -->
-  <style type="text/tailwindcss">
-    @theme {
-      --color-brand-50: #eef2ff;
-      --color-brand-100: #e0e7ff;
-      --color-brand-200: #c7d2fe;
-      --color-brand-300: #a5b4fc;
-      --color-brand-400: #818cf8;
-      --color-brand-500: #6366f1;
-      --color-brand-600: #4f46e5;
-      --color-brand-700: #4338ca;
-      --color-brand-800: #3730a3;
-      --color-brand-900: #312e81;
-      --color-brand-950: #1e1b4b;
-
-      --color-surface: #0f172a;
-      --color-surface-light: #1e293b;
-      --color-surface-lighter: #334155;
-      --color-surface-border: #475569;
-
-      --font-vazir: 'Vazirmatn', system-ui, sans-serif;
-      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-
-      --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      --animate-fade-in: fadeIn 0.5s ease-out forwards;
-      --animate-slide-up: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      --animate-glow: glow 2s ease-in-out infinite alternate;
-      --animate-scale-in: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-      --animate-fade-in-up: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      --animate-slide-in-right: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      --animate-spin: spin 0.6s linear infinite;
-      --animate-pulse-ring: pulseRing 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      --animate-shimmer: shimmer 1.5s ease-in-out infinite;
-      --animate-glow-rotate: glowRotate 3s linear infinite;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes glow {
-      from { box-shadow: 0 0 5px rgba(99, 102, 241, 0.3); }
-      to { box-shadow: 0 0 20px rgba(99, 102, 241, 0.6); }
-    }
-
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(-30px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes pulseRing {
-      0% { transform: scale(1); opacity: 0.6; }
-      100% { transform: scale(2.5); opacity: 0; }
-    }
-
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-
-    @keyframes glowRotate {
-      0% { filter: blur(8px) hue-rotate(0deg); }
-      100% { filter: blur(8px) hue-rotate(360deg); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khashayar Downloader — Test Panel</title>
+    
+    <!-- Tailwind CSS v4 via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 'vazir': ['Vazirmatn', 'sans-serif'] },
+                    colors: {
+                        brand: { 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' },
+                        surface: { DEFAULT: '#0f172a', light: '#1e293b', lighter: '#334155', border: '#475569' }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Vazirmatn Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; background: #0f172a; color: #f1f5f9; min-height: 100vh; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.06); }
+        .btn-primary { background: linear-gradient(135deg, #4f46e5, #6366f1); transition: all 0.3s; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(99,102,241,0.4); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .input-field { background: #1e293b; border: 2px solid #475569; border-radius: 12px; padding: 12px 16px; width: 100%; color: white; font-family: inherit; transition: all 0.2s; }
+        .input-field:focus { border-color: #6366f1; outline: none; box-shadow: 0 0 0 4px rgba(99,102,241,0.1); }
+        select.input-field { appearance: none; cursor: pointer; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { animation: spin 0.8s linear infinite; }
+        .result-card { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
 </head>
-
-<body class="font-vazir bg-surface text-white min-h-screen antialiased selection:bg-brand-500/30 selection:text-white">
-
-  <!-- ────────────────────────────────────────────── -->
-  <!-- Main Application Container                    -->
-  <!-- ────────────────────────────────────────────── -->
-  <div id="app" class="relative z-10">
-    <!-- Skeleton Loader -->
-    <div id="skeleton-loader" class="min-h-screen flex items-center justify-center p-4">
-      <div class="w-full max-w-2xl mx-auto space-y-8 animate-pulse">
-        <div class="flex justify-center">
-          <div class="w-20 h-20 bg-surface-lighter rounded-3xl"></div>
+<body class="flex items-center justify-center p-4">
+    
+    <div id="app" class="w-full max-w-lg mx-auto space-y-6">
+        
+        <!-- Header -->
+        <div class="text-center space-y-2">
+            <div class="text-4xl">🎬</div>
+            <h1 class="text-2xl font-bold">Khashayar Downloader</h1>
+            <p class="text-sm text-gray-400">تست مستقیم Workflow — لینک بده، کیفیت رو انتخاب کن، دانلود کن</p>
+            <p class="text-xs text-yellow-500/70">⚠️ فایل‌ها ۵ دقیقه پس از دانلود خودکار حذف می‌شوند</p>
         </div>
-        <div class="space-y-3 text-center">
-          <div class="h-8 bg-surface-lighter rounded-lg w-3/4 mx-auto"></div>
-          <div class="h-5 bg-surface-lighter rounded-lg w-1/2 mx-auto"></div>
+        
+        <!-- Form -->
+        <div class="glass rounded-2xl p-6 space-y-4">
+            
+            <!-- URL Input -->
+            <div>
+                <label class="text-sm text-gray-300 mb-2 block">🔗 لینک ویدیو یوتیوب</label>
+                <input type="text" id="urlInput" class="input-field" 
+                       placeholder="https://www.youtube.com/watch?v=..." 
+                       dir="ltr" autocomplete="off">
+                <p id="urlError" class="text-red-400 text-xs mt-1 hidden"></p>
+            </div>
+            
+            <!-- Options Row -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Quality -->
+                <div>
+                    <label class="text-sm text-gray-300 mb-2 block">🎬 کیفیت</label>
+                    <select id="qualitySelect" class="input-field">
+                        <option value="best">بهترین</option>
+                        <option value="2160">4K</option>
+                        <option value="1080">1080p</option>
+                        <option value="720">720p</option>
+                        <option value="480">480p</option>
+                        <option value="audio">فقط صدا (MP3)</option>
+                    </select>
+                </div>
+                
+                <!-- Subtitles Toggle -->
+                <div>
+                    <label class="text-sm text-gray-300 mb-2 block">📝 زیرنویس</label>
+                    <button id="subBtn" onclick="toggleSub()" 
+                            class="input-field text-left cursor-pointer flex items-center justify-between">
+                        <span id="subLabel">خاموش</span>
+                        <span id="subDot" class="w-3 h-3 rounded-full bg-gray-500"></span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Password -->
+            <div>
+                <label class="text-sm text-gray-300 mb-2 block">🔒 رمز فایل (اختیاری)</label>
+                <input type="text" id="passInput" class="input-field" 
+                       placeholder="رمز دلخواه برای فایل ZIP" dir="ltr">
+            </div>
+            
+            <!-- Submit -->
+            <button id="submitBtn" onclick="startDownload()" 
+                    class="btn-primary w-full py-4 rounded-xl text-lg font-semibold">
+                <span id="btnText">🚀 شروع دانلود</span>
+                <span id="btnSpinner" class="spinner hidden ml-2 inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full"></span>
+            </button>
         </div>
-        <div class="space-y-4">
-          <div class="h-14 bg-surface-lighter rounded-2xl w-full"></div>
-          <div class="flex gap-3">
-            <div class="h-12 bg-surface-lighter rounded-xl flex-1"></div>
-            <div class="h-12 bg-surface-lighter rounded-xl w-24"></div>
-          </div>
-          <div class="h-12 bg-surface-lighter rounded-xl w-full"></div>
+        
+        <!-- Status -->
+        <div id="statusBox" class="glass rounded-2xl p-5 text-center hidden result-card">
+            <div id="statusIcon" class="text-4xl mb-2"></div>
+            <div id="statusText" class="text-lg font-semibold"></div>
+            <div id="statusSub" class="text-sm text-gray-400 mt-1"></div>
+            <div id="downloadArea" class="mt-4 hidden">
+                <a id="downloadLink" href="#" target="_blank" 
+                   class="inline-block bg-green-600 hover:bg-green-500 text-white px-6 py-3 rounded-xl font-semibold transition">
+                    ⬇️ دانلود فایل
+                </a>
+                <p class="text-xs text-yellow-500/70 mt-3">⚠️ این فایل ۵ دقیقه دیگر حذف می‌شود</p>
+            </div>
         </div>
-      </div>
+        
+        <!-- Footer -->
+        <p class="text-center text-xs text-gray-500">Powered by <a href="https://khashayar.one" class="text-brand-500">khashayar.one</a></p>
     </div>
 
-    <!-- Mounted by app.js -->
-    <div id="app-content" class="hidden"></div>
-  </div>
-
-  <!-- ────────────────────────────────────────────── -->
-  <!-- Background Effects                             -->
-  <!-- ────────────────────────────────────────────── -->
-  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none" aria-hidden="true">
-    <div class="absolute -top-40 -right-40 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] animate-pulse-slow"></div>
-    <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-brand-700/8 rounded-full blur-[120px] animate-pulse-slow" style="animation-delay: 1.5s;"></div>
-    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMDgiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-50"></div>
-  </div>
-
-  <!-- ────────────────────────────────────────────── -->
-  <!-- Custom Scripts                                -->
-  <!-- ────────────────────────────────────────────── -->
-  <script src="assets/js/utils.js" defer></script>
-  <script src="assets/js/i18n.js" defer></script>
-  <script src="assets/js/api.js" defer></script>
-  <script src="assets/js/ui.js" defer></script>
-  <script src="assets/js/app.js" defer></script>
-
-  <!-- Initialize Lucide Icons -->
-  <script defer>
-    window.addEventListener('load', function() {
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-        console.log('[Khashayar] ✅ All resources loaded successfully');
-      }
-    });
-  </script>
-
+    <script>
+        // ⚙️ Configuration
+        const CONFIG = {
+            owner: 'khashayardev',
+            repo: 'khashayardev.github.io',
+            workflowId: 'yt-dl.yml',
+            branch: 'main',
+            pollInterval: 5000,
+            maxPollAttempts: 120
+        };
+        
+        // State
+        let subtitleEnabled = false;
+        let isRunning = false;
+        let pollTimer = null;
+        
+        // Toggle subtitle
+        function toggleSub() {
+            subtitleEnabled = !subtitleEnabled;
+            document.getElementById('subLabel').textContent = subtitleEnabled ? 'روشن' : 'خاموش';
+            document.getElementById('subDot').className = 'w-3 h-3 rounded-full ' + 
+                (subtitleEnabled ? 'bg-green-500 shadow-lg shadow-green-500/50' : 'bg-gray-500');
+        }
+        
+        // Validate YouTube URL
+        function isValidYouTubeUrl(url) {
+            const patterns = [
+                /^https?:\/\/(www\.)?youtube\.com\/watch\?v=[\w-]{11}/,
+                /^https?:\/\/youtu\.be\/[\w-]{11}/,
+                /^https?:\/\/(www\.)?youtube\.com\/shorts\/[\w-]{11}/
+            ];
+            return patterns.some(p => p.test(url.trim()));
+        }
+        
+        // Show error on URL input
+        function showUrlError(msg) {
+            const el = document.getElementById('urlError');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            document.getElementById('urlInput').style.borderColor = '#ef4444';
+        }
+        
+        function clearUrlError() {
+            document.getElementById('urlError').classList.add('hidden');
+            document.getElementById('urlInput').style.borderColor = '#475569';
+        }
+        
+        // Show status
+        function showStatus(icon, title, sub = '', showDownload = false, downloadUrl = '') {
+            const box = document.getElementById('statusBox');
+            box.classList.remove('hidden');
+            document.getElementById('statusIcon').textContent = icon;
+            document.getElementById('statusText').textContent = title;
+            document.getElementById('statusSub').textContent = sub;
+            
+            const downloadArea = document.getElementById('downloadArea');
+            if (showDownload && downloadUrl) {
+                downloadArea.classList.remove('hidden');
+                document.getElementById('downloadLink').href = downloadUrl;
+            } else {
+                downloadArea.classList.add('hidden');
+            }
+        }
+        
+        // Get GitHub Token (from URL param, localStorage, or prompt)
+        function getToken() {
+            // Check URL param
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('token')) return params.get('token');
+            
+            // Check localStorage
+            const stored = localStorage.getItem('gh_token_test');
+            if (stored) return stored;
+            
+            // Ask user
+            const token = prompt(
+                '🔑 GitHub Personal Access Token required\n\n' +
+                'Create one at: https://github.com/settings/tokens\n' +
+                'Scopes needed: repo, workflow\n\n' +
+                'Enter your token:'
+            );
+            
+            if (token) {
+                localStorage.setItem('gh_token_test', token);
+                return token;
+            }
+            return null;
+        }
+        
+        // Trigger workflow
+        async function dispatchWorkflow(token, url, quality, subtitles, password) {
+            const endpoint = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/actions/workflows/${CONFIG.workflowId}/dispatches`;
+            
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ref: CONFIG.branch,
+                    inputs: {
+                        youtube_urls: url,
+                        quality: quality,
+                        download_subtitles: subtitles ? 'true' : 'false',
+                        password: password || '',
+                    }
+                })
+            });
+            
+            if (response.status === 204) return true;
+            
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.message || `HTTP ${response.status}`);
+        }
+        
+        // Get latest workflow run
+        async function getLatestRun(token) {
+            const endpoint = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/actions/runs?branch=${CONFIG.branch}&per_page=1`;
+            
+            const response = await fetch(endpoint, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                }
+            });
+            
+            const data = await response.json();
+            return data.workflow_runs?.[0] || null;
+        }
+        
+        // Get video download URL
+        function getVideoUrl(folderName) {
+            return `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/${CONFIG.branch}/videos/${encodeURIComponent(folderName)}/${encodeURIComponent(folderName)}.mp4`;
+        }
+        
+        // Main download function
+        async function startDownload() {
+            if (isRunning) return;
+            
+            const url = document.getElementById('urlInput').value.trim();
+            clearUrlError();
+            
+            // Validation
+            if (!url) { showUrlError('لینک یوتیوب را وارد کنید'); return; }
+            if (!isValidYouTubeUrl(url)) { showUrlError('لینک یوتیوب معتبر نیست'); return; }
+            
+            const token = getToken();
+            if (!token) { showStatus('🔑', 'توکن لازم است', 'بدون توکن نمی‌توان دانلود کرد'); return; }
+            
+            const quality = document.getElementById('qualitySelect').value;
+            const password = document.getElementById('passInput').value.trim();
+            
+            // Start
+            isRunning = true;
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            document.getElementById('btnText').textContent = 'در حال ارسال...';
+            document.getElementById('btnSpinner').classList.remove('hidden');
+            
+            showStatus('📤', 'در حال ارسال درخواست...', 'اتصال به GitHub API');
+            
+            try {
+                // Step 1: Dispatch
+                await dispatchWorkflow(token, url, quality, subtitleEnabled, password);
+                
+                showStatus('⏳', 'دانلود شروع شد', 'در حال دریافت ویدیو از یوتیوب...');
+                document.getElementById('btnText').textContent = 'در حال دانلود...';
+                
+                // Step 2: Poll for completion
+                let attempts = 0;
+                let lastRunId = null;
+                
+                await new Promise((resolve, reject) => {
+                    pollTimer = setInterval(async () => {
+                        try {
+                            attempts++;
+                            const run = await getLatestRun(token);
+                            
+                            if (run && run.id !== lastRunId) {
+                                lastRunId = run.id;
+                                console.log(`Poll #${attempts}: ${run.status} / ${run.conclusion}`);
+                            }
+                            
+                            if (run && run.status === 'completed') {
+                                clearInterval(pollTimer);
+                                if (run.conclusion === 'success') {
+                                    resolve(run);
+                                } else {
+                                    reject(new Error('Workflow failed'));
+                                }
+                                return;
+                            }
+                            
+                            if (attempts >= CONFIG.maxPollAttempts) {
+                                clearInterval(pollTimer);
+                                reject(new Error('Timeout'));
+                            }
+                        } catch (e) {
+                            // Network errors are okay during polling
+                            console.warn('Poll error:', e.message);
+                        }
+                    }, CONFIG.pollInterval);
+                });
+                
+                // Step 3: Success — get the video URL
+                // The folder name is the sanitized title. We'll fetch it from the repo.
+                const filesUrl = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/videos`;
+                const filesResponse = await fetch(filesUrl, {
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+                });
+                const files = await filesResponse.json();
+                
+                if (!Array.isArray(files) || files.length === 0) {
+                    throw new Error('No files found in videos/');
+                }
+                
+                // Get the last folder (most recent download)
+                const lastFolder = files.filter(f => f.type === 'dir').pop();
+                if (!lastFolder) throw new Error('No video folder found');
+                
+                const videoUrl = getVideoUrl(lastFolder.name);
+                
+                showStatus('✅', 'ویدیو آماده است!', `پوشه: ${lastFolder.name}`, true, videoUrl);
+                document.getElementById('btnText').textContent = '✅ دانلود مجدد';
+                document.getElementById('btnSpinner').classList.add('hidden');
+                
+                // Start countdown for 5-minute expiry
+                startExpiryTimer();
+                
+            } catch (error) {
+                console.error('Download error:', error);
+                
+                let msg = 'خطا در دانلود';
+                if (error.message.includes('401') || error.message.includes('Bad credentials')) {
+                    msg = 'توکن نامعتبر است';
+                    localStorage.removeItem('gh_token_test');
+                } else if (error.message.includes('403') || error.message.includes('rate limit')) {
+                    msg = 'محدودیت نرخ — چند دقیقه صبر کنید';
+                } else if (error.message.includes('Timeout')) {
+                    msg = 'زمان دانلود طولانی شد — دوباره تلاش کنید';
+                } else if (error.message.includes('Workflow failed')) {
+                    msg = 'دانلود ناموفق — لینک را بررسی کنید';
+                }
+                
+                showStatus('❌', msg, error.message);
+                document.getElementById('btnText').textContent = '🔄 تلاش مجدد';
+                document.getElementById('btnSpinner').classList.add('hidden');
+            } finally {
+                isRunning = false;
+                btn.disabled = false;
+            }
+        }
+        
+        // 5-minute expiry timer
+        function startExpiryTimer() {
+            let seconds = 300;
+            const sub = document.getElementById('statusSub');
+            
+            const timer = setInterval(() => {
+                seconds--;
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                sub.textContent = `⏱ ${mins}:${secs.toString().padStart(2, '0')} تا حذف خودکار`;
+                
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    sub.textContent = '🗑 فایل حذف شد';
+                    document.getElementById('downloadLink').classList.add('opacity-50', 'pointer-events-none');
+                }
+            }, 1000);
+        }
+        
+        // Enter key to submit
+        document.getElementById('urlInput').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') startDownload();
+        });
+        
+        // Real-time URL validation
+        document.getElementById('urlInput').addEventListener('input', function() {
+            if (this.value.trim() && !isValidYouTubeUrl(this.value)) {
+                this.style.borderColor = '#f59e0b';
+            } else {
+                this.style.borderColor = '#475569';
+                clearUrlError();
+            }
+        });
+    </script>
 </body>
 </html>
