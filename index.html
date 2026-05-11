@@ -6,20 +6,7 @@
     <title>Khashayar Downloader — Test Panel</title>
     
     <!-- Tailwind CSS v4 via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: { 'vazir': ['Vazirmatn', 'sans-serif'] },
-                    colors: {
-                        brand: { 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' },
-                        surface: { DEFAULT: '#0f172a', light: '#1e293b', lighter: '#334155', border: '#475569' }
-                    }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.0/dist/index.global.min.js"></script>
     
     <!-- Vazirmatn Font -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
@@ -37,6 +24,17 @@
         .spinner { animation: spin 0.8s linear infinite; }
         .result-card { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@theme {
+    --font-vazir: 'Vazirmatn', sans-serif;
+    --color-brand-500: #6366f1;
+    --color-brand-600: #4f46e5;
+    --color-brand-700: #4338ca;
+    --color-surface: #0f172a;
+    --color-surface-light: #1e293b;
+    --color-surface-lighter: #334155;
+    --color-surface-border: #475569;
+}
     </style>
 </head>
 <body class="flex items-center justify-center p-4">
