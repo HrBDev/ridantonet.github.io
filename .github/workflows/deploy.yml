@@ -14,18 +14,57 @@ jobs:
       contents: write
     
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-      
-      - name: Inject Token into index.html
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          
+      - name: Verify GH_PAT secret exists
         run: |
-          # جایگزین کردن placeholder با توکن واقعی
+          if [ -n "${{ secrets.GH_PAT }}" ]; then
+            echo "✅ GH_PAT secret is configured"
+            echo "Token length: ${#GH_PAT}"
+          else
+            echo "❌ GH_PAT secret is NOT configured!"
+            echo "Please add GH_PAT to repository secrets"
+            exit 1
+          fi
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          
+      - name: Inject token into index.html
+        run: |
+          # Check if placeholder exists
+          if ! grep -q "__GITHUB_TOKEN_PLACEHOLDER__" index.html; then
+            echo "❌ Placeholder __GITHUB_TOKEN_PLACEHOLDER__ not found in index.html"
+            exit 1
+          fi
+          
+          # Inject the token
           sed -i "s|__GITHUB_TOKEN_PLACEHOLDER__|${{ secrets.GH_PAT }}|g" index.html
-      
+          
+          # Verify injection was successful
+          if grep -q "__GITHUB_TOKEN_PLACEHOLDER__" index.html; then
+            echo "❌ Token injection failed - placeholder still exists"
+            exit 1
+          else
+            echo "✅ Token successfully injected into index.html"
+          fi
+          
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Add the modified file
           git add index.html
-          git diff --staged --quiet || git commit -m "Inject GitHub token into index.html [skip ci]"
-          git push origin main
+          
+          # Check if there are changes to commit
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: inject GitHub token into index.html [skip ci]"
+            git push origin main
+            echo "✅ Changes pushed successfully"
+          fi
