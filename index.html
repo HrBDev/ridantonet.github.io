@@ -2,13 +2,13 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <title>🎬 Khashayar Downloader</title>
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <meta name="description" content="دانلودر حرفه‌ای ویدیوهای یوتیوب — سریع، امن، با کیفیت دلخواه">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🎬 Khashayar YouTube Downloader</title>
+    
+    <meta name="description" content="دانلودر حرفه‌ای ویدیوهای یوتیوب">
     <meta name="theme-color" content="#0f172a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="color-scheme" content="dark">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230f172a'/><polygon points='75 35 55 55 75 75' fill='%238188f8'/><rect x='20' y='30' width='35' height='40' rx='8' fill='%236366f1'/></svg>">
     
     <!-- Tailwind CSS v4 -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.0/dist/index.global.min.js"></script>
@@ -16,525 +16,399 @@
     <!-- Vazirmatn Font -->
     <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     
-    <!-- Lucide Icons -->
-    <script src="https://cdn.jsdelivr.net/npm/lucide@0.454.0/dist/umd/lucide.min.js" defer></script>
-    
     <!-- GSAP -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-    
-    <!-- Anime.js -->
-    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     
     <style>
         @theme {
             --font-vazir: 'Vazirmatn', sans-serif;
             --color-brand-400: #818cf8; --color-brand-500: #6366f1; --color-brand-600: #4f46e5;
             --color-surface: #0f172a; --color-surface-light: #1e293b; --color-surface-lighter: #334155;
-            --color-success: #22c55e; --color-warning: #f59e0b; --color-error: #ef4444;
+            --color-success: #22c55e; --color-error: #ef4444; --color-warning: #f59e0b;
             --color-text: #f1f5f9; --color-text-secondary: #94a3b8; --color-text-muted: #64748b;
+            --radius-card: 1.5rem; --radius-input: 1rem;
         }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         
-        body { 
-            font-family: 'Vazirmatn', sans-serif; 
-            background: #0f172a; color: #f1f5f9; min-height: 100dvh;
-            overflow-x: hidden; -webkit-tap-highlight-color: transparent;
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: #0f172a; color: #f1f5f9;
+            min-height: 100dvh; overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
             display: flex; align-items: center; justify-content: center;
+            padding: 1rem;
         }
         
-        /* ── Animated Background ── */
-        .bg-mesh {
+        /* Background glow */
+        .bg-glow {
             position: fixed; inset: 0; pointer-events: none; z-index: 0;
-            background: radial-gradient(ellipse 80% 80% at 50% -20%, rgba(99,102,241,0.15), transparent),
-                        radial-gradient(ellipse 60% 60% at 80% 80%, rgba(6,182,212,0.1), transparent),
-                        radial-gradient(ellipse 40% 40% at 20% 50%, rgba(139,92,246,0.08), transparent);
+            background: radial-gradient(ellipse 60% 60% at 50% -10%, rgba(99,102,241,0.12), transparent),
+                        radial-gradient(ellipse 50% 50% at 80% 90%, rgba(6,182,212,0.08), transparent);
         }
         
-        .bg-dots {
-            position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.3;
-            background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
-            background-size: 32px 32px;
+        /* ── Card ── */
+        .card {
+            background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-card);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5); transition: all 0.3s;
         }
+        .card:focus-within { border-color: rgba(99,102,241,0.4); box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(99,102,241,0.1); }
         
-        /* ── Glass Cards ── */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        /* ── Input ── */
+        .input {
+            width: 100%; padding: 15px 18px; font-size: 15px; font-family: inherit;
+            background: rgba(15, 23, 42, 0.5); border: 2px solid rgba(71, 85, 105, 0.4);
+            border-radius: var(--radius-input); color: white; transition: all 0.25s; outline: none;
         }
-        .glass-panel:focus-within { border-color: rgba(99,102,241,0.4); box-shadow: 0 0 0 1px rgba(99,102,241,0.2), 0 20px 50px rgba(0,0,0,0.5); }
+        .input:focus { border-color: #818cf8; background: rgba(15, 23, 42, 0.8); box-shadow: 0 0 0 5px rgba(99,102,241,0.06); }
+        .input::placeholder { color: #64748b; }
+        .input.error { border-color: #ef4444; }
+        .input.success { border-color: #22c55e; }
         
-        /* ── Form Elements ── */
-        .input-main {
-            width: 100%; padding: 16px 20px; font-size: 16px; font-family: inherit; direction: ltr;
-            background: rgba(30, 41, 59, 0.7); border: 2px solid rgba(71, 85, 105, 0.4);
-            border-radius: 20px; color: white; transition: all 0.3s ease; outline: none;
-        }
-        .input-main:focus { border-color: #818cf8; background: rgba(30, 41, 59, 0.9); box-shadow: 0 0 0 5px rgba(99,102,241,0.08); }
-        .input-main::placeholder { color: #64748b; }
-        .input-main.error { border-color: #ef4444; box-shadow: 0 0 0 5px rgba(239,68,68,0.08); }
-        .input-main.success { border-color: #22c55e; }
-        
-        .select-main {
+        /* ── Select ── */
+        .select {
             width: 100%; padding: 14px 16px; font-size: 14px; font-family: inherit;
-            background: rgba(30, 41, 59, 0.7); border: 2px solid rgba(71, 85, 105, 0.4);
-            border-radius: 18px; color: white; cursor: pointer; outline: none;
-            appearance: none; transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.5); border: 2px solid rgba(71, 85, 105, 0.4);
+            border-radius: var(--radius-input); color: white; cursor: pointer; outline: none;
+            appearance: none; transition: all 0.25s;
         }
-        .select-main:focus { border-color: #818cf8; }
+        .select:focus { border-color: #818cf8; }
         
-        /* ── Buttons ── */
-        .btn-download {
-            width: 100%; padding: 18px; font-size: 18px; font-family: inherit; font-weight: 700;
-            border: none; border-radius: 20px; color: white; cursor: pointer;
+        /* ── Button ── */
+        .btn {
+            width: 100%; padding: 16px; font-size: 17px; font-family: inherit; font-weight: 700;
+            border: none; border-radius: var(--radius-input); color: white; cursor: pointer;
             background: linear-gradient(135deg, #6366f1, #4f46e5);
-            box-shadow: 0 10px 30px rgba(99,102,241,0.3);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 10px 30px rgba(99,102,241,0.3); transition: all 0.3s;
             display: flex; align-items: center; justify-content: center; gap: 10px;
-            position: relative; overflow: hidden;
         }
-        .btn-download::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%); transition: transform 0.6s;
-        }
-        .btn-download:hover::after { transform: translateX(100%); }
-        .btn-download:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(99,102,241,0.5); }
-        .btn-download:active { transform: scale(0.97); }
-        .btn-download:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(99,102,241,0.5); }
+        .btn:active { transform: scale(0.97); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         
-        /* ── Toggle Switch ── */
-        .toggle-switch {
-            width: 52px; height: 28px; border-radius: 14px; cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); position: relative;
+        /* ── Toggle ── */
+        .toggle {
+            width: 48px; height: 26px; border-radius: 13px; cursor: pointer; transition: all 0.3s;
+            position: relative; flex-shrink: 0;
         }
-        .toggle-switch.on { background: #22c55e; }
-        .toggle-switch.off { background: #475569; }
-        .toggle-switch::after {
-            content: ''; position: absolute; top: 3px; width: 22px; height: 22px;
-            border-radius: 50%; background: white; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        .toggle.off { background: #475569; }
+        .toggle.on { background: #22c55e; }
+        .toggle::after {
+            content: ''; position: absolute; top: 3px; width: 20px; height: 20px;
+            border-radius: 50%; background: white; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
-        .toggle-switch.on::after { left: 27px; }
-        .toggle-switch.off::after { left: 3px; }
+        .toggle.off::after { left: 3px; }
+        .toggle.on::after { left: 25px; }
         
-        /* ── Progress Bar ── */
-        .progress-bar-bg { width: 100%; height: 6px; background: rgba(71,85,105,0.3); border-radius: 3px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; border-radius: 3px; transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            background: linear-gradient(90deg, #6366f1, #818cf8, #22c55e); background-size: 200% 100%; animation: progressGlow 2s ease infinite; }
-        @keyframes progressGlow { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        /* ── Progress ── */
+        .progress-bar { width: 100%; height: 6px; background: rgba(71,85,105,0.3); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 3px; width: 0%; transition: width 0.5s; background: linear-gradient(90deg, #6366f1, #22c55e); }
         
         /* ── Timeline ── */
-        .timeline-step { display: flex; align-items: flex-start; gap: 14px; padding: 10px 0; position: relative; }
-        .timeline-dot { width: 28px; height: 28px; min-width: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; transition: all 0.4s; z-index: 1; }
-        .timeline-dot.queued { background: #1e293b; border: 2px solid #475569; color: #64748b; }
-        .timeline-dot.in_progress { background: rgba(99,102,241,0.2); border: 2px solid #6366f1; color: #818cf8; animation: pulseGlow 1.5s ease-in-out infinite; }
-        .timeline-dot.completed { background: #22c55e; border: 2px solid #22c55e; color: white; }
-        .timeline-dot.failed { background: #ef4444; border: 2px solid #ef4444; color: white; }
-        @keyframes pulseGlow { 0%,100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); } 50% { box-shadow: 0 0 0 10px rgba(99,102,241,0); } }
-        .timeline-line { position: absolute; top: 38px; right: 13px; width: 2px; height: calc(100% - 28px); background: #334155; transition: background 0.4s; }
-        .timeline-step.completed .timeline-line { background: #22c55e; }
-        .timeline-label { font-size: 13px; color: #64748b; transition: color 0.3s; }
-        .timeline-step.in_progress .timeline-label { color: #f1f5f9; font-weight: 500; }
-        .timeline-step.completed .timeline-label { color: #94a3b8; }
+        .tl-step { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+        .tl-dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; transition: all 0.4s; }
+        .tl-dot.queued { background: #1e293b; border: 2px solid #475569; color: #64748b; }
+        .tl-dot.in_progress { background: rgba(99,102,241,0.2); border: 2px solid #6366f1; color: #818cf8; animation: dotPulse 1.5s infinite; }
+        .tl-dot.completed { background: #22c55e; border: 2px solid #22c55e; color: white; }
+        .tl-dot.failed { background: #ef4444; border: 2px solid #ef4444; color: white; }
+        @keyframes dotPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); } 50% { box-shadow: 0 0 0 8px rgba(99,102,241,0); } }
+        .tl-label { font-size: 13px; color: #64748b; transition: color 0.3s; }
+        .tl-step.active .tl-label { color: #f1f5f9; font-weight: 500; }
+        .tl-step.done .tl-label { color: #94a3b8; }
         
-        /* ── Result Card ── */
-        .result-glow { box-shadow: 0 0 60px rgba(34,197,94,0.2), 0 20px 50px rgba(0,0,0,0.5); }
-        
-        /* ── Loading Wave ── */
-        .loading-wave { display: flex; gap: 4px; align-items: flex-end; justify-content: center; height: 30px; }
-        .loading-wave span { width: 4px; height: 100%; background: #818cf8; border-radius: 2px; animation: wave 1.2s ease-in-out infinite; }
-        .loading-wave span:nth-child(2) { animation-delay: 0.1s; }
-        .loading-wave span:nth-child(3) { animation-delay: 0.2s; }
-        .loading-wave span:nth-child(4) { animation-delay: 0.3s; }
-        .loading-wave span:nth-child(5) { animation-delay: 0.4s; }
-        @keyframes wave { 0%,100% { height: 8px; } 50% { height: 100%; } }
+        /* ── Spinner ── */
+        .spinner { width: 22px; height: 22px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         /* ── Animations ── */
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes scaleIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-        .anim-slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .anim-fade-in { animation: fadeIn 0.5s ease forwards; }
-        .anim-scale-in { animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
-        
-        /* ── Copy tooltip ── */
-        .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100;
-            background: #22c55e; color: white; padding: 12px 24px; border-radius: 16px; font-family: 'Vazirmatn', sans-serif;
-            font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); pointer-events: none; }
-        
-        /* ── Scrollbar ── */
-        ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-thumb { background: #475569; border-radius: 2px; }
+        .anim-slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body>
+    <div class="bg-glow"></div>
     
-    <div class="bg-mesh"></div>
-    <div class="bg-dots"></div>
-    
-    <!-- ═══════════ Main App ═══════════ -->
-    <main id="app" class="w-full max-w-lg mx-auto px-4 py-6 sm:py-10 relative z-10 space-y-5" style="opacity:0;">
+    <main id="app" class="w-full max-w-lg mx-auto space-y-4 relative z-10" style="opacity:0;">
         
         <!-- Header -->
-        <header class="text-center space-y-3 pb-2">
-            <div class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-2xl glass-panel" id="logoBox">
-                <i data-lucide="download" class="w-8 h-8 sm:w-10 sm:h-10 text-brand-400"></i>
-            </div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                Khashayar <span class="text-brand-400">Downloader</span>
-            </h1>
-            <p class="text-text-secondary text-xs sm:text-sm max-w-xs mx-auto leading-relaxed">
-                لینک یوتیوب رو بذار، کیفیت رو انتخاب کن، ویدیو رو تحویل بگیر
-            </p>
-            <div id="tokenBadge" class="hidden inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-medium" style="background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.2);">
-                <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> متصل
-            </div>
+        <header class="text-center space-y-2 pb-2">
+            <div class="text-4xl select-none">🎬</div>
+            <h1 class="text-2xl font-extrabold">Khashayar <span class="text-brand-400">Downloader</span></h1>
+            <p class="text-text-secondary text-xs">دانلود ویدیو یوتیوب — سریع و خودکار</p>
         </header>
         
-        <!-- Form Card -->
-        <section class="glass-panel p-5 sm:p-6 space-y-4">
+        <!-- Form -->
+        <section class="card p-5 space-y-4">
             
-            <!-- URL Input -->
+            <!-- URL -->
             <div>
-                <label class="text-xs font-medium text-text-secondary mb-2 block">🔗 لینک یوتیوب</label>
-                <input type="text" id="urlInput" class="input-main" placeholder="youtube.com/watch?v=..." autocomplete="off" spellcheck="false">
-                <p id="urlError" class="text-error text-[11px] mt-2 hidden">⚠️ <span id="urlErrorText"></span></p>
+                <label class="text-xs text-text-secondary mb-2 block">🔗 لینک یوتیوب</label>
+                <input type="text" id="urlInput" class="input" placeholder="youtube.com/watch?v=..." dir="ltr" autocomplete="off" spellcheck="false">
+                <p id="urlError" class="text-error text-xs mt-1.5 hidden"></p>
             </div>
             
-            <!-- Quality & Subtitles -->
+            <!-- Quality + Sub -->
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="text-xs font-medium text-text-secondary mb-2 block">🎬 کیفیت</label>
-                    <select id="qualitySelect" class="select-main">
+                    <label class="text-xs text-text-secondary mb-2 block">🎬 کیفیت</label>
+                    <select id="qualitySelect" class="select">
                         <option value="best">✨ بهترین</option>
-                        <option value="2160">📺 4K</option>
-                        <option value="1080">🖥 1080p</option>
-                        <option value="720">📱 720p</option>
-                        <option value="480">💻 480p</option>
+                        <option value="2160">4K</option>
+                        <option value="1080">1080p</option>
+                        <option value="720">720p</option>
+                        <option value="480">480p</option>
                         <option value="audio">🎵 MP3</option>
                     </select>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-text-secondary mb-2 block">📝 زیرنویس</label>
-                    <button onclick="toggleSub()" class="w-full flex items-center justify-between px-4 py-3 rounded-[18px] transition" style="background: rgba(30,41,59,0.7); border: 2px solid rgba(71,85,105,0.4);">
+                    <label class="text-xs text-text-secondary mb-2 block">📝 زیرنویس</label>
+                    <button onclick="toggleSub()" class="w-full flex items-center justify-between px-4 py-[13px] rounded-xl transition" style="background: rgba(15,23,42,0.5); border: 2px solid rgba(71,85,105,0.4);">
                         <span id="subLabel" class="text-sm text-text-secondary">خاموش</span>
-                        <div class="toggle-switch off" id="toggleSwitch"></div>
+                        <div class="toggle off" id="toggleEl"></div>
                     </button>
                 </div>
             </div>
             
             <!-- Password -->
             <div>
-                <label class="text-xs font-medium text-text-secondary mb-2 block">🔒 رمز ZIP <span class="text-text-muted">(اختیاری)</span></label>
-                <input type="text" id="passInput" class="input-main" placeholder="رمز دلخواه" dir="ltr" style="padding: 14px 20px; font-size: 14px;">
+                <label class="text-xs text-text-secondary mb-2 block">🔒 رمز ZIP <span class="text-text-muted">(اختیاری)</span></label>
+                <input type="text" id="passInput" class="input" placeholder="رمز دلخواه" dir="ltr" style="padding:13px 18px; font-size:14px;">
             </div>
             
             <!-- Submit -->
-            <button id="submitBtn" onclick="startDownload()" class="btn-download">
-                <i data-lucide="rocket" class="w-5 h-5" id="btnIcon"></i>
-                <span id="btnText">شروع دانلود</span>
-                <span id="btnSpinner" class="loading-wave hidden"><span></span><span></span><span></span><span></span><span></span></span>
+            <button id="submitBtn" onclick="startDownload()" class="btn">
+                <span id="btnText">🚀 شروع دانلود</span>
+                <span id="btnSpinner" class="spinner" style="display:none;"></span>
             </button>
         </section>
         
-        <!-- Progress / Timeline -->
-        <section id="progressBox" class="glass-panel p-5 sm:p-6 hidden anim-slide-up">
+        <!-- Progress -->
+        <section id="progressBox" class="card p-5 hidden anim-slide-up">
             <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-medium text-text-secondary">وضعیت دانلود</span>
-                <span id="progressPercent" class="text-xs text-brand-400 font-bold">0%</span>
+                <span class="text-xs text-text-secondary">وضعیت</span>
+                <span id="progressPct" class="text-xs text-brand-400 font-bold">0%</span>
             </div>
-            <div class="progress-bar-bg"><div id="progressBar" class="progress-bar-fill" style="width:0%"></div></div>
-            <div id="timelineContainer" class="mt-4 space-y-0"></div>
+            <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+            <div id="timeline" class="mt-4 space-y-0"></div>
         </section>
         
         <!-- Result -->
-        <section id="resultBox" class="glass-panel p-5 sm:p-6 text-center hidden anim-scale-in result-glow">
-            <div id="resultIcon" class="text-5xl mb-3">✅</div>
-            <h2 id="resultTitle" class="text-lg font-bold mb-1"></h2>
-            <p id="resultSub" class="text-xs text-text-secondary mb-4"></p>
-            <div id="downloadArea" class="hidden">
-                <a id="downloadLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white text-base transition" style="background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 10px 30px rgba(34,197,94,0.3);">
-                    <i data-lucide="download" class="w-5 h-5"></i> دانلود فایل
-                </a>
-                <p class="text-[11px] text-warning mt-3"><span>⏱</span> <span id="expiryTimer"></span></p>
-            </div>
-            <button onclick="resetAll()" class="mt-4 text-xs text-brand-400 font-medium">🔄 دانلود جدید</button>
+        <section id="resultBox" class="card p-5 text-center hidden anim-slide-up" style="border-color: rgba(34,197,94,0.3);">
+            <div class="text-4xl mb-2">✅</div>
+            <h2 class="text-lg font-bold mb-1">ویدیو آماده است!</h2>
+            <p id="resultFolder" class="text-xs text-text-secondary mb-4"></p>
+            <a id="downloadLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white transition" style="background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 8px 25px rgba(34,197,94,0.3);">
+                ⬇️ دانلود فایل
+            </a>
+            <p class="text-xs text-warning mt-3"><span id="expiryTimer"></span></p>
+            <button onclick="resetAll()" class="mt-3 text-xs text-brand-400">🔄 دانلود جدید</button>
         </section>
         
         <!-- Error -->
-        <section id="errorBox" class="glass-panel p-5 sm:p-6 text-center hidden anim-slide-up" style="border-color: rgba(239,68,68,0.3);">
-            <div class="text-4xl mb-2">❌</div>
-            <h3 class="text-base font-bold mb-1">خطا در دانلود</h3>
+        <section id="errorBox" class="card p-5 text-center hidden anim-slide-up" style="border-color: rgba(239,68,68,0.3);">
+            <div class="text-3xl mb-2">❌</div>
+            <h3 class="text-base font-bold mb-1">خطا</h3>
             <p id="errorMsg" class="text-xs text-text-secondary mb-3"></p>
-            <button onclick="retryDownload()" class="px-6 py-2.5 rounded-xl text-sm font-medium text-white transition" style="background: rgba(239,68,68,0.2); border: 1px solid rgba(239,68,68,0.3);">🔄 تلاش مجدد</button>
+            <button onclick="retryDownload()" class="px-5 py-2.5 rounded-xl text-sm text-white" style="background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);">🔄 تلاش مجدد</button>
         </section>
         
-        <!-- Footer -->
         <footer class="text-center text-[10px] text-text-muted pb-4">
-            <a href="https://khashayar.one" class="text-brand-400 hover:text-brand-300 transition" target="_blank">khashayar.one</a>
-            <span class="mx-2">•</span>
-            <span id="footerYear"></span>
+            <a href="https://khashayar.one" class="text-brand-400" target="_blank">khashayar.one</a>
         </footer>
     </main>
 
     <script>
-        // ⭐ Auto-injected by deploy workflow
+        // ⭐ Token injected by deploy workflow — DO NOT EDIT
         const AUTO_TOKEN = '__GITHUB_TOKEN_PLACEHOLDER__';
         
-        const CONFIG = { owner: 'khashayardev', repo: 'khashayardev.github.io', workflowId: 'yt-dl.yml', branch: 'main', pollInterval: 4000, maxPollAttempts: 200 };
+        const C = { owner:'khashayardev', repo:'khashayardev.github.io', wf:'yt-dl.yml', branch:'main', poll:4000, maxPoll:200 };
+        let subOn = false, busy = false, pollTimer = null, expiryTimer = null, lastData = null;
         
-        let subtitleEnabled = false, isRunning = false, pollTimer = null, expiryTimer = null, lastRetryData = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            const inp = document.getElementById('urlInput');
+            inp.addEventListener('input', validateUrl);
+            inp.addEventListener('keydown', e => { if (e.key === 'Enter') startDownload(); });
+            if (typeof gsap !== 'undefined') { gsap.to('#app', { opacity:1, duration:0.6, ease:'power2.out' }); }
+            else { document.getElementById('app').style.opacity = '1'; }
+        });
         
-        // ── Init ──
-        function init() {
-            if (AUTO_TOKEN && !AUTO_TOKEN.startsWith('__GITHUB')) document.getElementById('tokenBadge').classList.remove('hidden');
-            document.getElementById('footerYear').textContent = new Date().getFullYear();
-            
-            const input = document.getElementById('urlInput');
-            input.addEventListener('input', validateUrl);
-            input.addEventListener('keydown', e => { if (e.key === 'Enter') startDownload(); });
-            
-            lucide.createIcons();
-            
-            // GSAP entrance
-            if (typeof gsap !== 'undefined') {
-                gsap.to('#app', { opacity: 1, duration: 0.6, ease: 'power2.out' });
-                gsap.from('#logoBox', { scale: 0, rotation: -180, duration: 0.8, ease: 'back.out(1.7)', delay: 0.1 });
-            } else {
-                document.getElementById('app').style.opacity = '1';
-            }
-        }
-        
-        // ── Toggle ──
         function toggleSub() {
-            subtitleEnabled = !subtitleEnabled;
-            document.getElementById('subLabel').textContent = subtitleEnabled ? 'روشن' : 'خاموش';
-            const sw = document.getElementById('toggleSwitch');
-            sw.className = 'toggle-switch ' + (subtitleEnabled ? 'on' : 'off');
+            subOn = !subOn;
+            document.getElementById('subLabel').textContent = subOn ? 'روشن' : 'خاموش';
+            document.getElementById('toggleEl').className = 'toggle ' + (subOn ? 'on' : 'off');
         }
         
-        // ── Validation ──
-        function isValidYouTubeUrl(url) {
-            return /^https?:\/\/(www\.|m\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)[\w-]{11}/.test(url.trim());
-        }
+        function isValid(u) { return /^https?:\/\/(www\.|m\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)[\w-]{11}/.test(u.trim()); }
         
         function validateUrl() {
-            const url = document.getElementById('urlInput').value.trim();
-            const input = document.getElementById('urlInput'); const error = document.getElementById('urlError');
-            if (!url) { error.classList.add('hidden'); input.className = 'input-main'; return; }
-            if (isValidYouTubeUrl(url)) { error.classList.add('hidden'); input.className = 'input-main success'; }
-            else { document.getElementById('urlErrorText').textContent = 'لینک معتبر نیست'; error.classList.remove('hidden'); input.className = 'input-main error'; }
+            const u = document.getElementById('urlInput').value.trim(), inp = document.getElementById('urlInput'), er = document.getElementById('urlError');
+            if (!u) { er.classList.add('hidden'); inp.className = 'input'; return; }
+            if (isValid(u)) { er.classList.add('hidden'); inp.className = 'input success'; }
+            else { er.textContent = '⚠️ لینک یوتیوب معتبر نیست'; er.classList.remove('hidden'); inp.className = 'input error'; }
         }
         
-        // ── Token ──
         function getToken() {
             if (AUTO_TOKEN && !AUTO_TOKEN.startsWith('__GITHUB')) return AUTO_TOKEN;
-            const params = new URLSearchParams(window.location.search); if (params.get('token')) return params.get('token');
-            const stored = localStorage.getItem('gh_token'); if (stored) return stored;
-            const token = prompt('🔑 GitHub Token\n\nScopes: repo, workflow\n\ngithub.com/settings/tokens');
-            if (token) { localStorage.setItem('gh_token', token); return token; }
+            const p = new URLSearchParams(location.search); if (p.get('token')) return p.get('token');
+            const s = localStorage.getItem('gh_token'); if (s) return s;
+            const t = prompt('🔑 GitHub Token\n\nScopes: repo, workflow');
+            if (t) { localStorage.setItem('gh_token', t); return t; }
             return null;
         }
         
-        // ── API ──
-        async function dispatchWorkflow(token, url, quality, subtitles, password) {
-            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/actions/workflows/${CONFIG.workflowId}/dispatches`, {
-                method: 'POST', headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ref: CONFIG.branch, inputs: { youtube_urls: url, quality, download_subtitles: subtitles ? 'true' : 'false', password: password || '' } })
+        async function api(endpoint, token, opts = {}) {
+            const res = await fetch(endpoint.startsWith('http') ? endpoint : `https://api.github.com${endpoint}`, {
+                headers: { 'Authorization':`Bearer ${token}`, 'Accept':'application/vnd.github.v3+json', 'Content-Type':'application/json', ...opts.headers },
+                ...opts
             });
-            if (res.status === 204) return true;
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.message || `HTTP ${res.status}`);
+            if (res.status === 204) return { ok: true };
+            if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.message || `HTTP ${res.status}`); }
+            return res.json();
         }
         
-        async function getLatestRun(token) {
-            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/actions/runs?branch=${CONFIG.branch}&per_page=1`, {
-                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+        function dispatch(token, url, quality, subs, pass) {
+            return api(`/repos/${C.owner}/${C.repo}/actions/workflows/${C.wf}/dispatches`, token, {
+                method:'POST', body: JSON.stringify({ ref:C.branch, inputs:{ youtube_urls:url, quality, download_subtitles:subs?'true':'false', password:pass||'' } })
             });
-            const data = await res.json(); return data.workflow_runs?.[0] || null;
         }
         
-        async function getRunJobs(token, runId) {
-            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/actions/runs/${runId}/jobs`, {
-                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-            });
-            const data = await res.json(); return data.jobs || [];
-        }
+        function getRun(token) { return api(`/repos/${C.owner}/${C.repo}/actions/runs?branch=${C.branch}&per_page=1`, token).then(d => d.workflow_runs?.[0] || null); }
         
-        async function getVideoFolder(token) {
-            const res = await fetch(`https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents/videos`, {
-                headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-            });
-            const files = await res.json();
-            if (!Array.isArray(files)) return null;
-            return files.filter(f => f.type === 'dir').pop() || null;
-        }
+        function getJobs(token, runId) { return api(`/repos/${C.owner}/${C.repo}/actions/runs/${runId}/jobs`, token).then(d => d.jobs || []); }
         
-        function getVideoUrl(folderName) {
-            return `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/${CONFIG.branch}/videos/${encodeURIComponent(folderName)}/${encodeURIComponent(folderName)}.mp4`;
-        }
+        function getFolder(token) { return api(`/repos/${C.owner}/${C.repo}/contents/videos`, token).then(d => Array.isArray(d) ? d.filter(f=>f.type==='dir').pop()||null : null); }
         
-        // ── Timeline ──
+        function videoUrl(folder) { return `https://raw.githubusercontent.com/${C.owner}/${C.repo}/${C.branch}/videos/${encodeURIComponent(folder)}/${encodeURIComponent(folder)}.mp4`; }
+        
         function buildTimeline(jobs) {
-            const container = document.getElementById('timelineContainer');
-            container.innerHTML = '';
+            const container = document.getElementById('timeline'); container.innerHTML = '';
             const steps = [
-                { id: 'setup', name: '📥 آماده‌سازی', key: 'Checkout' },
-                { id: 'warp', name: '🌐 اتصال WARP', key: 'WARP' },
-                { id: 'deps', name: '📦 نصب ابزارها', key: 'Dependencies' },
-                { id: 'download', name: '⬇️ دانلود ویدیو', key: 'Download Videos' },
-                { id: 'push', name: '📤 ذخیره نهایی', key: 'Push' },
+                { id:'setup', name:'📥 آماده‌سازی', key:'Checkout' },
+                { id:'warp', name:'🌐 اتصال WARP', key:'WARP' },
+                { id:'deps', name:'📦 نصب ابزارها', key:'Dependencies' },
+                { id:'download', name:'⬇️ دانلود ویدیو', key:'Download Videos' },
+                { id:'push', name:'📤 ذخیره نهایی', key:'Push' },
             ];
-            const allSteps = [];
-            if (jobs.length > 0) {
-                const jobSteps = jobs[0].steps || [];
+            const all = [];
+            if (jobs.length) {
+                const ss = jobs[0].steps || [];
                 steps.forEach(s => {
-                    const match = jobSteps.find(js => js.name.toLowerCase().includes(s.key.toLowerCase()));
-                    let status = match ? match.status : 'queued';
-                    if (match && match.status === 'completed' && match.conclusion === 'failure') status = 'failed';
-                    allSteps.push({ ...s, status });
+                    const m = ss.find(x => x.name.toLowerCase().includes(s.key.toLowerCase()));
+                    let st = m ? m.status : 'queued';
+                    if (m && m.status==='completed' && m.conclusion==='failure') st = 'failed';
+                    all.push({...s, status:st});
                 });
             }
-            
-            allSteps.forEach((step, i) => {
-                const div = document.createElement('div');
-                div.className = 'timeline-step ' + (step.status === 'completed' ? 'completed' : step.status === 'in_progress' ? 'in_progress' : '');
-                let icon = '⋯'; if (step.status === 'completed') icon = '✓'; else if (step.status === 'in_progress') icon = '◎'; else if (step.status === 'failed') icon = '✕';
-                div.innerHTML = `<div class="timeline-dot ${step.status}">${icon}</div><div><span class="timeline-label">${step.name}</span></div>`;
-                if (i < allSteps.length - 1) div.innerHTML += '<div class="timeline-line"></div>';
-                container.appendChild(div);
+            all.forEach(s => {
+                const d = document.createElement('div');
+                d.className = 'tl-step';
+                let icon = '⋯'; if (s.status==='completed') icon='✓'; else if (s.status==='in_progress') icon='◎'; else if (s.status==='failed') icon='✕';
+                d.innerHTML = `<div class="tl-dot ${s.status}">${icon}</div><span class="tl-label">${s.name}</span>`;
+                container.appendChild(d);
             });
-            
-            const completed = allSteps.filter(s => s.status === 'completed').length;
-            const pct = Math.round((completed / allSteps.length) * 100);
-            document.getElementById('progressBar').style.width = pct + '%';
-            document.getElementById('progressPercent').textContent = pct + '%';
+            const done = all.filter(s => s.status==='completed').length;
+            const pct = Math.round((done/all.length)*100);
+            document.getElementById('progressFill').style.width = pct+'%';
+            document.getElementById('progressPct').textContent = pct+'%';
         }
         
-        async function pollWithTimeline(token) {
+        function poll(token) {
             let attempts = 0;
             return new Promise((resolve, reject) => {
                 pollTimer = setInterval(async () => {
                     try {
                         attempts++;
-                        const run = await getLatestRun(token);
+                        const run = await getRun(token);
                         if (!run) return;
-                        const jobs = await getRunJobs(token, run.id);
+                        const jobs = await getJobs(token, run.id);
                         buildTimeline(jobs);
-                        
-                        if (run.status === 'completed') {
-                            clearInterval(pollTimer);
-                            if (run.conclusion === 'success') resolve(run); else reject(new Error('workflow_failed'));
-                            return;
-                        }
-                        if (attempts >= CONFIG.maxPollAttempts) { clearInterval(pollTimer); reject(new Error('timeout')); }
-                    } catch (e) { console.warn('Poll:', e.message); }
-                }, CONFIG.pollInterval);
+                        if (run.status==='completed') { clearInterval(pollTimer); run.conclusion==='success' ? resolve(run) : reject(new Error('failed')); return; }
+                        if (attempts>=C.maxPoll) { clearInterval(pollTimer); reject(new Error('timeout')); }
+                    } catch(e) { console.warn(e); }
+                }, C.poll);
             });
         }
         
-        // ── Main ──
-        async function startDownload() {
-            if (isRunning) return;
-            const url = document.getElementById('urlInput').value.trim();
-            document.getElementById('urlError').classList.add('hidden');
-            document.getElementById('urlInput').className = 'input-main';
-            
-            if (!url) { document.getElementById('urlErrorText').textContent = 'لینک را وارد کنید'; document.getElementById('urlError').classList.remove('hidden'); document.getElementById('urlInput').className = 'input-main error'; return; }
-            if (!isValidYouTubeUrl(url)) { document.getElementById('urlErrorText').textContent = 'لینک معتبر نیست'; document.getElementById('urlError').classList.remove('hidden'); document.getElementById('urlInput').className = 'input-main error'; return; }
-            
-            const token = getToken();
-            if (!token) { showError('توکن گیتهاب لازم است. لطفاً وارد کنید.'); return; }
-            
-            const quality = document.getElementById('qualitySelect').value;
-            const password = document.getElementById('passInput').value.trim();
-            
-            lastRetryData = { url, quality, password };
-            isRunning = true;
-            
-            // UI
-            const btn = document.getElementById('submitBtn'); btn.disabled = true;
-            document.getElementById('btnIcon').style.display = 'none';
-            document.getElementById('btnText').textContent = 'در حال ارسال';
-            document.getElementById('btnSpinner').classList.remove('hidden');
-            hideAll(); document.getElementById('progressBox').classList.remove('hidden');
-            
-            try {
-                await dispatchWorkflow(token, url, quality, subtitleEnabled, password);
-                document.getElementById('btnText').textContent = 'در حال دانلود';
-                
-                await pollWithTimeline(token);
-                
-                const folder = await getVideoFolder(token);
-                if (!folder) throw new Error('no_folder');
-                const videoUrl = getVideoUrl(folder.name);
-                
-                showResult('✅', 'ویدیو آماده است!', folder.name, videoUrl);
-                startExpiryTimer();
-                
-                document.getElementById('btnText').textContent = '✅ کامل شد';
-                document.getElementById('btnSpinner').classList.add('hidden');
-                document.getElementById('btnIcon').style.display = 'block';
-                document.getElementById('btnIcon').outerHTML = '<i data-lucide="check-circle" class="w-5 h-5 text-green-400" id="btnIcon"></i>';
-                lucide.createIcons();
-            } catch (e) {
-                console.error(e);
-                let msg = 'خطای ناشناخته';
-                if (e.message.includes('401')) { msg = 'توکن نامعتبر'; localStorage.removeItem('gh_token'); }
-                else if (e.message.includes('403')) msg = 'محدودیت نرخ — صبر کنید';
-                else if (e.message === 'timeout') msg = 'زمان طولانی شد — دوباره تلاش کنید';
-                else if (e.message === 'workflow_failed') msg = 'دانلود ناموفق — لینک را بررسی کنید';
-                else if (e.message === 'no_folder') msg = 'فایل خروجی یافت نشد';
-                showError(msg);
-                resetBtn();
-            } finally { isRunning = false; btn.disabled = false; }
-        }
-        
-        function retryDownload() { resetAll(); setTimeout(() => { document.getElementById('urlInput').value = lastRetryData?.url || ''; startDownload(); }, 300); }
-        
-        // ── UI Helpers ──
         function hideAll() { ['progressBox','resultBox','errorBox'].forEach(id => document.getElementById(id).classList.add('hidden')); }
-        
-        function showResult(icon, title, sub, url) {
-            hideAll(); const box = document.getElementById('resultBox'); box.classList.remove('hidden');
-            document.getElementById('resultIcon').textContent = icon;
-            document.getElementById('resultTitle').textContent = title;
-            document.getElementById('resultSub').textContent = '📁 ' + sub;
-            document.getElementById('downloadArea').classList.remove('hidden');
-            document.getElementById('downloadLink').href = url;
-        }
         
         function showError(msg) { hideAll(); document.getElementById('errorBox').classList.remove('hidden'); document.getElementById('errorMsg').textContent = msg; }
         
-        function resetBtn() {
-            const btn = document.getElementById('submitBtn');
-            document.getElementById('btnText').textContent = 'شروع دانلود';
-            document.getElementById('btnSpinner').classList.add('hidden');
-            document.getElementById('btnIcon').style.display = 'block';
-            document.getElementById('btnIcon').outerHTML = '<i data-lucide="rocket" class="w-5 h-5" id="btnIcon"></i>';
-            lucide.createIcons();
+        function showResult(folder, url) {
+            hideAll();
+            const box = document.getElementById('resultBox'); box.classList.remove('hidden');
+            document.getElementById('resultFolder').textContent = '📁 ' + folder;
+            document.getElementById('downloadLink').href = url;
+            startExpiry();
         }
         
-        function resetAll() {
-            hideAll(); resetBtn(); document.getElementById('progressBox').classList.add('hidden');
+        function startExpiry() {
             if (expiryTimer) clearInterval(expiryTimer);
-        }
-        
-        function startExpiryTimer() {
-            if (expiryTimer) clearInterval(expiryTimer);
-            let seconds = 300; const el = document.getElementById('expiryTimer');
+            let s = 300; const el = document.getElementById('expiryTimer');
             expiryTimer = setInterval(() => {
-                seconds--;
-                const m = Math.floor(seconds / 60), s = seconds % 60;
-                el.textContent = `${m}:${String(s).padStart(2,'0')} تا حذف خودکار`;
-                if (seconds <= 60) el.parentElement.style.color = '#ef4444';
-                if (seconds <= 0) { clearInterval(expiryTimer); el.textContent = 'منقضی شد'; document.getElementById('downloadLink').style.opacity = '0.4'; document.getElementById('downloadLink').style.pointerEvents = 'none'; }
+                s--; const m = Math.floor(s/60), sec = s%60;
+                el.textContent = `⏱ ${m}:${String(sec).padStart(2,'0')} تا حذف خودکار`;
+                if (s<=60) el.style.color = '#ef4444';
+                if (s<=0) { clearInterval(expiryTimer); el.textContent = '🗑 منقضی شد'; document.getElementById('downloadLink').style.opacity='0.4'; document.getElementById('downloadLink').style.pointerEvents='none'; }
             }, 1000);
         }
         
-        // ── Start ──
-        document.addEventListener('DOMContentLoaded', init);
+        function resetBtn() {
+            document.getElementById('btnText').textContent = '🚀 شروع دانلود';
+            document.getElementById('btnSpinner').style.display = 'none';
+        }
+        
+        function resetAll() { hideAll(); resetBtn(); if (expiryTimer) clearInterval(expiryTimer); document.getElementById('progressBox').classList.add('hidden'); }
+        
+        function retryDownload() { resetAll(); if (lastData) { document.getElementById('urlInput').value = lastData.url; } setTimeout(startDownload, 300); }
+        
+        async function startDownload() {
+            if (busy) return;
+            const url = document.getElementById('urlInput').value.trim();
+            const inp = document.getElementById('urlInput'), er = document.getElementById('urlError');
+            er.classList.add('hidden'); inp.className = 'input';
+            
+            if (!url) { er.textContent = '⚠️ لینک را وارد کنید'; er.classList.remove('hidden'); inp.className = 'input error'; return; }
+            if (!isValid(url)) { er.textContent = '⚠️ لینک معتبر نیست'; er.classList.remove('hidden'); inp.className = 'input error'; return; }
+            
+            const token = getToken();
+            if (!token) { showError('توکن گیتهاب لازم است'); return; }
+            
+            const quality = document.getElementById('qualitySelect').value;
+            const pass = document.getElementById('passInput').value.trim();
+            lastData = { url, quality, pass };
+            
+            busy = true;
+            const btn = document.getElementById('submitBtn'); btn.disabled = true;
+            document.getElementById('btnText').textContent = 'در حال ارسال...';
+            document.getElementById('btnSpinner').style.display = 'block';
+            hideAll(); document.getElementById('progressBox').classList.remove('hidden');
+            
+            try {
+                await dispatch(token, url, quality, subOn, pass);
+                document.getElementById('btnText').textContent = 'در حال دانلود...';
+                await poll(token);
+                const folder = await getFolder(token);
+                if (!folder) throw new Error('no_folder');
+                showResult(folder.name, videoUrl(folder.name));
+                document.getElementById('btnText').textContent = '✅ کامل شد';
+            } catch(e) {
+                console.error(e);
+                let msg = 'خطا در دانلود';
+                if (e.message.includes('401')) { msg = 'توکن نامعتبر'; localStorage.removeItem('gh_token'); }
+                else if (e.message.includes('403')) msg = 'محدودیت نرخ';
+                else if (e.message==='timeout') msg = 'زمان طولانی شد';
+                else if (e.message==='failed') msg = 'دانلود ناموفق';
+                else if (e.message==='no_folder') msg = 'فایل یافت نشد';
+                showError(msg);
+                resetBtn();
+            } finally {
+                busy = false; btn.disabled = false;
+                document.getElementById('btnSpinner').style.display = 'none';
+            }
+        }
     </script>
 </body>
 </html>
