@@ -100,7 +100,6 @@ jobs:
           echo "Waiting for WARP to initialize (15 seconds)..."
           sleep 15
           
-          # Verify WARP is working
           for i in $(seq 1 5); do
             RESULT=$(curl -s --max-time 5 --socks5-hostname 127.0.0.1:1080 https://cloudflare.com/cdn-cgi/trace 2>/dev/null || echo "failed")
             if echo "$RESULT" | grep -qE "warp=(on|plus)"; then
@@ -126,16 +125,13 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq python3-pip ffmpeg zip p7zip-full curl jq bc unzip
           
-          # Install Deno (required for YouTube JS challenge solving)
           curl -fsSL https://deno.land/install.sh | sh
           export DENO_INSTALL="$HOME/.deno"
           export PATH="$DENO_INSTALL/bin:$PATH"
           echo "$DENO_INSTALL/bin" >> $GITHUB_PATH
           
-          # Verify Deno installation
           deno --version
           
-          # Install/Upgrade yt-dlp
           pip3 install --upgrade yt-dlp --quiet
           
           echo "✅ All dependencies installed"
@@ -152,7 +148,6 @@ jobs:
           REPO_NAME: ${{ github.event.repository.name }}
           BRANCH: ${{ github.ref_name }}
         run: |
-          # Parse URLs
           URLS_RAW="${YT_URLS}"
           read -ra URL_LIST <<< "$URLS_RAW"
           TOTAL_URLS=${#URL_LIST[@]}
@@ -169,7 +164,6 @@ jobs:
           echo "   • Password: $([ -n "${YT_PASSWORD}" ] && echo 'YES ✅' || echo 'NO ❌')"
           echo ""
           
-          # Save all variables for subsequent steps
           echo "TOTAL_URLS=$TOTAL_URLS" >> $GITHUB_ENV
           echo "QUALITY=${YT_QUALITY}" >> $GITHUB_ENV
           echo "ZIP_PASSWORD=${YT_PASSWORD}" >> $GITHUB_ENV
@@ -179,15 +173,12 @@ jobs:
           echo "BRANCH=${BRANCH}" >> $GITHUB_ENV
           echo "BACKUP_DIR=/tmp/kh_downloads_$$" >> $GITHUB_ENV
           
-          # Save URL list to file
           printf "%s\n" "${URL_LIST[@]}" > /tmp/url_list.txt
           
-          # Create backup directory
           mkdir -p /tmp/kh_downloads_$$
           mkdir -p videos
           > /tmp/video_info.txt
           
-          # Determine yt-dlp format string
           case "${YT_QUALITY}" in
             audio)
               FORMAT="bestaudio/bestaudio*/best"
@@ -230,7 +221,6 @@ jobs:
           #!/bin/bash
           set -e
           
-          # Load variables
           BACKUP_DIR="${{ env.BACKUP_DIR }}"
           FORMAT="${{ env.FORMAT }}"
           QUALITY="${{ env.QUALITY }}"
@@ -240,14 +230,17 @@ jobs:
           REPO_NAME="${{ env.REPO_NAME }}"
           BRANCH="${{ env.BRANCH }}"
           
-          # Read URL list
           mapfile -t URL_LIST < /tmp/url_list.txt
           TOTAL_URLS=${#URL_LIST[@]}
           
-          # ── Helper Functions ──────────────────────────
-          
+          # ⭐ FIXED sanitize_name — no more sed errors
           sanitize_name() {
-            echo "$1" | sed 's/ /-/g' | sed 's/　/-/g' | tr -s '-' | sed 's/[^a-zA-Z0-9آ-ی_-]/-/g'
+            local name="$1"
+            # Replace spaces and special chars with dash using tr
+            name=$(echo "$name" | LC_ALL=C tr '[:space:]｜　' '---' | LC_ALL=C tr -c 'a-zA-Z0-9\u0600-\u06FF_-' '-' | tr -s '-' | sed 's/^-//;s/-$//')
+            # Fallback if name becomes empty
+            [ -z "$name" ] && name="video"
+            echo "$name"
           }
           
           urlencode() {
@@ -284,6 +277,65 @@ jobs:
             fi
           }
           
+          # ⭐ generate_readme function
+          generate_readme() {
+            local FOLDER_PATH="$1"
+            local VIDEO_NAME="$2"
+            local URL="$3"
+            local QUALITY="$4"
+            local MODE="$5"
+            local PASSWORD="$6"
+            local FOLDER_ENCODED="$7"
+            local REPO_OWNER="$8"
+            local REPO_NAME="$9"
+            local BRANCH="${10}"
+            
+            local README_FILE="$FOLDER_PATH/README.md"
+            
+            # Thumbnail section
+            local THUMB_MD=""
+            if [ -f "$FOLDER_PATH/thumbnail.jpg" ]; then
+              local THUMB_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/${BRANCH}/videos/${FOLDER_ENCODED}/thumbnail.jpg"
+              THUMB_MD="<div align=\"center\"><img src=\"${THUMB_URL}\" alt=\"Thumbnail\" width=\"400\" /></div>"
+            fi
+            
+            # Password status
+            local PASSWORD_STATUS="❌ No"
+            [ -n "$PASSWORD" ] && PASSWORD_STATUS="🔒 Yes"
+            
+            cat > "$README_FILE" << READMEEOF
+# ${VIDEO_NAME}
+
+${THUMB_MD}
+
+---
+
+## 📋 Video Information
+
+| Property | Value |
+|----------|-------|
+| **Title** | \`${VIDEO_NAME}\` |
+| **Source** | [YouTube](${URL}) |
+| **Quality** | ${QUALITY} |
+| **Status** | ✅ Complete |
+| **Password** | ${PASSWORD_STATUS} |
+
+---
+
+## 📥 Download
+
+> ⚠️ This file will be automatically deleted **5 minutes** after download.
+
+$([ "$MODE" = "split" ] && echo "> 📦 Download **all parts**, then open the main \`.zip\` file.")
+
+---
+
+*Downloaded via [khashayar.one](https://khashayar.one)*
+READMEEOF
+            
+            echo "  📄 README created"
+          }
+          
           download_video() {
             local METHOD=$1
             local URL=$2
@@ -291,7 +343,6 @@ jobs:
             
             echo "  🔄 Trying method $METHOD..."
             
-            # Common flags
             if [ "$QUALITY" = "audio" ]; then
               COMMON_FLAGS="--extract-audio --audio-format mp3 --audio-quality 0 --write-thumbnail --convert-thumbnails jpg --no-cache-dir --output ${TMP_DIR}/%(title)s.%(ext)s --no-part --no-playlist --retries 5 --fragment-retries 5 --no-check-certificates --concurrent-fragments 8 --buffer-size 16K --http-chunk-size 10M --progress --newline"
             else
@@ -398,15 +449,11 @@ jobs:
               continue
             fi
             
-            # Clean up partial files
             find "$TMP_DIR" -name "*.part" -delete 2>/dev/null || true
-            
-            # ── Process Downloaded Files ──────────────────
             
             for FILE in "$TMP_DIR"/*; do
               [ -f "$FILE" ] || continue
               
-              # Skip thumbnails (handled separately)
               if [[ "$FILE" == *.jpg ]] || [[ "$FILE" == *.webp ]]; then
                 continue
               fi
@@ -416,7 +463,10 @@ jobs:
               FILENAME_NO_EXT="${BASENAME%.*}"
               EXT="${BASENAME##*.}"
               
+              # ⭐ Use set +e for sanitize
+              set +e
               FILENAME_NO_EXT=$(sanitize_name "$FILENAME_NO_EXT")
+              set -e
               
               echo ""
               echo "  📦 Processing: $BASENAME ($(( SIZE / 1024 / 1024 ))MB)"
@@ -425,19 +475,15 @@ jobs:
               FINAL_PATH="$BACKUP_DIR/$FINAL_FOLDER"
               mkdir -p "$FINAL_PATH"
               
-              # Copy thumbnail if exists
               THUMB_FILE=$(ls "$TMP_DIR"/*.jpg 2>/dev/null | head -1)
               if [ -n "$THUMB_FILE" ] && [ -f "$THUMB_FILE" ]; then
                 cp "$THUMB_FILE" "$FINAL_PATH/thumbnail.jpg"
                 echo "  🖼️ Thumbnail saved"
               fi
               
-              # Save video info
               echo "${FILENAME_NO_EXT}|${FINAL_FOLDER}" >> /tmp/video_info.txt
               
               FOLDER_ENCODED=$(urlencode "$FINAL_FOLDER")
-              
-              # ── Split large files ────────────────────────
               
               if [ "$SIZE" -gt "$SPLIT_BYTES" ]; then
                 echo "  📦 Splitting into ${SPLIT_SIZE_MB}MB parts..."
@@ -453,12 +499,9 @@ jobs:
                 PART_COUNT=$(find "$FINAL_PATH" -name "*.z*" 2>/dev/null | wc -l)
                 echo "  ✅ Created $PART_COUNT parts"
                 
-                # Generate README
                 generate_readme "$FINAL_PATH" "$FILENAME_NO_EXT" "$URL" "$QUALITY" "split" "$ZIP_PASSWORD" "$FOLDER_ENCODED" "$REPO_OWNER" "$REPO_NAME" "$BRANCH"
                 
               else
-                # ── Small file: direct save or single zip ────
-                
                 if [ -n "$ZIP_PASSWORD" ]; then
                   zip -0 -P "${ZIP_PASSWORD}" "$FINAL_PATH/$FINAL_FOLDER.zip" "$FILE" > /dev/null 2>&1
                   echo "  🔒 Password-protected ZIP created"
@@ -476,7 +519,6 @@ jobs:
             echo "  ✅ Finished URL $URL_INDEX/$TOTAL_URLS"
           done
           
-          # Summary
           echo ""
           echo "════════════════════════════════════════════"
           echo "  📊 Download Summary"
@@ -484,7 +526,6 @@ jobs:
           echo "  ❌ Failed: $FAILED_COUNT"
           echo "════════════════════════════════════════════"
           
-          # Save counts for next step
           echo "DOWNLOADED_COUNT=$DOWNLOADED_COUNT" >> $GITHUB_ENV
           echo "FAILED_COUNT=$FAILED_COUNT" >> $GITHUB_ENV
 
@@ -493,12 +534,9 @@ jobs:
         if: ${{ github.event.inputs.download_subtitles == 'true' }}
         run: |
           #!/bin/bash
-          set +e  # Don't fail on subtitle errors
+          set +e
           
           BACKUP_DIR="${{ env.BACKUP_DIR }}"
-          REPO_OWNER="${{ env.REPO_OWNER }}"
-          REPO_NAME="${{ env.REPO_NAME }}"
-          BRANCH="${{ env.BRANCH }}"
           
           mapfile -t URL_LIST < /tmp/url_list.txt
           
@@ -515,7 +553,6 @@ jobs:
             
             echo "  📝 Subtitles for: $FOLDER_NAME"
             
-            # Download all available subtitles
             yt-dlp \
               --proxy "socks5://127.0.0.1:1080" \
               --write-sub --sub-langs "fa,en" \
@@ -534,7 +571,6 @@ jobs:
             SUB_COUNT=$(find "$SUB_DIR" -type f 2>/dev/null | wc -l)
             
             if [ "$SUB_COUNT" -gt 0 ]; then
-              # Zip subtitles
               ZIP_PATH="$BACKUP_DIR/$FOLDER_NAME/subtitle.zip"
               (cd "$SUB_DIR" && zip -j "$ZIP_PATH" ./* 2>/dev/null) || true
               rm -rf "$SUB_DIR"
@@ -567,12 +603,9 @@ jobs:
           
           BACKUP_DIR="${{ env.BACKUP_DIR }}"
           BRANCH="${{ env.BRANCH }}"
-          REPO_OWNER="${{ env.REPO_OWNER }}"
-          REPO_NAME="${{ env.REPO_NAME }}"
           DOWNLOADED_COUNT="${{ env.DOWNLOADED_COUNT }}"
           
           echo "📤 Pushing to repository..."
-          echo "  • Branch: $BRANCH"
           echo "  • Files: $(find "$BACKUP_DIR" -type f 2>/dev/null | wc -l)"
           
           if [ "$DOWNLOADED_COUNT" -eq 0 ] || [ ! -d "$BACKUP_DIR" ]; then
@@ -580,15 +613,12 @@ jobs:
             exit 0
           fi
           
-          # Sync with remote
           git fetch origin "$BRANCH" --quiet
           git reset --hard origin/"$BRANCH" --quiet
           
-          # Copy files
           mkdir -p videos
           cp -r "$BACKUP_DIR"/* videos/ 2>/dev/null || true
           
-          # Force add (videos is in .gitignore)
           git add -f videos/
           
           if git diff --cached --quiet; then
@@ -596,10 +626,8 @@ jobs:
             exit 0
           fi
           
-          # Commit
           git commit -m "[khashayar.one] 📥 New download(s) [skip ci]" --quiet || true
           
-          # Push with retry
           RETRY=0
           MAX_RETRIES=10
           
@@ -630,65 +658,4 @@ jobs:
           echo "════════════════════════════════════════"
           echo "  ✅ Download Complete!"
           echo "  🌐 $PROJECT_URL"
-          echo "  📁 Repository: $REPO_OWNER/$REPO_NAME"
-          echo "  🌿 Branch: $BRANCH"
           echo "════════════════════════════════════════"
-
-# ──────────────────────────────────────────────
-# README Generation Function (embedded)
-# ──────────────────────────────────────────────
-
-# This function is called from within the download step
-# It's defined here as a reference of what's generated
-
-# generate_readme() {
-#   local FOLDER_PATH="$1"
-#   local VIDEO_NAME="$2"
-#   local URL="$3"
-#   local QUALITY="$4"
-#   local MODE="$5"  # split, single, direct
-#   local PASSWORD="$6"
-#   local FOLDER_ENCODED="$7"
-#   local REPO_OWNER="$8"
-#   local REPO_NAME="$9"
-#   local BRANCH="${10}"
-#   
-#   local README_FILE="$FOLDER_PATH/README.md"
-#   
-#   # Thumbnail section
-#   if [ -f "$FOLDER_PATH/thumbnail.jpg" ]; then
-#     THUMB_URL="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/${BRANCH}/videos/${FOLDER_ENCODED}/thumbnail.jpg"
-#     THUMB_MD="<div align=\"center\"><img src=\"${THUMB_URL}\" alt=\"Thumbnail\" width=\"400\" /></div>"
-#   fi
-#   
-#   # Build README content
-#   cat > "$README_FILE" << EOF
-# # ${VIDEO_NAME}
-# 
-# ${THUMB_MD:-}
-# 
-# ---
-# 
-# ## 📋 Video Information
-# 
-# | Property | Value |
-# |----------|-------|
-# | **Title** | \`${VIDEO_NAME}\` |
-# | **Source** | [YouTube](${URL}) |
-# | **Quality** | ${QUALITY} |
-# | **Status** | ✅ Complete |
-# | **Password** | $([ -n "$PASSWORD" ] && echo '🔒 Yes' || echo '❌ No') |
-# 
-# ---
-# 
-# ## 📥 Download
-# 
-# > ⚠️ This file will be automatically deleted **5 minutes** after download.
-# 
-# $([ "$MODE" = "split" ] && echo "> 📦 Download **all parts**, then open the main \`.zip\` file.")
-# 
-# ---
-# 
-# *Downloaded via [khashayar.one](https://khashayar.one)*
-# EOF
-# }
