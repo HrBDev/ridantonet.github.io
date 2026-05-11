@@ -7,7 +7,7 @@
     
     <!-- Font Awesome 6 (Free Icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <!-- Google Font: Vazirmatn (وزیر) -->
+    <!-- Vazir Font از CDNjs -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/vazir-font/30.1.0/font-face.min.css" rel="stylesheet">
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -30,13 +30,11 @@
             min-height: 100vh;
         }
 
-        /* Light mode override */
         body.light {
             background: radial-gradient(circle at 20% 30%, #eef2ff, #e0e7ff);
             color: #0f172a;
         }
 
-        /* متغیرهای دارک (پیش‌فرض) */
         :root {
             --bg-glass: rgba(20, 25, 45, 0.55);
             --bg-glass-light: rgba(30, 40, 65, 0.45);
@@ -58,7 +56,6 @@
             --card-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.1);
         }
 
-        /* ---------- تایپوگرافی و اسکرول ---------- */
         h1, h2, h3, .btn, .tab, label {
             letter-spacing: -0.02em;
         }
@@ -79,7 +76,6 @@
             background: #cfddee;
         }
 
-        /* ---------- کامپوننت شیشه‌ای اپل استایل ---------- */
         .glass-card {
             background: var(--bg-glass);
             backdrop-filter: blur(18px);
@@ -108,7 +104,7 @@
             cursor: pointer;
             transition: 0.2s;
             width: 100%;
-            font-family: 'Vazirmatn', monospace;
+            font-family: 'Vazir', monospace;
         }
 
         .btn-neon:hover {
@@ -131,7 +127,6 @@
             color: #0f172a;
         }
 
-        /* فیلدهای فرم */
         input, select, textarea {
             width: 100%;
             padding: 0.85rem 1rem;
@@ -141,7 +136,7 @@
             color: var(--text-main);
             font-size: 0.95rem;
             transition: 0.2s;
-            font-family: 'Vazirmatn', monospace;
+            font-family: 'Vazir', monospace;
         }
         body.light input, body.light select, body.light textarea {
             background: rgba(255,255,245,0.85);
@@ -163,7 +158,6 @@
             color: var(--text-muted);
         }
 
-        /* تب ها */
         .tabs {
             display: flex;
             flex-wrap: wrap;
@@ -199,7 +193,6 @@
             to { opacity: 1; transform: translateY(0);}
         }
 
-        /* آمار کارت ها */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4,1fr);
@@ -225,7 +218,6 @@
             color: var(--text-muted);
         }
 
-        /* پیشرفت */
         .progress-container {
             background: #1e293b;
             border-radius: 60px;
@@ -240,7 +232,6 @@
             border-radius: 60px;
         }
 
-        /* تاریخچه */
         .history-list {
             max-height: 230px;
             overflow-y: auto;
@@ -261,7 +252,6 @@
             transform: translateX(-3px);
         }
 
-        /* سوئیچ تم */
         .theme-switch {
             cursor: pointer;
             font-size: 1.6rem;
@@ -275,7 +265,6 @@
             transition: 0.2s;
         }
 
-        /* responsive */
         @media (max-width: 820px) {
             .stats-grid { grid-template-columns: repeat(2,1fr); gap: 1rem; }
             .two-cols { grid-template-columns: 1fr !important; }
@@ -300,6 +289,16 @@
         .mr-2 { margin-left: 0.5rem; }
         .gap-3 { gap: 1rem; }
         .text-center { text-align: center; }
+
+        .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: 0.3s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent); }
+        input:checked + .slider:before { transform: translateX(22px); }
+        .container { max-width: 1300px; margin: 0 auto; padding: 0; }
+        .mt-3 { margin-top: 0.7rem; }
+        .mt-4 { margin-top: 1rem; }
     </style>
 </head>
 <body>
@@ -455,19 +454,6 @@
     </footer>
 </div>
 
-<style>
-    /* سوئیچ اختصاصی */
-    .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: 0.3s; border-radius: 34px; }
-    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
-    input:checked + .slider { background-color: var(--accent); }
-    input:checked + .slider:before { transform: translateX(22px); }
-    .container { max-width: 1300px; margin: 0 auto; padding: 0; }
-    .mt-3 { margin-top: 0.7rem; }
-    .mt-4 { margin-top: 1rem; }
-</style>
-
 <!-- کتابخانه ها -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.0/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
@@ -480,6 +466,7 @@
     dayjs.locale('fa');
     const API_URL = 'https://khashayar.one/api/trigger.php';
     let pollingInterval = null;
+    let currentRunId = null;
     
     // آمار ذخیره شده در localStorage
     let stats = {
@@ -600,59 +587,94 @@
     // ---------- ارتباط با trigger.php (API امن) ----------
     async function triggerWorkflow(payload) {
         const response = await axios.post(API_URL, payload, { headers: { 'Content-Type': 'application/json' }, timeout: 30000 });
-        if (!response.data || response.data.run_id === undefined) throw new Error('پاسخ نامعتبر سرور');
+        if (!response.data) throw new Error('پاسخ نامعتبر سرور');
+        if (response.data.remaining_requests !== undefined) {
+            if (response.data.remaining_requests <= 3 && response.data.remaining_requests > 0) {
+                Swal.fire({ icon: 'info', title: 'محدودیت درخواست', text: `شما ${response.data.remaining_requests} درخواست دیگر در این ساعت دارید`, background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347', timer: 3000 });
+            }
+        }
+        if (!response.data.run_id) throw new Error('شناسه درخواست دریافت نشد');
         return response.data.run_id;
     }
     
     async function fetchStatus(runId) {
         try {
-            const res = await axios.get(`${API_URL}?run_id=${runId}`, { timeout: 8000 });
+            const res = await axios.get(`${API_URL}?run_id=${runId}`, { timeout: 15000 });
             return res.data;
-        } catch { return null; }
-    }
-    
-    async function getLatestVideo() {
-        try {
-            const res = await axios.get(`${API_URL}?get_latest=true`);
-            return res.data.download_url;
         } catch { return null; }
     }
     
     function pollDownload(runId) {
         if (pollingInterval) clearInterval(pollingInterval);
+        
+        let lastProgressPercent = 0;
+        let completedHandled = false;
+        
         pollingInterval = setInterval(async () => {
             const status = await fetchStatus(runId);
             if (!status) return;
-            let percent = status.status === 'in_progress' ? 45 : (status.status === 'completed' ? 100 : 15);
-            document.getElementById('progressFill').style.width = `${percent}%`;
-            document.getElementById('percentLabel').innerText = `${percent}%`;
-            document.getElementById('statusMsg').innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${status.message || 'در حال پردازش...'}`;
-            if (status.status === 'completed') {
+            
+            let percent = 10;
+            if (status.status === 'in_progress') percent = 45;
+            else if (status.status === 'completed') percent = 100;
+            else if (status.status === 'queued') percent = 15;
+            else percent = 10;
+            
+            if (percent !== lastProgressPercent) {
+                document.getElementById('progressFill').style.width = `${percent}%`;
+                document.getElementById('percentLabel').innerText = `${percent}%`;
+                lastProgressPercent = percent;
+            }
+            
+            let statusMessage = status.message || 'در حال پردازش...';
+            if (status.status === 'queued') statusMessage = '⏳ در صف انتظار...';
+            else if (status.status === 'in_progress') statusMessage = '⬇️ در حال دانلود و پردازش...';
+            
+            document.getElementById('statusMsg').innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${statusMessage}`;
+            
+            if (status.status === 'completed' && !completedHandled) {
+                completedHandled = true;
                 clearInterval(pollingInterval);
+                
                 if (status.success) {
-                    const videoUrl = await getLatestVideo();
-                    if (videoUrl) {
-                        document.getElementById('directDownloadLink').href = videoUrl;
+                    if (status.download_url) {
+                        document.getElementById('directDownloadLink').href = status.download_url;
                         document.getElementById('downloadBlock').style.display = 'block';
-                        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> موفق! ویدیو آماده است';
+                        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> ✅ موفق! ویدیو آماده است';
                         document.getElementById('progressFill').style.width = '100%';
                         document.getElementById('percentLabel').innerText = '100%';
+                        
                         stats.todayDownloads++;
                         stats.totalSizeGB += 0.45;
                         stats.lastDownloadTime = dayjs().format('HH:mm:ss');
                         const dayOfWeek = new Date().getDay();
                         stats.weeklyData[dayOfWeek] = (stats.weeklyData[dayOfWeek] || 0) + 1;
-                        addToHistory(document.getElementById('urlInput').value.split('\n')[0]);
+                        addToHistory(document.getElementById('urlInput').value.split('\n')[0] || 'YouTube Video');
                         updateStatsUI();
                         playBeep();
-                        if (settings.desktopNotify && Notification.permission === 'granted')
+                        
+                        if (settings.desktopNotify && Notification.permission === 'granted') {
                             new Notification('Khashayar Downloader', { body: 'دانلود با موفقیت انجام شد!' });
-                        Swal.fire({ icon: 'success', title: 'دانلود کامل شد!', text: 'فایل آماده دریافت می‌باشد', background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347', timer: 2300 });
-                    } else showError('لینک فایل یافت نشد');
-                } else showError(status.error || 'خطا از سمت سرور');
+                        }
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'دانلود کامل شد!',
+                            text: 'فایل آماده دریافت می‌باشد',
+                            background: '#1e293b',
+                            color: '#fff',
+                            confirmButtonColor: '#FFB347',
+                            timer: 2500
+                        });
+                    } else {
+                        showError('لینک فایل یافت نشد، شاید هنوز آپلود نشده');
+                    }
+                } else {
+                    showError(status.error || 'خطا از سمت سرور');
+                }
                 document.getElementById('submitBtn').disabled = false;
             }
-        }, 3000);
+        }, 4000);
     }
     
     function showError(message) {
@@ -672,6 +694,7 @@
         if (localStorage.getItem('qualityPref')) document.getElementById('quality').value = localStorage.getItem('qualityPref');
         if (localStorage.getItem('formatPref')) document.getElementById('format').value = localStorage.getItem('formatPref');
     }
+    
     function saveUserPrefs() {
         settings.autoSave = document.getElementById('autoSave').checked;
         settings.soundNotify = document.getElementById('soundNotify').checked;
@@ -685,62 +708,9 @@
         }
     }
     
-    // رویداد اصلی فرم
-    document.getElementById('downloadForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        resetUI();
-        saveUserPrefs();
-        const rawUrls = document.getElementById('urlInput').value.trim();
-        if (!rawUrls) {
-            Swal.fire({ icon: 'warning', title: 'لینک یوتیوب را وارد کنید', background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347' });
-            return;
-        }
-        const urls = rawUrls.split(/\r?\n/).filter(u => u.trim());
-        const payload = {
-            youtube_urls: urls.join(' '),
-            quality: document.getElementById('quality').value,
-            download_subtitles: document.getElementById('subtitles').value === 'true',
-            password: document.getElementById('password').value.trim()
-        };
-        document.getElementById('submitBtn').disabled = true;
-        document.getElementById('progressBox').style.display = 'block';
-        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-paper-plane"></i> ارسال به گیت‌هاب اکشن...';
-        document.getElementById('progressFill').style.width = '5%';
-        document.getElementById('percentLabel').innerHTML = '5%';
-        try {
-            const runId = await triggerWorkflow(payload);
-            if (runId) pollDownload(runId);
-            else {
-                setTimeout(async () => {
-                    const latestUrl = await getLatestVideo();
-                    if (latestUrl) {
-                        document.getElementById('directDownloadLink').href = latestUrl;
-                        document.getElementById('downloadBlock').style.display = 'block';
-                        document.getElementById('statusMsg').innerHTML = '✅ فایل آماده دانلود است';
-                        document.getElementById('progressFill').style.width = '100%';
-                        document.getElementById('percentLabel').innerHTML = '100%';
-                        stats.todayDownloads++;
-                        stats.totalSizeGB += 0.5;
-                        stats.lastDownloadTime = dayjs().format('HH:mm:ss');
-                        const day = new Date().getDay();
-                        stats.weeklyData[day] = (stats.weeklyData[day] || 0) + 1;
-                        addToHistory(urls[0]);
-                        updateStatsUI();
-                        playBeep();
-                        if (settings.desktopNotify && Notification.permission === 'granted') new Notification('Khashayar Downloader', { body: 'دانلود جدید آماده شد!' });
-                        Swal.fire({ icon: 'success', title: 'عملیات موفق', text: 'لینک دانلود آماده است', background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347' });
-                    } else showError('فایل پیدا نشد. شاید هنوز کامل نشده');
-                    document.getElementById('submitBtn').disabled = false;
-                }, 13000);
-            }
-        } catch (err) {
-            showError(err.message);
-            document.getElementById('submitBtn').disabled = false;
-        }
-    });
-    
     function resetUI() {
         if (pollingInterval) clearInterval(pollingInterval);
+        currentRunId = null;
         document.getElementById('progressBox').style.display = 'none';
         document.getElementById('downloadBlock').style.display = 'none';
         document.getElementById('errorBlock').style.display = 'none';
@@ -749,18 +719,76 @@
         document.getElementById('submitBtn').disabled = false;
     }
     
+    // رویداد اصلی فرم
+    document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        resetUI();
+        saveUserPrefs();
+        
+        const rawUrls = document.getElementById('urlInput').value.trim();
+        if (!rawUrls) {
+            Swal.fire({ icon: 'warning', title: 'لطفاً لینک یوتیوب را وارد کنید', background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347' });
+            return;
+        }
+        
+        const urls = rawUrls.split(/\r?\n/).filter(u => u.trim());
+        const payload = {
+            youtube_urls: urls.join(' '),
+            quality: document.getElementById('quality').value,
+            download_subtitles: document.getElementById('subtitles').value === 'true',
+            password: document.getElementById('password').value.trim()
+        };
+        
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('progressBox').style.display = 'block';
+        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-paper-plane"></i> 🚀 ارسال به گیت‌هاب اکشن...';
+        document.getElementById('progressFill').style.width = '5%';
+        document.getElementById('percentLabel').innerHTML = '5%';
+        
+        try {
+            const runId = await triggerWorkflow(payload);
+            if (runId) {
+                currentRunId = runId;
+                pollDownload(runId);
+            } else {
+                throw new Error('شناسه درخواست دریافت نشد');
+            }
+        } catch (err) {
+            showError(err.message || 'خطا در ارتباط با سرور');
+            document.getElementById('submitBtn').disabled = false;
+        }
+    });
+    
     document.getElementById('resetBtn')?.addEventListener('click', () => {
         resetUI();
         document.getElementById('downloadForm').reset();
         document.getElementById('submitBtn').disabled = false;
     });
+    
     document.getElementById('clearHistoryBtn')?.addEventListener('click', () => {
-        Swal.fire({ title: 'پاک کردن تاریخچه؟', text: 'قابل بازگشت نیست', icon: 'warning', background: '#1e293b', color: '#fff', showCancelButton: true, confirmButtonColor: '#FFB347' }).then(res => {
-            if(res.isConfirmed) { stats.history = []; updateStatsUI(); Swal.fire('پاک شد!','','success'); }
+        Swal.fire({
+            title: 'پاک کردن تاریخچه؟',
+            text: 'این عمل قابل بازگشت نیست',
+            icon: 'warning',
+            background: '#1e293b',
+            color: '#fff',
+            showCancelButton: true,
+            confirmButtonColor: '#FFB347',
+            cancelButtonColor: '#ef4444'
+        }).then(res => {
+            if (res.isConfirmed) {
+                stats.history = [];
+                updateStatsUI();
+                Swal.fire('پاک شد!', '', 'success');
+            }
         });
     });
     
-    if (settings.desktopNotify && Notification.permission !== 'granted' && Notification.permission !== 'denied') Notification.requestPermission();
+    // درخواست اعلان دسکتاپ
+    if (settings.desktopNotify && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+        Notification.requestPermission();
+    }
+    
     loadUserPrefs();
     updateStatsUI();
 </script>
