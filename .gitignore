@@ -1,0 +1,120 @@
+# ============================================================
+# .gitignore — Khashayar YouTube Downloader
+# ============================================================
+
+# ── Downloaded Videos ──────────────────────────
+# Ignore all video files, keep folder structure
+/videos/*
+!/videos/.gitkeep
+!/videos/README.md
+
+# ── Operating System Files ─────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ── IDE & Editor Files ─────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+.code-workspace
+
+# ── Node.js (if applicable in future) ──────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ── Build & Cache ──────────────────────────────
+*.log
+*.tmp
+*.temp
+.cache/
+dist/
+build/
+
+# ── Environment & Secrets ──────────────────────
+.env
+.env.local
+.env.production
+.env.development
+*.secret
+credentials.json
+
+# ── Large Binary Files ─────────────────────────
+*.mp4
+*.mp3
+*.webm
+*.mkv
+*.avi
+*.mov
+*.flv
+*.wmv
+*.m4a
+*.aac
+*.ogg
+*.flac
+*.wav
+
+# ── Archive Files ──────────────────────────────
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+*.bz2
+*.xz
+*.zst
+
+# ── Temporary Download Files ───────────────────
+*.part
+*.ytdl
+*.crdownload
+*.partial
+
+# ── Subtitle Files ─────────────────────────────
+*.vtt
+*.srt
+*.ass
+*.ssa
+*.ttml
+
+# ── Thumbnail Cache ────────────────────────────
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.gif
+
+# ── Python Cache ───────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.venv/
+venv/
+env/
+
+# ── Docker ─────────────────────────────────────
+.dockerignore
+docker-compose.override.yml
+
+# ── Miscellaneous ──────────────────────────────
+*.bak
+*.orig
+*.old
+*.swp
