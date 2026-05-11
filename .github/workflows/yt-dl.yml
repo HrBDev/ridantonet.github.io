@@ -483,7 +483,22 @@ jobs:
         run: |
           docker stop warp 2>/dev/null || true
           docker rm warp 2>/dev/null || true
-
+          
+      # ── Step 8.5: Delete files older than 5 minutes ──────────────────  ⬅️ اینجا اضافه کن
+      - name: "🗑️ Delete old video files (older than 5 minutes)"
+        if: always()
+        run: |
+          echo "🧹 Checking for old files..."
+          if [ -d "videos" ]; then
+            OLD_FOLDERS=$(find videos -mindepth 1 -maxdepth 1 -type d -mmin +5 2>/dev/null || true)
+            if [ -n "$OLD_FOLDERS" ]; then
+              echo "$OLD_FOLDERS" | while read folder; do
+                echo "  🗑️ Removing: $folder"
+                rm -rf "$folder"
+              done
+            fi
+          fi
+          
       # ── Step 9: Push ──────────────────────────────────
       - name: "📤 Push to Repository"
         id: push
