@@ -2,20 +2,17 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Khashayar Downloader | دانلودر حرفه‌ای یوتیوب</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khashayar YouTube Downloader</title>
     
-    <!-- Font Awesome 6 (Free Icons) -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <!-- Vazir Font از CDNjs -->
+    <!-- Vazir Font -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/vazir-font/30.1.0/font-face.min.css" rel="stylesheet">
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <!-- SweetAlert2 CSS -->
+    <!-- SweetAlert2 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.15.10/sweetalert2.min.css" rel="stylesheet">
     
     <style>
-        /* ---------- RESET & GLOBAL ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -23,774 +20,454 @@
         }
 
         body {
-            background: radial-gradient(circle at 20% 30%, #0A0C1A, #03050C);
-            font-family: 'Vazir', 'Segoe UI', system-ui, sans-serif;
-            padding: 2rem 1rem;
-            color: #f0f3fa;
+            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            font-family: 'Vazir', system-ui, sans-serif;
             min-height: 100vh;
+            padding: 2rem 1rem;
         }
 
-        body.light {
-            background: radial-gradient(circle at 20% 30%, #eef2ff, #e0e7ff);
-            color: #0f172a;
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
         }
 
-        :root {
-            --bg-glass: rgba(20, 25, 45, 0.55);
-            --bg-glass-light: rgba(30, 40, 65, 0.45);
-            --border-glass: rgba(255, 215, 100, 0.25);
-            --accent: #FFB347;
-            --accent-glow: rgba(255, 180, 71, 0.4);
-            --text-main: #f1f5f9;
-            --text-muted: #a0afc0;
-            --card-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.4);
-            --transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-        }
-
-        body.light {
-            --bg-glass: rgba(255, 255, 255, 0.75);
-            --bg-glass-light: rgba(245, 248, 255, 0.85);
-            --border-glass: rgba(0, 0, 0, 0.08);
-            --text-main: #0c1b33;
-            --text-muted: #2c3e66;
-            --card-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.1);
-        }
-
-        h1, h2, h3, .btn, .tab, label {
-            letter-spacing: -0.02em;
-        }
-
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1e293b;
-            border-radius: 12px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 12px;
-        }
-        body.light ::-webkit-scrollbar-track {
-            background: #cfddee;
-        }
-
-        .glass-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border-radius: 2.5rem;
-            border: 1px solid var(--border-glass);
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-        }
-
-        .glass-card-sm {
-            background: var(--bg-glass-light);
-            backdrop-filter: blur(14px);
-            border-radius: 1.8rem;
-            border: 1px solid var(--border-glass);
-        }
-
-        .btn-neon {
-            background: linear-gradient(105deg, var(--accent), #f59e0b);
-            border: none;
-            font-weight: 700;
-            padding: 0.9rem 1.8rem;
-            border-radius: 3rem;
-            color: #0b1120;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 100%;
-            font-family: 'Vazir', monospace;
-        }
-
-        .btn-neon:hover {
-            transform: scale(1.01);
-            box-shadow: 0 12px 28px var(--accent-glow);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--accent);
-            padding: 0.5rem 1.2rem;
+        .card {
+            background: rgba(18, 25, 45, 0.85);
+            backdrop-filter: blur(16px);
             border-radius: 2rem;
-            color: var(--accent);
-            transition: 0.2s;
-            cursor: pointer;
-            font-weight: 500;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        .btn-outline:hover {
-            background: var(--accent);
-            color: #0f172a;
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f5e6b0, #f7b32b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .sub {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            color: #d1d5db;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        label i {
+            margin-left: 0.4rem;
+            color: #f7b32b;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 0.85rem 1rem;
-            background: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255,255,240,0.15);
-            border-radius: 1.5rem;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            transition: 0.2s;
+            padding: 0.8rem 1rem;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 1rem;
+            color: #f1f5f9;
+            font-size: 0.9rem;
+            transition: all 0.2s;
             font-family: 'Vazir', monospace;
         }
-        body.light input, body.light select, body.light textarea {
-            background: rgba(255,255,245,0.85);
-            border-color: #cbd5e6;
-            color: #0f172a;
-        }
+
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-        label {
-            font-size: 0.8rem;
-            font-weight: 600;
-            margin-bottom: 0.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-muted);
+            border-color: #f7b32b;
+            box-shadow: 0 0 0 2px rgba(247, 179, 43, 0.2);
         }
 
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            border-bottom: 1px solid rgba(255,215,100,0.2);
-            margin-bottom: 2rem;
-            padding-bottom: 0.5rem;
-        }
-        .tab {
-            padding: 0.5rem 1.5rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 600;
-            background: rgba(255,255,245,0.02);
-            backdrop-filter: blur(4px);
-        }
-        .tab.active {
-            background: var(--accent);
-            color: #0b1120;
-            box-shadow: 0 0 12px var(--accent-glow);
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-            animation: fadeSlide 0.4s ease;
+        textarea {
+            resize: vertical;
+            font-family: monospace;
         }
 
-        @keyframes fadeSlide {
-            from { opacity: 0; transform: translateY(10px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-
-        .stats-grid {
+        .row2 {
             display: grid;
-            grid-template-columns: repeat(4,1fr);
-            gap: 1.2rem;
-            margin: 2rem 0;
-        }
-        .stat-item {
-            background: var(--bg-glass-light);
-            border-radius: 1.6rem;
-            padding: 1rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.2s;
-        }
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--accent);
-            line-height: 1.2;
-        }
-        .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
         }
 
-        .progress-container {
+        @media (max-width: 500px) {
+            .row2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        button {
+            width: 100%;
+            background: linear-gradient(90deg, #f0a500, #f7b32b);
+            border: none;
+            padding: 0.9rem;
+            border-radius: 2.5rem;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #0f172a;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+            font-family: 'Vazir', monospace;
+        }
+
+        button:hover:not(:disabled) {
+            transform: scale(1.01);
+            box-shadow: 0 0 15px rgba(247, 179, 43, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .progress-card {
+            background: #0f172a;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: #f7b32b;
+            font-size: 0.8rem;
+        }
+
+        .progress-bar {
             background: #1e293b;
-            border-radius: 60px;
-            height: 8px;
+            border-radius: 1rem;
+            height: 0.5rem;
             overflow: hidden;
         }
+
         .progress-fill {
-            background: linear-gradient(90deg, #ffb347, #ff9f2e);
-            height: 100%;
+            background: linear-gradient(90deg, #f0a500, #f7b32b);
             width: 0%;
-            transition: width 0.3s;
-            border-radius: 60px;
+            height: 100%;
+            border-radius: 1rem;
+            transition: width 0.3s ease;
         }
 
-        .history-list {
-            max-height: 230px;
-            overflow-y: auto;
+        .download-block {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 1rem;
         }
-        .history-item {
-            background: rgba(0,0,0,0.2);
-            border-radius: 1.2rem;
-            padding: 0.7rem 1rem;
-            margin-bottom: 0.6rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+        .download-block a {
+            display: inline-block;
+            background: #f7b32b;
+            color: #0f172a;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .error-block {
+            text-align: center;
+            color: #f87171;
             font-size: 0.8rem;
-            transition: 0.2s;
-        }
-        .history-item:hover {
-            background: rgba(255,180,71,0.1);
-            transform: translateX(-3px);
+            margin-top: 0.8rem;
         }
 
-        .theme-switch {
-            cursor: pointer;
-            font-size: 1.6rem;
-            background: var(--bg-glass-light);
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: 0.2s;
+        .limit-badge {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #6b7280;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #2d3748;
         }
 
-        @media (max-width: 820px) {
-            .stats-grid { grid-template-columns: repeat(2,1fr); gap: 1rem; }
-            .two-cols { grid-template-columns: 1fr !important; }
-        }
-        @media (max-width: 540px) {
-            .glass-card { padding: 1.25rem; }
-            .stat-value { font-size: 1.5rem; }
+        footer {
+            text-align: center;
+            color: #4b5563;
+            font-size: 0.7rem;
+            margin-top: 1.5rem;
         }
 
-        .two-cols {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+        .text-accent {
+            color: #f7b32b;
         }
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .mb-4 { margin-bottom: 1rem; }
-        .mt-5 { margin-top: 1.8rem; }
-        .mr-2 { margin-left: 0.5rem; }
-        .gap-3 { gap: 1rem; }
-        .text-center { text-align: center; }
-
-        .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: 0.3s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(22px); }
-        .container { max-width: 1300px; margin: 0 auto; padding: 0; }
-        .mt-3 { margin-top: 0.7rem; }
-        .mt-4 { margin-top: 1rem; }
     </style>
 </head>
 <body>
 
-<div class="container" style="max-width: 1300px; margin: 0 auto;">
-    
-    <!-- هدر و دکمه تم -->
-    <div class="flex-between mb-4 animate__animated animate__fadeInUp">
-        <div>
-            <h1 style="font-size: 2.1rem; font-weight: 900; background: linear-gradient(120deg, #FFD89C, #FFB347); -webkit-background-clip: text; background-clip: text; color: transparent;">
-                🎬 Khashayar Downloader
-            </h1>
-            <p style="color: var(--text-muted); font-size: 0.85rem;">دانلود حرفه‌ای از یوتیوب • اینستاگرام • تلگرام — با قدرت GitHub Actions</p>
-        </div>
-        <div class="theme-switch" id="themeToggle">
-            <i class="fas fa-moon"></i>
-        </div>
-    </div>
+<div class="container">
+    <div class="card">
+        <h1>🎬 Khashayar Downloader</h1>
+        <div class="sub">دانلود ویدیو از یوتیوب — ساده و سریع</div>
 
-    <!-- کارت اصلی (فرم دانلود + تب ها) -->
-    <div class="glass-card" style="padding: 2rem;">
-        
-        <div class="tabs">
-            <div class="tab active" data-tab="youtube"><i class="fab fa-youtube" style="color:#ff3e2e;"></i> یوتیوب</div>
-            <div class="tab" data-tab="instagram"><i class="fab fa-instagram" style="color:#e4405f;"></i> اینستاگرام <span style="font-size: 0.65rem;">(به زودی)</span></div>
-            <div class="tab" data-tab="telegram"><i class="fab fa-telegram" style="color:#34a7e6;"></i> تلگرام <span style="font-size: 0.65rem;">(به زودی)</span></div>
-        </div>
+        <form id="downloadForm">
+            <div class="form-group">
+                <label><i class="fab fa-youtube"></i> لینک یوتیوب</label>
+                <textarea id="urlInput" rows="2" placeholder="https://youtu.be/...&#10;https://www.youtube.com/watch?v=..." required></textarea>
+            </div>
 
-        <!-- ---------- فرم یوتیوب ---------- -->
-        <div id="youtubeTab" class="tab-content active">
-            <form id="downloadForm">
-                <div class="mb-4">
-                    <label><i class="fab fa-youtube"></i> لینک ویدیو (پشتیبانی از چند لینک یا پلی‌لیست)</label>
-                    <textarea id="urlInput" rows="2" placeholder="https://youtu.be/...&#10;https://www.youtube.com/watch?v=...&#10;https://youtube.com/playlist?list=..."></textarea>
+            <div class="row2">
+                <div class="form-group">
+                    <label><i class="fas fa-video"></i> کیفیت</label>
+                    <select id="quality">
+                        <option value="best">✨ بهترین (1080p+)</option>
+                        <option value="2160">4K (2160p)</option>
+                        <option value="1440">1440p (2K)</option>
+                        <option value="1080">1080p Full HD</option>
+                        <option value="720">720p HD</option>
+                        <option value="480">480p</option>
+                        <option value="audio">🎵 MP3 (فقط صدا)</option>
+                    </select>
                 </div>
-
-                <div class="two-cols" style="margin-bottom: 1.2rem;">
-                    <div>
-                        <label><i class="fas fa-video"></i> کیفیت</label>
-                        <select id="quality">
-                            <option value="best">✨ بهترین (4K/1080p+)</option>
-                            <option value="2160">4K (2160p)</option>
-                            <option value="1440">1440p (2K)</option>
-                            <option value="1080">1080p Full HD</option>
-                            <option value="720">720p HD</option>
-                            <option value="480">480p</option>
-                            <option value="audio">🎵 MP3 (فقط صدا)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label><i class="fas fa-language"></i> زیرنویس (فارسی+انگلیسی)</label>
-                        <select id="subtitles">
-                            <option value="false">خاموش</option>
-                            <option value="true">روشن — خودکار</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label><i class="fas fa-file-archive"></i> فرمت خروجی</label>
-                        <select id="format">
-                            <option value="mp4">MP4 (پیش‌فرض)</option>
-                            <option value="mkv">MKV</option>
-                            <option value="webm">WebM</option>
-                        </select>
-                    </div>
+                <div class="form-group">
+                    <label><i class="fas fa-language"></i> زیرنویس</label>
+                    <select id="subtitles">
+                        <option value="false">خاموش</option>
+                        <option value="true">روشن (فارسی + انگلیسی)</option>
+                    </select>
                 </div>
+            </div>
 
-                <div class="mb-4">
-                    <label><i class="fas fa-lock"></i> رمز ZIP (اختیاری)</label>
-                    <input type="text" id="password" placeholder="فقط در صورت نیاز به رمزگذاری فایل">
+            <div class="form-group">
+                <label><i class="fas fa-lock"></i> رمز ZIP (اختیاری)</label>
+                <input type="text" id="password" placeholder="در صورت نیاز رمز عبور">
+            </div>
+
+            <button type="submit" id="submitBtn">
+                <i class="fas fa-download"></i> شروع دانلود
+            </button>
+        </form>
+
+        <div id="progressBox" style="display: none;">
+            <div class="progress-card">
+                <div class="progress-header">
+                    <span id="statusMsg"><i class="fas fa-spinner fa-pulse"></i> در حال ارسال...</span>
+                    <span id="percentLabel">0%</span>
                 </div>
-
-                <button type="submit" id="submitBtn" class="btn-neon"><i class="fas fa-download"></i> شروع دانلود</button>
-            </form>
-        </div>
-
-        <!-- پلتفرم های دیگر (موقت) -->
-        <div id="instagramTab" class="tab-content text-center" style="padding: 2rem;">
-            <i class="fab fa-instagram" style="font-size: 3rem; color:#e4405f;"></i>
-            <p class="mt-4" style="color: var(--text-muted);">به زودی امکان دانلود ریلز، پست و استوری اینستاگرام</p>
-        </div>
-        <div id="telegramTab" class="tab-content text-center" style="padding: 2rem;">
-            <i class="fab fa-telegram" style="font-size: 3rem; color:#34a7e6;"></i>
-            <p class="mt-4" style="color: var(--text-muted);">کانال‌های عمومی تلگرام — ویدیو و فایل به زودی</p>
-        </div>
-
-        <!-- جعبه پیشرفت دانلود -->
-        <div id="progressBox" style="display: none; margin-top: 1.8rem;">
-            <div class="glass-card-sm" style="padding: 1.2rem;">
-                <div class="flex-between">
-                    <span id="statusMsg" style="color: var(--accent);"><i class="fas fa-spinner fa-pulse"></i> در حال ارسال درخواست...</span>
-                    <span id="percentLabel" style="font-weight: bold;">0%</span>
-                </div>
-                <div class="progress-container mt-3">
+                <div class="progress-bar">
                     <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
                 </div>
-                <div id="downloadBlock" style="display: none; text-align: center; margin-top: 1rem;">
-                    <div style="color: #10b981;"><i class="fas fa-check-circle"></i> ویدیو آماده دریافت است!</div>
-                    <a id="directDownloadLink" href="#" class="btn-outline" style="display: inline-block; margin-top: 0.8rem;"><i class="fas fa-download"></i> دانلود فایل</a>
-                    <button id="resetBtn" class="btn-outline" style="margin-right: 0.7rem;"><i class="fas fa-redo-alt"></i> جدید</button>
+                <div id="downloadBlock" style="display: none;" class="download-block">
+                    <div><i class="fas fa-check-circle"></i> ویدیو آماده است!</div>
+                    <a id="directDownloadLink" href="#" target="_blank"><i class="fas fa-download"></i> دانلود فایل</a>
+                    <button type="button" id="resetBtn" style="margin-top: 0.5rem; background: #374151; padding: 0.4rem 1rem; font-size: 0.8rem;">جدید</button>
                 </div>
-                <div id="errorBlock" style="display: none; margin-top: 0.8rem; color: #ff6b6b; text-align: center;"></div>
+                <div id="errorBlock" style="display: none;" class="error-block"></div>
             </div>
+        </div>
+
+        <div class="limit-badge">
+            <i class="fas fa-info-circle"></i> هر کاربر حداکثر ۱۰ درخواست در ساعت | فایل‌ها ۵ دقیقه پس از دانلود حذف می‌شوند
         </div>
     </div>
 
-    <!-- بخش آمار و تاریخچه / نمودار -->
-    <div class="stats-grid">
-        <div class="stat-item"><div class="stat-value" id="totalDownloads">0</div><div class="stat-label">دانلود امروز</div></div>
-        <div class="stat-item"><div class="stat-value" id="totalSize">0 GB</div><div class="stat-label">حجم کل دانلودها</div></div>
-        <div class="stat-item"><div class="stat-value" id="lastDownloadTime">--:--:--</div><div class="stat-label">آخرین دانلود</div></div>
-        <div class="stat-item"><div class="stat-value" id="totalItems">0</div><div class="stat-label">تعداد ویدیوها</div></div>
-    </div>
-
-    <div class="two-cols">
-        <!-- نمودار Chart.js -->
-        <div class="glass-card-sm" style="padding: 1.2rem;">
-            <h3 style="font-weight: 700; margin-bottom: 1rem;"><i class="fas fa-chart-line" style="color: var(--accent);"></i> آمار هفتگی</h3>
-            <canvas id="statsChart" height="180"></canvas>
-        </div>
-        <!-- تاریخچه دانلود -->
-        <div class="glass-card-sm" style="padding: 1.2rem;">
-            <div class="flex-between">
-                <h3 style="font-weight: 700;"><i class="fas fa-history" style="color: var(--accent);"></i> تاریخچه</h3>
-                <button id="clearHistoryBtn" class="btn-outline" style="padding: 0.2rem 1rem;">پاک کردن</button>
-            </div>
-            <div id="historyList" class="history-list mt-4">
-                <div class="text-center" style="color: var(--text-muted); padding: 1rem;">تاریخی ثبت نشده</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- تنظیمات پیشرفته (ذخیره خودکار، صدا، اعلان) -->
-    <div class="glass-card-sm mt-5" style="padding: 1.2rem;">
-        <h3 style="font-weight: 700;"><i class="fas fa-sliders-h"></i> تنظیمات پیشرفته</h3>
-        <div class="two-cols" style="margin-top: 1rem;">
-            <div class="flex-between">
-                <span>💾 ذخیره خودکار تنظیمات</span>
-                <label class="switch"><input type="checkbox" id="autoSave" checked><span class="slider round"></span></label>
-            </div>
-            <div class="flex-between">
-                <span>🔔 پخش صدا پس از دانلود</span>
-                <label class="switch"><input type="checkbox" id="soundNotify"><span class="slider round"></span></label>
-            </div>
-            <div class="flex-between">
-                <span>🖥️ اعلان دسکتاپ</span>
-                <label class="switch"><input type="checkbox" id="desktopNotify" checked><span class="slider round"></span></label>
-            </div>
-        </div>
-    </div>
-
-    <footer class="text-center" style="margin-top: 2.5rem; opacity: 0.6; font-size: 0.7rem;">
-        با ❤️ توسط خشایار — مجهز به ۸ متد دورزدن تحریم • کیفیت‌گیت • زیرنویس خودکار
+    <footer>
+        ساخته شده با ❤️ توسط Khashayar.one
     </footer>
 </div>
 
-<!-- کتابخانه ها -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.8.0/axios.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.18/dayjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.18/locale/fa.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.15.10/sweetalert2.all.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
 <script>
-    dayjs.locale('fa');
     const API_URL = 'https://khashayar.one/api/trigger.php';
     let pollingInterval = null;
     let currentRunId = null;
-    
-    // آمار ذخیره شده در localStorage
-    let stats = {
-        todayDownloads: parseInt(localStorage.getItem('totalDownloads') || '0'),
-        totalSizeGB: parseFloat(localStorage.getItem('totalSize') || '0'),
-        lastDownloadTime: localStorage.getItem('lastDownloadTime') || '---',
-        weeklyData: JSON.parse(localStorage.getItem('weeklyData') || '[3,7,9,5,12,18,21]'),
-        history: JSON.parse(localStorage.getItem('downloadHistory') || '[]')
-    };
-    
-    let settings = {
-        autoSave: localStorage.getItem('autoSave') !== 'false',
-        soundNotify: localStorage.getItem('soundNotify') === 'true',
-        desktopNotify: localStorage.getItem('desktopNotify') !== 'false'
-    };
-    
-    // به روز رسانی ui آماری
-    function updateStatsUI() {
-        document.getElementById('totalDownloads').innerText = stats.todayDownloads;
-        document.getElementById('totalSize').innerText = stats.totalSizeGB.toFixed(1);
-        document.getElementById('lastDownloadTime').innerText = stats.lastDownloadTime;
-        document.getElementById('totalItems').innerText = stats.history.length;
-        localStorage.setItem('totalDownloads', stats.todayDownloads);
-        localStorage.setItem('totalSize', stats.totalSizeGB);
-        localStorage.setItem('lastDownloadTime', stats.lastDownloadTime);
-        localStorage.setItem('weeklyData', JSON.stringify(stats.weeklyData));
-        localStorage.setItem('downloadHistory', JSON.stringify(stats.history));
-        if (window.statsChart) {
-            window.statsChart.data.datasets[0].data = stats.weeklyData;
-            window.statsChart.update();
-        }
-        renderHistory();
-    }
-    
-    function renderHistory() {
-        const container = document.getElementById('historyList');
-        if (!stats.history.length) {
-            container.innerHTML = '<div class="text-center" style="color: var(--text-muted); padding: 1rem;">تاریخی ثبت نشده</div>';
-            return;
-        }
-        container.innerHTML = stats.history.map(item => `
-            <div class="history-item">
-                <span><i class="fab fa-youtube" style="color: #ff3e2e;"></i> ${item.title || 'ویدیو دانلود شده'}</span>
-                <span style="font-size: 0.7rem;">${dayjs(item.date).format('HH:mm • DD MMM')}</span>
-            </div>
-        `).join('');
-    }
-    
-    function addToHistory(title = 'YouTube Video') {
-        stats.history.unshift({ title: title.substring(0, 40), date: new Date().toISOString() });
-        if (stats.history.length > 12) stats.history.pop();
-        updateStatsUI();
-    }
-    
-    function playBeep() {
-        if (!settings.soundNotify) return;
-        try {
-            const audio = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3');
-            audio.volume = 0.2;
-            audio.play().catch(()=>{});
-        } catch(e) {}
-    }
-    
-    // نمودار
-    const ctx = document.getElementById('statsChart').getContext('2d');
-    window.statsChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'],
-            datasets: [{
-                label: 'تعداد دانلود',
-                data: stats.weeklyData,
-                borderColor: '#FFB347',
-                backgroundColor: 'rgba(255,180,71,0.1)',
-                borderWidth: 2,
-                tension: 0.25,
-                fill: true,
-                pointBackgroundColor: '#FFB347'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: { legend: { labels: { color: '#a0afc0' } } },
-            scales: { y: { grid: { color: '#2a3650' }, ticks: { color: '#b9c8ff' } }, x: { ticks: { color: '#b9c8ff' } } }
-        }
-    });
-    
-    // GSAP انیمیشن ظاهر شدن
-    gsap.fromTo('.glass-card', { opacity:0, y:30 }, { duration:0.7, opacity:1, y:0, ease:'power2.out' });
-    gsap.fromTo('.stats-grid .stat-item', { opacity:0, scale:0.9 }, { duration:0.5, opacity:1, scale:1, stagger:0.1, delay:0.2 });
-    
-    // دارک/لایت
-    const themeBtn = document.getElementById('themeToggle');
-    if (localStorage.getItem('theme') === 'light') document.body.classList.add('light');
-    themeBtn.addEventListener('click', () => {
-        document.body.classList.toggle('light');
-        const isLight = document.body.classList.contains('light');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        themeBtn.querySelector('i').className = isLight ? 'fas fa-sun' : 'fas fa-moon';
-    });
-    
-    // تب ها (یوتیوب / اینستاگرام / تلگرام)
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            const target = tab.dataset.tab;
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.getElementById(`${target}Tab`).classList.add('active');
-            if (target !== 'youtube') {
-                document.getElementById('progressBox').style.display = 'none';
-                Swal.fire({ icon: 'info', title: 'به زودی!', text: 'سرویس دهی این پلتفرم تا هفته آینده', background: '#1e293b', color: '#fff', confirmButtonColor: '#f7b32b' });
-            }
+
+    // DOM elements
+    const form = document.getElementById('downloadForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressBox = document.getElementById('progressBox');
+    const progressFill = document.getElementById('progressFill');
+    const percentLabel = document.getElementById('percentLabel');
+    const statusMsg = document.getElementById('statusMsg');
+    const downloadBlock = document.getElementById('downloadBlock');
+    const directLink = document.getElementById('directDownloadLink');
+    const errorBlock = document.getElementById('errorBlock');
+    const resetBtn = document.getElementById('resetBtn');
+    const urlInput = document.getElementById('urlInput');
+    const qualitySelect = document.getElementById('quality');
+    const subtitlesSelect = document.getElementById('subtitles');
+    const passwordInput = document.getElementById('password');
+
+    // Helper functions
+    function showError(msg) {
+        errorBlock.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
+        errorBlock.style.display = 'block';
+        downloadBlock.style.display = 'none';
+        statusMsg.innerHTML = '<i class="fas fa-times-circle"></i> خطا';
+        if (pollingInterval) clearInterval(pollingInterval);
+        submitBtn.disabled = false;
+        
+        Swal.fire({
+            icon: 'error',
+            title: 'خطا',
+            text: msg,
+            background: '#1e293b',
+            color: '#fff',
+            confirmButtonColor: '#f7b32b'
         });
-    });
-    
-    // ---------- ارتباط با trigger.php (API امن) ----------
-    async function triggerWorkflow(payload) {
-        const response = await axios.post(API_URL, payload, { headers: { 'Content-Type': 'application/json' }, timeout: 30000 });
-        if (!response.data) throw new Error('پاسخ نامعتبر سرور');
-        if (response.data.remaining_requests !== undefined) {
-            if (response.data.remaining_requests <= 3 && response.data.remaining_requests > 0) {
-                Swal.fire({ icon: 'info', title: 'محدودیت درخواست', text: `شما ${response.data.remaining_requests} درخواست دیگر در این ساعت دارید`, background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347', timer: 3000 });
-            }
-        }
-        if (!response.data.run_id) throw new Error('شناسه درخواست دریافت نشد');
-        return response.data.run_id;
     }
-    
-    async function fetchStatus(runId) {
-        try {
-            const res = await axios.get(`${API_URL}?run_id=${runId}`, { timeout: 15000 });
-            return res.data;
-        } catch { return null; }
-    }
-    
-    function pollDownload(runId) {
-        if (pollingInterval) clearInterval(pollingInterval);
-        
-        let lastProgressPercent = 0;
-        let completedHandled = false;
-        
-        pollingInterval = setInterval(async () => {
-            const status = await fetchStatus(runId);
-            if (!status) return;
-            
-            let percent = 10;
-            if (status.status === 'in_progress') percent = 45;
-            else if (status.status === 'completed') percent = 100;
-            else if (status.status === 'queued') percent = 15;
-            else percent = 10;
-            
-            if (percent !== lastProgressPercent) {
-                document.getElementById('progressFill').style.width = `${percent}%`;
-                document.getElementById('percentLabel').innerText = `${percent}%`;
-                lastProgressPercent = percent;
-            }
-            
-            let statusMessage = status.message || 'در حال پردازش...';
-            if (status.status === 'queued') statusMessage = '⏳ در صف انتظار...';
-            else if (status.status === 'in_progress') statusMessage = '⬇️ در حال دانلود و پردازش...';
-            
-            document.getElementById('statusMsg').innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${statusMessage}`;
-            
-            if (status.status === 'completed' && !completedHandled) {
-                completedHandled = true;
-                clearInterval(pollingInterval);
-                
-                if (status.success) {
-                    if (status.download_url) {
-                        document.getElementById('directDownloadLink').href = status.download_url;
-                        document.getElementById('downloadBlock').style.display = 'block';
-                        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> ✅ موفق! ویدیو آماده است';
-                        document.getElementById('progressFill').style.width = '100%';
-                        document.getElementById('percentLabel').innerText = '100%';
-                        
-                        stats.todayDownloads++;
-                        stats.totalSizeGB += 0.45;
-                        stats.lastDownloadTime = dayjs().format('HH:mm:ss');
-                        const dayOfWeek = new Date().getDay();
-                        stats.weeklyData[dayOfWeek] = (stats.weeklyData[dayOfWeek] || 0) + 1;
-                        addToHistory(document.getElementById('urlInput').value.split('\n')[0] || 'YouTube Video');
-                        updateStatsUI();
-                        playBeep();
-                        
-                        if (settings.desktopNotify && Notification.permission === 'granted') {
-                            new Notification('Khashayar Downloader', { body: 'دانلود با موفقیت انجام شد!' });
-                        }
-                        
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'دانلود کامل شد!',
-                            text: 'فایل آماده دریافت می‌باشد',
-                            background: '#1e293b',
-                            color: '#fff',
-                            confirmButtonColor: '#FFB347',
-                            timer: 2500
-                        });
-                    } else {
-                        showError('لینک فایل یافت نشد، شاید هنوز آپلود نشده');
-                    }
-                } else {
-                    showError(status.error || 'خطا از سمت سرور');
-                }
-                document.getElementById('submitBtn').disabled = false;
-            }
-        }, 4000);
-    }
-    
-    function showError(message) {
-        document.getElementById('errorBlock').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-        document.getElementById('errorBlock').style.display = 'block';
-        document.getElementById('downloadBlock').style.display = 'none';
-        document.getElementById('submitBtn').disabled = false;
-        Swal.fire({ icon: 'error', title: 'خطا', text: message, background: '#1e293b', color: '#fff', confirmButtonColor: '#ff6b6b' });
-        if (pollingInterval) clearInterval(pollingInterval);
-    }
-    
-    // ذخیره و بارگذاری تنظیمات
-    function loadUserPrefs() {
-        document.getElementById('autoSave').checked = settings.autoSave;
-        document.getElementById('soundNotify').checked = settings.soundNotify;
-        document.getElementById('desktopNotify').checked = settings.desktopNotify;
-        if (localStorage.getItem('qualityPref')) document.getElementById('quality').value = localStorage.getItem('qualityPref');
-        if (localStorage.getItem('formatPref')) document.getElementById('format').value = localStorage.getItem('formatPref');
-    }
-    
-    function saveUserPrefs() {
-        settings.autoSave = document.getElementById('autoSave').checked;
-        settings.soundNotify = document.getElementById('soundNotify').checked;
-        settings.desktopNotify = document.getElementById('desktopNotify').checked;
-        localStorage.setItem('autoSave', settings.autoSave);
-        localStorage.setItem('soundNotify', settings.soundNotify);
-        localStorage.setItem('desktopNotify', settings.desktopNotify);
-        if (settings.autoSave) {
-            localStorage.setItem('qualityPref', document.getElementById('quality').value);
-            localStorage.setItem('formatPref', document.getElementById('format').value);
-        }
-    }
-    
+
     function resetUI() {
         if (pollingInterval) clearInterval(pollingInterval);
         currentRunId = null;
-        document.getElementById('progressBox').style.display = 'none';
-        document.getElementById('downloadBlock').style.display = 'none';
-        document.getElementById('errorBlock').style.display = 'none';
-        document.getElementById('progressFill').style.width = '0%';
-        document.getElementById('percentLabel').innerText = '0%';
-        document.getElementById('submitBtn').disabled = false;
+        progressBox.style.display = 'none';
+        downloadBlock.style.display = 'none';
+        errorBlock.style.display = 'none';
+        progressFill.style.width = '0%';
+        percentLabel.innerText = '0%';
+        submitBtn.disabled = false;
     }
-    
-    // رویداد اصلی فرم
-    document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+
+    async function triggerDownload(payload) {
+        const response = await axios.post(API_URL, payload, {
+            headers: { 'Content-Type': 'application/json' },
+            timeout: 30000
+        });
+        
+        if (!response.data) throw new Error('پاسخ نامعتبر از سرور');
+        if (response.data.error) throw new Error(response.data.error);
+        if (!response.data.run_id) throw new Error('شناسه درخواست دریافت نشد');
+        
+        return response.data.run_id;
+    }
+
+    async function checkStatus(runId) {
+        try {
+            const response = await axios.get(`${API_URL}?run_id=${runId}`, { timeout: 10000 });
+            return response.data;
+        } catch {
+            return null;
+        }
+    }
+
+    function startPolling(runId) {
+        if (pollingInterval) clearInterval(pollingInterval);
+        
+        let lastPercent = 0;
+        
+        pollingInterval = setInterval(async () => {
+            const status = await checkStatus(runId);
+            if (!status) return;
+            
+            // Update progress based on status
+            let percent = 10;
+            if (status.status === 'queued') percent = 15;
+            else if (status.status === 'in_progress') percent = 50;
+            else if (status.status === 'completed') percent = 100;
+            
+            if (percent !== lastPercent) {
+                progressFill.style.width = `${percent}%`;
+                percentLabel.innerText = `${percent}%`;
+                lastPercent = percent;
+            }
+            
+            // Update status message
+            let msg = status.message || 'در حال پردازش...';
+            if (status.status === 'queued') msg = '⏳ در صف انتظار...';
+            else if (status.status === 'in_progress') msg = '⬇️ در حال دانلود...';
+            statusMsg.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${msg}`;
+            
+            // Check if completed
+            if (status.status === 'completed') {
+                clearInterval(pollingInterval);
+                
+                if (status.success && status.download_url) {
+                    // Success!
+                    directLink.href = status.download_url;
+                    downloadBlock.style.display = 'block';
+                    statusMsg.innerHTML = '<i class="fas fa-check-circle"></i> ✅ دانلود کامل شد!';
+                    progressFill.style.width = '100%';
+                    percentLabel.innerText = '100%';
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'دانلود کامل شد!',
+                        text: 'ویدیو آماده دریافت است',
+                        background: '#1e293b',
+                        color: '#fff',
+                        confirmButtonColor: '#f7b32b',
+                        timer: 3000
+                    });
+                    
+                    submitBtn.disabled = false;
+                } else {
+                    showError(status.error || 'خطا در دانلود ویدیو');
+                }
+            }
+        }, 4000);
+    }
+
+    // Form submit
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         resetUI();
-        saveUserPrefs();
         
-        const rawUrls = document.getElementById('urlInput').value.trim();
-        if (!rawUrls) {
-            Swal.fire({ icon: 'warning', title: 'لطفاً لینک یوتیوب را وارد کنید', background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347' });
+        const urlsRaw = urlInput.value.trim();
+        if (!urlsRaw) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'لطفاً لینک یوتیوب را وارد کنید',
+                background: '#1e293b',
+                color: '#fff',
+                confirmButtonColor: '#f7b32b'
+            });
             return;
         }
         
-        const urls = rawUrls.split(/\r?\n/).filter(u => u.trim());
+        const urlList = urlsRaw.split(/\r?\n/).filter(u => u.trim().length > 0);
         const payload = {
-            youtube_urls: urls.join(' '),
-            quality: document.getElementById('quality').value,
-            download_subtitles: document.getElementById('subtitles').value === 'true',
-            password: document.getElementById('password').value.trim()
+            youtube_urls: urlList.join(' '),
+            quality: qualitySelect.value,
+            download_subtitles: subtitlesSelect.value === 'true',
+            password: passwordInput.value.trim()
         };
         
-        document.getElementById('submitBtn').disabled = true;
-        document.getElementById('progressBox').style.display = 'block';
-        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-paper-plane"></i> 🚀 ارسال به گیت‌هاب اکشن...';
-        document.getElementById('progressFill').style.width = '5%';
-        document.getElementById('percentLabel').innerHTML = '5%';
+        submitBtn.disabled = true;
+        progressBox.style.display = 'block';
+        statusMsg.innerHTML = '<i class="fas fa-paper-plane"></i> 🚀 ارسال درخواست...';
+        progressFill.style.width = '5%';
+        percentLabel.innerText = '5%';
         
         try {
-            const runId = await triggerWorkflow(payload);
-            if (runId) {
-                currentRunId = runId;
-                pollDownload(runId);
-            } else {
-                throw new Error('شناسه درخواست دریافت نشد');
-            }
+            const runId = await triggerDownload(payload);
+            currentRunId = runId;
+            startPolling(runId);
         } catch (err) {
             showError(err.message || 'خطا در ارتباط با سرور');
-            document.getElementById('submitBtn').disabled = false;
+            submitBtn.disabled = false;
         }
     });
     
-    document.getElementById('resetBtn')?.addEventListener('click', () => {
+    // Reset button
+    resetBtn.addEventListener('click', () => {
         resetUI();
-        document.getElementById('downloadForm').reset();
-        document.getElementById('submitBtn').disabled = false;
+        form.reset();
+        submitBtn.disabled = false;
+        urlInput.focus();
     });
-    
-    document.getElementById('clearHistoryBtn')?.addEventListener('click', () => {
-        Swal.fire({
-            title: 'پاک کردن تاریخچه؟',
-            text: 'این عمل قابل بازگشت نیست',
-            icon: 'warning',
-            background: '#1e293b',
-            color: '#fff',
-            showCancelButton: true,
-            confirmButtonColor: '#FFB347',
-            cancelButtonColor: '#ef4444'
-        }).then(res => {
-            if (res.isConfirmed) {
-                stats.history = [];
-                updateStatsUI();
-                Swal.fire('پاک شد!', '', 'success');
-            }
-        });
-    });
-    
-    // درخواست اعلان دسکتاپ
-    if (settings.desktopNotify && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-        Notification.requestPermission();
-    }
-    
-    loadUserPrefs();
-    updateStatsUI();
 </script>
 </body>
 </html>
