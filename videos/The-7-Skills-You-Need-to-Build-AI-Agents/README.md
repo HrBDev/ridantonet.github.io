@@ -12,7 +12,7 @@
 |----------|-------|
 | **Title** | `The-7-Skills-You-Need-to-Build-AI-Agents` |
 | **Source** | [YouTube](https://www.youtube.com/watch?v=mtiOK2QG9Q0) |
-| **Quality** | best |
+| **Quality** | 1080 |
 | **Status** | ✅ Complete |
 | **Password** | ❌ No |
 
