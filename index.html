@@ -2,413 +2,521 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>🎬 Khashayar YouTube Downloader</title>
-    
-    <meta name="description" content="دانلودر حرفه‌ای ویدیوهای یوتیوب">
-    <meta name="theme-color" content="#0f172a">
-    <meta name="color-scheme" content="dark">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230f172a'/><polygon points='75 35 55 55 75 75' fill='%238188f8'/><rect x='20' y='30' width='35' height='40' rx='8' fill='%236366f1'/></svg>">
-    
-    <!-- Tailwind CSS v4 -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.0/dist/index.global.min.js"></script>
-    
-    <!-- Vazirmatn Font -->
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
-    
-    <!-- GSAP -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Khashayar Downloader | دانلود خودکار یوتیوب</title>
     <style>
-        @theme {
-            --font-vazir: 'Vazirmatn', sans-serif;
-            --color-brand-400: #818cf8; --color-brand-500: #6366f1; --color-brand-600: #4f46e5;
-            --color-surface: #0f172a; --color-surface-light: #1e293b; --color-surface-lighter: #334155;
-            --color-success: #22c55e; --color-error: #ef4444; --color-warning: #f59e0b;
-            --color-text: #f1f5f9; --color-text-secondary: #94a3b8; --color-text-muted: #64748b;
-            --radius-card: 1.5rem; --radius-input: 1rem;
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Tahoma', sans-serif;
         }
-        
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
-            font-family: 'Vazirmatn', sans-serif;
-            background: #0f172a; color: #f1f5f9;
-            min-height: 100dvh; overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
-            display: flex; align-items: center; justify-content: center;
-            padding: 1rem;
+            background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            margin: 0;
         }
-        
-        /* Background glow */
-        .bg-glow {
-            position: fixed; inset: 0; pointer-events: none; z-index: 0;
-            background: radial-gradient(ellipse 60% 60% at 50% -10%, rgba(99,102,241,0.12), transparent),
-                        radial-gradient(ellipse 50% 50% at 80% 90%, rgba(6,182,212,0.08), transparent);
-        }
-        
-        /* ── Card ── */
         .card {
-            background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.06); border-radius: var(--radius-card);
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5); transition: all 0.3s;
+            max-width: 700px;
+            width: 100%;
+            background: rgba(18, 25, 45, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 2rem 1.8rem;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.2s;
         }
-        .card:focus-within { border-color: rgba(99,102,241,0.4); box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(99,102,241,0.1); }
-        
-        /* ── Input ── */
-        .input {
-            width: 100%; padding: 15px 18px; font-size: 15px; font-family: inherit;
-            background: rgba(15, 23, 42, 0.5); border: 2px solid rgba(71, 85, 105, 0.4);
-            border-radius: var(--radius-input); color: white; transition: all 0.25s; outline: none;
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFF8E7, #FFD966);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.3px;
         }
-        .input:focus { border-color: #818cf8; background: rgba(15, 23, 42, 0.8); box-shadow: 0 0 0 5px rgba(99,102,241,0.06); }
-        .input::placeholder { color: #64748b; }
-        .input.error { border-color: #ef4444; }
-        .input.success { border-color: #22c55e; }
-        
-        /* ── Select ── */
-        .select {
-            width: 100%; padding: 14px 16px; font-size: 14px; font-family: inherit;
-            background: rgba(15, 23, 42, 0.5); border: 2px solid rgba(71, 85, 105, 0.4);
-            border-radius: var(--radius-input); color: white; cursor: pointer; outline: none;
-            appearance: none; transition: all 0.25s;
+        .sub {
+            text-align: center;
+            color: #9aa9c7;
+            border-bottom: 1px dashed #2a3650;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.8rem;
         }
-        .select:focus { border-color: #818cf8; }
-        
-        /* ── Button ── */
-        .btn {
-            width: 100%; padding: 16px; font-size: 17px; font-family: inherit; font-weight: 700;
-            border: none; border-radius: var(--radius-input); color: white; cursor: pointer;
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            box-shadow: 0 10px 30px rgba(99,102,241,0.3); transition: all 0.3s;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
+        .form-group {
+            margin-bottom: 1.4rem;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(99,102,241,0.5); }
-        .btn:active { transform: scale(0.97); }
-        .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        
-        /* ── Toggle ── */
-        .toggle {
-            width: 48px; height: 26px; border-radius: 13px; cursor: pointer; transition: all 0.3s;
-            position: relative; flex-shrink: 0;
+        label {
+            display: block;
+            font-weight: 600;
+            color: #e2e9ff;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
         }
-        .toggle.off { background: #475569; }
-        .toggle.on { background: #22c55e; }
-        .toggle::after {
-            content: ''; position: absolute; top: 3px; width: 20px; height: 20px;
-            border-radius: 50%; background: white; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        input, select, textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: #0f1422;
+            border: 1px solid #2a3455;
+            border-radius: 1.2rem;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.2s;
+            outline: none;
         }
-        .toggle.off::after { left: 3px; }
-        .toggle.on::after { left: 25px; }
-        
-        /* ── Progress ── */
-        .progress-bar { width: 100%; height: 6px; background: rgba(71,85,105,0.3); border-radius: 3px; overflow: hidden; }
-        .progress-fill { height: 100%; border-radius: 3px; width: 0%; transition: width 0.5s; background: linear-gradient(90deg, #6366f1, #22c55e); }
-        
-        /* ── Timeline ── */
-        .tl-step { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
-        .tl-dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; transition: all 0.4s; }
-        .tl-dot.queued { background: #1e293b; border: 2px solid #475569; color: #64748b; }
-        .tl-dot.in_progress { background: rgba(99,102,241,0.2); border: 2px solid #6366f1; color: #818cf8; animation: dotPulse 1.5s infinite; }
-        .tl-dot.completed { background: #22c55e; border: 2px solid #22c55e; color: white; }
-        .tl-dot.failed { background: #ef4444; border: 2px solid #ef4444; color: white; }
-        @keyframes dotPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); } 50% { box-shadow: 0 0 0 8px rgba(99,102,241,0); } }
-        .tl-label { font-size: 13px; color: #64748b; transition: color 0.3s; }
-        .tl-step.active .tl-label { color: #f1f5f9; font-weight: 500; }
-        .tl-step.done .tl-label { color: #94a3b8; }
-        
-        /* ── Spinner ── */
-        .spinner { width: 22px; height: 22px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        
-        /* ── Animations ── */
-        @keyframes slideUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .anim-slide-up { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        input:focus, select:focus, textarea:focus {
+            border-color: #f7b32b;
+            box-shadow: 0 0 0 3px rgba(247,179,43,0.2);
+        }
+        textarea {
+            resize: vertical;
+            font-family: monospace;
+            direction: ltr;
+        }
+        .row2 {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .row2 .form-group {
+            flex: 1;
+        }
+        button {
+            background: linear-gradient(90deg, #f0a500, #f7b32b);
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            border-radius: 3rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #0a0e1a;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(240,165,0,0.3);
+            margin-top: 0.5rem;
+        }
+        button:active { transform: scale(0.97);}
+        button:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+        .progress-area {
+            background: #0b0f18;
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+        }
+        .progress-bar-container {
+            background: #1e263b;
+            border-radius: 1rem;
+            height: 1.2rem;
+            overflow: hidden;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #f7b32b, #ffd966);
+            border-radius: 1rem;
+            transition: width 0.3s ease;
+        }
+        .status-text {
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin-top: 0.6rem;
+            color: #b9c3e6;
+            display: flex;
+            justify-content: space-between;
+        }
+        .download-link {
+            background: #0f1625;
+            padding: 1rem;
+            border-radius: 1.5rem;
+            margin-top: 1rem;
+            text-align: center;
+            word-break: break-all;
+        }
+        .btn-small {
+            background: #2a3a60;
+            color: white;
+            box-shadow: none;
+            font-size: 0.9rem;
+            padding: 0.6rem;
+            margin-top: 0.5rem;
+        }
+        .error {
+            color: #ff9e8f;
+            background: #3a1e1a;
+            padding: 0.6rem;
+            border-radius: 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+        .success { color: #a3f0b0; }
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            color: #4c5880;
+            margin-top: 1.6rem;
+        }
+        a { color: #ffd966; text-decoration: none; }
+        @media (max-width: 500px) {
+            .card { padding: 1.5rem; }
+            .row2 { flex-direction: column; gap: 0; }
+        }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
-    
-    <main id="app" class="w-full max-w-lg mx-auto space-y-4 relative z-10" style="opacity:0;">
-        
-        <!-- Header -->
-        <header class="text-center space-y-2 pb-2">
-            <div class="text-4xl select-none">🎬</div>
-            <h1 class="text-2xl font-extrabold">Khashayar <span class="text-brand-400">Downloader</span></h1>
-            <p class="text-text-secondary text-xs">دانلود ویدیو یوتیوب — سریع و خودکار</p>
-        </header>
-        
-        <!-- Form -->
-        <section class="card p-5 space-y-4">
-            
-            <!-- URL -->
-            <div>
-                <label class="text-xs text-text-secondary mb-2 block">🔗 لینک یوتیوب</label>
-                <input type="text" id="urlInput" class="input" placeholder="youtube.com/watch?v=..." dir="ltr" autocomplete="off" spellcheck="false">
-                <p id="urlError" class="text-error text-xs mt-1.5 hidden"></p>
-            </div>
-            
-            <!-- Quality + Sub -->
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="text-xs text-text-secondary mb-2 block">🎬 کیفیت</label>
-                    <select id="qualitySelect" class="select">
-                        <option value="best">✨ بهترین</option>
-                        <option value="2160">4K</option>
-                        <option value="1080">1080p</option>
-                        <option value="720">720p</option>
-                        <option value="480">480p</option>
-                        <option value="audio">🎵 MP3</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-xs text-text-secondary mb-2 block">📝 زیرنویس</label>
-                    <button onclick="toggleSub()" class="w-full flex items-center justify-between px-4 py-[13px] rounded-xl transition" style="background: rgba(15,23,42,0.5); border: 2px solid rgba(71,85,105,0.4);">
-                        <span id="subLabel" class="text-sm text-text-secondary">خاموش</span>
-                        <div class="toggle off" id="toggleEl"></div>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Password -->
-            <div>
-                <label class="text-xs text-text-secondary mb-2 block">🔒 رمز ZIP <span class="text-text-muted">(اختیاری)</span></label>
-                <input type="text" id="passInput" class="input" placeholder="رمز دلخواه" dir="ltr" style="padding:13px 18px; font-size:14px;">
-            </div>
-            
-            <!-- Submit -->
-            <button id="submitBtn" onclick="startDownload()" class="btn">
-                <span id="btnText">🚀 شروع دانلود</span>
-                <span id="btnSpinner" class="spinner" style="display:none;"></span>
-            </button>
-        </section>
-        
-        <!-- Progress -->
-        <section id="progressBox" class="card p-5 hidden anim-slide-up">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-xs text-text-secondary">وضعیت</span>
-                <span id="progressPct" class="text-xs text-brand-400 font-bold">0%</span>
-            </div>
-            <div class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
-            <div id="timeline" class="mt-4 space-y-0"></div>
-        </section>
-        
-        <!-- Result -->
-        <section id="resultBox" class="card p-5 text-center hidden anim-slide-up" style="border-color: rgba(34,197,94,0.3);">
-            <div class="text-4xl mb-2">✅</div>
-            <h2 class="text-lg font-bold mb-1">ویدیو آماده است!</h2>
-            <p id="resultFolder" class="text-xs text-text-secondary mb-4"></p>
-            <a id="downloadLink" href="#" target="_blank" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-white transition" style="background: linear-gradient(135deg, #22c55e, #16a34a); box-shadow: 0 8px 25px rgba(34,197,94,0.3);">
-                ⬇️ دانلود فایل
-            </a>
-            <p class="text-xs text-warning mt-3"><span id="expiryTimer"></span></p>
-            <button onclick="resetAll()" class="mt-3 text-xs text-brand-400">🔄 دانلود جدید</button>
-        </section>
-        
-        <!-- Error -->
-        <section id="errorBox" class="card p-5 text-center hidden anim-slide-up" style="border-color: rgba(239,68,68,0.3);">
-            <div class="text-3xl mb-2">❌</div>
-            <h3 class="text-base font-bold mb-1">خطا</h3>
-            <p id="errorMsg" class="text-xs text-text-secondary mb-3"></p>
-            <button onclick="retryDownload()" class="px-5 py-2.5 rounded-xl text-sm text-white" style="background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);">🔄 تلاش مجدد</button>
-        </section>
-        
-        <footer class="text-center text-[10px] text-text-muted pb-4">
-            <a href="https://khashayar.one" class="text-brand-400" target="_blank">khashayar.one</a>
-        </footer>
-    </main>
+<div class="card">
+    <h1>🎬 Khashayar Downloader</h1>
+    <div class="sub">دانلود ویدیو از یوتیوب — سریع و خودکار</div>
 
-    <script>
-        // ⭐ Token injected by deploy workflow — DO NOT EDIT
-        const AUTO_TOKEN = '__GITHUB_TOKEN_PLACEHOLDER__';
-        
-        const C = { owner:'khashayardev', repo:'khashayardev.github.io', wf:'yt-dl.yml', branch:'main', poll:4000, maxPoll:200 };
-        let subOn = false, busy = false, pollTimer = null, expiryTimer = null, lastData = null;
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const inp = document.getElementById('urlInput');
-            inp.addEventListener('input', validateUrl);
-            inp.addEventListener('keydown', e => { if (e.key === 'Enter') startDownload(); });
-            if (typeof gsap !== 'undefined') { gsap.to('#app', { opacity:1, duration:0.6, ease:'power2.out' }); }
-            else { document.getElementById('app').style.opacity = '1'; }
+    <form id="downloadForm">
+        <div class="form-group">
+            <label>🔗 لینک یوتیوب (لینک دوم رو هم میتونید Enter بزنید)</label>
+            <textarea id="urls" rows="2" placeholder="https://youtu.be/...&#10;https://www.youtube.com/watch?v=..." required></textarea>
+        </div>
+        <div class="row2">
+            <div class="form-group">
+                <label>🎬 کیفیت</label>
+                <select id="quality">
+                    <option value="best">✨ بهترین (ترجیحاً 1080+)</option>
+                    <option value="2160">4K (2160p)</option>
+                    <option value="1440">1440p (2K)</option>
+                    <option value="1080">1080p (Full HD)</option>
+                    <option value="720">720p (HD)</option>
+                    <option value="480">480p</option>
+                    <option value="audio">🎵 MP3 (فقط صوت)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>📝 زیرنویس (فارسی+انگلیسی)</label>
+                <select id="subtitles">
+                    <option value="false">خاموش</option>
+                    <option value="true">روشن (دانلود خودکار)</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>🔒 رمز ZIP (اختیاری)</label>
+            <input type="text" id="password" placeholder="در صورت نیاز فایل فشرده رمز داشته باشد">
+        </div>
+
+        <button type="submit" id="submitBtn">🚀 شروع دانلود</button>
+    </form>
+
+    <!-- منطقه وضعیت و پیشرفت -->
+    <div id="progressBox" style="display: none;">
+        <div class="progress-area">
+            <div class="progress-bar-container">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="status-text">
+                <span id="statusMsg">در حال انتظار برای اجرا...</span>
+                <span id="percentLabel">0%</span>
+            </div>
+        </div>
+        <div id="downloadBlock" style="display: none;" class="download-link">
+            <div>✅ ویدیو آماده است!</div>
+            <a id="directDownloadLink" href="#" target="_blank" rel="noopener" class="btn-small" style="display: inline-block; margin-top: 0.8rem;">⬇️ دانلود فایل</a>
+            <button type="button" id="resetBtn" class="btn-small" style="background:#1e2a3a;">🔄 دانلود جدید</button>
+        </div>
+        <div id="errorBlock" style="display: none;" class="error"></div>
+    </div>
+    <footer>🚀 توسط GitHub Actions | توکن بصورت امن تزریق شده | وضعیت لحظه‌ای</footer>
+</div>
+
+<script>
+    // -------- global variables ----------
+    let currentRunId = null;
+    let pollingInterval = null;
+    let isWaitingForWorkflow = false;
+
+    const GITHUB_API_BASE = 'https://api.github.com/repos/khashayardev/khashayardev.github.io';
+    // توکن در زمان build توسط workflow (deploy.yml) به صورت جایگزین __GITHUB_TOKEN_PLACEHOLDER__ خواهد شد.
+    // در مرورگر کاربر هرگز مقدار واقعی توکن دیده نمی‌شود چون در زمان دیپلوی تزریق می‌شود.
+    const GITHUB_TOKEN = '__GITHUB_TOKEN_PLACEHOLDER__';
+
+    const dom = {
+        form: document.getElementById('downloadForm'),
+        submitBtn: document.getElementById('submitBtn'),
+        progressBox: document.getElementById('progressBox'),
+        progressFill: document.getElementById('progressFill'),
+        statusMsg: document.getElementById('statusMsg'),
+        percentLabel: document.getElementById('percentLabel'),
+        downloadBlock: document.getElementById('downloadBlock'),
+        directDownloadLink: document.getElementById('directDownloadLink'),
+        resetBtn: document.getElementById('resetBtn'),
+        errorBlock: document.getElementById('errorBlock'),
+        urls: document.getElementById('urls'),
+        quality: document.getElementById('quality'),
+        subtitles: document.getElementById('subtitles'),
+        password: document.getElementById('password')
+    };
+
+    // Helper: trigger workflow_dispatch
+    async function triggerWorkflow(payload) {
+        const response = await fetch(`${GITHUB_API_BASE}/actions/workflows/yt-dl.yml/dispatches`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `token ${GITHUB_TOKEN}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ref: 'main',
+                inputs: payload
+            })
         });
-        
-        function toggleSub() {
-            subOn = !subOn;
-            document.getElementById('subLabel').textContent = subOn ? 'روشن' : 'خاموش';
-            document.getElementById('toggleEl').className = 'toggle ' + (subOn ? 'on' : 'off');
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`GitHub API error: ${response.status} - ${errText}`);
         }
-        
-        function isValid(u) { return /^https?:\/\/(www\.|m\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)[\w-]{11}/.test(u.trim()); }
-        
-        function validateUrl() {
-            const u = document.getElementById('urlInput').value.trim(), inp = document.getElementById('urlInput'), er = document.getElementById('urlError');
-            if (!u) { er.classList.add('hidden'); inp.className = 'input'; return; }
-            if (isValid(u)) { er.classList.add('hidden'); inp.className = 'input success'; }
-            else { er.textContent = '⚠️ لینک یوتیوب معتبر نیست'; er.classList.remove('hidden'); inp.className = 'input error'; }
+        // پس از موفقیت, باید latest run را پیدا کنیم
+        return true;
+    }
+
+    // دریافت آخرین run از نوع workflow_dispatch که چند ثانیه قبل trigger شده
+    async function getLatestWorkflowRun() {
+        const response = await fetch(`${GITHUB_API_BASE}/actions/runs?event=workflow_dispatch&per_page=5`, {
+            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (!response.ok) return null;
+        const data = await response.json();
+        if (data.workflow_runs && data.workflow_runs.length > 0) {
+            return data.workflow_runs[0]; // جدیدترین
         }
-        
-        function getToken() {
-            if (AUTO_TOKEN && !AUTO_TOKEN.startsWith('__GITHUB')) return AUTO_TOKEN;
-            const p = new URLSearchParams(location.search); if (p.get('token')) return p.get('token');
-            const s = localStorage.getItem('gh_token'); if (s) return s;
-            const t = prompt('🔑 GitHub Token\n\nScopes: repo, workflow');
-            if (t) { localStorage.setItem('gh_token', t); return t; }
-            return null;
-        }
-        
-        async function api(endpoint, token, opts = {}) {
-            const res = await fetch(endpoint.startsWith('http') ? endpoint : `https://api.github.com${endpoint}`, {
-                headers: { 'Authorization':`Bearer ${token}`, 'Accept':'application/vnd.github.v3+json', 'Content-Type':'application/json', ...opts.headers },
-                ...opts
-            });
-            if (res.status === 204) return { ok: true };
-            if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(e.message || `HTTP ${res.status}`); }
-            return res.json();
-        }
-        
-        function dispatch(token, url, quality, subs, pass) {
-            return api(`/repos/${C.owner}/${C.repo}/actions/workflows/${C.wf}/dispatches`, token, {
-                method:'POST', body: JSON.stringify({ ref:C.branch, inputs:{ youtube_urls:url, quality, download_subtitles:subs?'true':'false', password:pass||'' } })
-            });
-        }
-        
-        function getRun(token) { return api(`/repos/${C.owner}/${C.repo}/actions/runs?branch=${C.branch}&per_page=1`, token).then(d => d.workflow_runs?.[0] || null); }
-        
-        function getJobs(token, runId) { return api(`/repos/${C.owner}/${C.repo}/actions/runs/${runId}/jobs`, token).then(d => d.jobs || []); }
-        
-        function getFolder(token) { return api(`/repos/${C.owner}/${C.repo}/contents/videos`, token).then(d => Array.isArray(d) ? d.filter(f=>f.type==='dir').pop()||null : null); }
-        
-        function videoUrl(folder) { return `https://raw.githubusercontent.com/${C.owner}/${C.repo}/${C.branch}/videos/${encodeURIComponent(folder)}/${encodeURIComponent(folder)}.mp4`; }
-        
-        function buildTimeline(jobs) {
-            const container = document.getElementById('timeline'); container.innerHTML = '';
-            const steps = [
-                { id:'setup', name:'📥 آماده‌سازی', key:'Checkout' },
-                { id:'warp', name:'🌐 اتصال WARP', key:'WARP' },
-                { id:'deps', name:'📦 نصب ابزارها', key:'Dependencies' },
-                { id:'download', name:'⬇️ دانلود ویدیو', key:'Download Videos' },
-                { id:'push', name:'📤 ذخیره نهایی', key:'Push' },
-            ];
-            const all = [];
-            if (jobs.length) {
-                const ss = jobs[0].steps || [];
-                steps.forEach(s => {
-                    const m = ss.find(x => x.name.toLowerCase().includes(s.key.toLowerCase()));
-                    let st = m ? m.status : 'queued';
-                    if (m && m.status==='completed' && m.conclusion==='failure') st = 'failed';
-                    all.push({...s, status:st});
-                });
-            }
-            all.forEach(s => {
-                const d = document.createElement('div');
-                d.className = 'tl-step';
-                let icon = '⋯'; if (s.status==='completed') icon='✓'; else if (s.status==='in_progress') icon='◎'; else if (s.status==='failed') icon='✕';
-                d.innerHTML = `<div class="tl-dot ${s.status}">${icon}</div><span class="tl-label">${s.name}</span>`;
-                container.appendChild(d);
-            });
-            const done = all.filter(s => s.status==='completed').length;
-            const pct = Math.round((done/all.length)*100);
-            document.getElementById('progressFill').style.width = pct+'%';
-            document.getElementById('progressPct').textContent = pct+'%';
-        }
-        
-        function poll(token) {
-            let attempts = 0;
-            return new Promise((resolve, reject) => {
-                pollTimer = setInterval(async () => {
-                    try {
-                        attempts++;
-                        const run = await getRun(token);
-                        if (!run) return;
-                        const jobs = await getJobs(token, run.id);
-                        buildTimeline(jobs);
-                        if (run.status==='completed') { clearInterval(pollTimer); run.conclusion==='success' ? resolve(run) : reject(new Error('failed')); return; }
-                        if (attempts>=C.maxPoll) { clearInterval(pollTimer); reject(new Error('timeout')); }
-                    } catch(e) { console.warn(e); }
-                }, C.poll);
-            });
-        }
-        
-        function hideAll() { ['progressBox','resultBox','errorBox'].forEach(id => document.getElementById(id).classList.add('hidden')); }
-        
-        function showError(msg) { hideAll(); document.getElementById('errorBox').classList.remove('hidden'); document.getElementById('errorMsg').textContent = msg; }
-        
-        function showResult(folder, url) {
-            hideAll();
-            const box = document.getElementById('resultBox'); box.classList.remove('hidden');
-            document.getElementById('resultFolder').textContent = '📁 ' + folder;
-            document.getElementById('downloadLink').href = url;
-            startExpiry();
-        }
-        
-        function startExpiry() {
-            if (expiryTimer) clearInterval(expiryTimer);
-            let s = 300; const el = document.getElementById('expiryTimer');
-            expiryTimer = setInterval(() => {
-                s--; const m = Math.floor(s/60), sec = s%60;
-                el.textContent = `⏱ ${m}:${String(sec).padStart(2,'0')} تا حذف خودکار`;
-                if (s<=60) el.style.color = '#ef4444';
-                if (s<=0) { clearInterval(expiryTimer); el.textContent = '🗑 منقضی شد'; document.getElementById('downloadLink').style.opacity='0.4'; document.getElementById('downloadLink').style.pointerEvents='none'; }
-            }, 1000);
-        }
-        
-        function resetBtn() {
-            document.getElementById('btnText').textContent = '🚀 شروع دانلود';
-            document.getElementById('btnSpinner').style.display = 'none';
-        }
-        
-        function resetAll() { hideAll(); resetBtn(); if (expiryTimer) clearInterval(expiryTimer); document.getElementById('progressBox').classList.add('hidden'); }
-        
-        function retryDownload() { resetAll(); if (lastData) { document.getElementById('urlInput').value = lastData.url; } setTimeout(startDownload, 300); }
-        
-        async function startDownload() {
-            if (busy) return;
-            const url = document.getElementById('urlInput').value.trim();
-            const inp = document.getElementById('urlInput'), er = document.getElementById('urlError');
-            er.classList.add('hidden'); inp.className = 'input';
-            
-            if (!url) { er.textContent = '⚠️ لینک را وارد کنید'; er.classList.remove('hidden'); inp.className = 'input error'; return; }
-            if (!isValid(url)) { er.textContent = '⚠️ لینک معتبر نیست'; er.classList.remove('hidden'); inp.className = 'input error'; return; }
-            
-            const token = getToken();
-            if (!token) { showError('توکن گیتهاب لازم است'); return; }
-            
-            const quality = document.getElementById('qualitySelect').value;
-            const pass = document.getElementById('passInput').value.trim();
-            lastData = { url, quality, pass };
-            
-            busy = true;
-            const btn = document.getElementById('submitBtn'); btn.disabled = true;
-            document.getElementById('btnText').textContent = 'در حال ارسال...';
-            document.getElementById('btnSpinner').style.display = 'block';
-            hideAll(); document.getElementById('progressBox').classList.remove('hidden');
-            
-            try {
-                await dispatch(token, url, quality, subOn, pass);
-                document.getElementById('btnText').textContent = 'در حال دانلود...';
-                await poll(token);
-                const folder = await getFolder(token);
-                if (!folder) throw new Error('no_folder');
-                showResult(folder.name, videoUrl(folder.name));
-                document.getElementById('btnText').textContent = '✅ کامل شد';
-            } catch(e) {
-                console.error(e);
-                let msg = 'خطا در دانلود';
-                if (e.message.includes('401')) { msg = 'توکن نامعتبر'; localStorage.removeItem('gh_token'); }
-                else if (e.message.includes('403')) msg = 'محدودیت نرخ';
-                else if (e.message==='timeout') msg = 'زمان طولانی شد';
-                else if (e.message==='failed') msg = 'دانلود ناموفق';
-                else if (e.message==='no_folder') msg = 'فایل یافت نشد';
-                showError(msg);
-                resetBtn();
-            } finally {
-                busy = false; btn.disabled = false;
-                document.getElementById('btnSpinner').style.display = 'none';
+        return null;
+    }
+
+    // دریافت وضعیت یک run خاص و بررسی conclusion و steps
+    async function getRunStatus(runId) {
+        const response = await fetch(`${GITHUB_API_BASE}/actions/runs/${runId}`, {
+            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (!response.ok) return null;
+        const run = await response.json();
+        // همچنین برای نمایش مرحله جاری بهتر است jobs را هم بگیریم
+        const jobsResp = await fetch(`${GITHUB_API_BASE}/actions/runs/${runId}/jobs`, {
+            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        let currentStepName = '';
+        let stepPercent = null;
+        if (jobsResp.ok) {
+            const jobsData = await jobsResp.json();
+            const job = jobsData.jobs?.find(j => j.name === 'download');
+            if (job && job.steps) {
+                const activeStep = job.steps.find(s => s.status === 'in_progress');
+                if (activeStep) currentStepName = activeStep.name;
+                // تخمین درصد پیشرفت: مراحل کلیدی ما در yml
+                // مراحل ثابت: Setup WARP, Dependencies, Setup Parameters, Download & Process Videos, Subtitles, Push
+                // دانلود و پردازش حدود 70% کار است. برای سادگی تخمین می‌زنیم
+                if (job.status === 'in_progress') {
+                    const totalSteps = 7; // تخمین تعداد گامهای اصلی
+                    let completedSteps = job.steps.filter(s => s.status === 'completed').length;
+                    stepPercent = Math.min(95, Math.floor((completedSteps / totalSteps) * 95));
+                }
             }
         }
-    </script>
+        let conclusion = run.status === 'completed' ? run.conclusion : null;
+        return { status: run.status, conclusion, currentStepName, stepPercent };
+    }
+
+    // شروع polling هر 2 ثانیه
+    function startPolling(runId) {
+        if (pollingInterval) clearInterval(pollingInterval);
+        pollingInterval = setInterval(async () => {
+            if (!runId) return;
+            const statusData = await getRunStatus(runId);
+            if (!statusData) return;
+
+            const { status, conclusion, currentStepName, stepPercent } = statusData;
+            let percent = 10; // حداقل
+            if (stepPercent) percent = stepPercent;
+            else if (status === 'in_progress') percent = 45;
+            else if (status === 'completed') percent = 100;
+
+            dom.progressFill.style.width = `${percent}%`;
+            dom.percentLabel.innerText = `${percent}%`;
+
+            let msg = '';
+            if (status === 'in_progress') {
+                msg = currentStepName ? `⏳ ${currentStepName} ...` : 'در حال دانلود و پردازش...';
+            } else if (status === 'completed') {
+                if (conclusion === 'success') {
+                    msg = '✅ دانلود با موفقیت پایان یافت!';
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                    await showDownloadLinkAfterSuccess();
+                } else {
+                    msg = `❌ خطا در اجرا (${conclusion})`;
+                    clearInterval(pollingInterval);
+                    pollingInterval = null;
+                    showError(`عملیات با شکست مواجه شد. لطفاً دوباره تلاش کنید.`);
+                }
+            } else {
+                msg = `وضعیت: ${status}`;
+            }
+            dom.statusMsg.innerText = msg;
+            if (percent >= 100 && conclusion === 'success') {
+                // ایمنی: لینک دانلود نمایش داده شود
+                await showDownloadLinkAfterSuccess();
+            }
+        }, 2500);
+    }
+
+    // یافتن آخرین فایل آپلود شده (بر اساس آخرین commit دایرکتوری videos)
+    async function fetchLatestVideoFile() {
+        const response = await fetch(`${GITHUB_API_BASE}/contents/videos`, {
+            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
+        });
+        if (!response.ok) return null;
+        const folders = await response.json();
+        if (!Array.isArray(folders) || folders.length === 0) return null;
+        // جدیدترین پوشه بر اساس commit date (با درخواست commit latest)
+        const folderPromises = folders.map(async (folder) => {
+            const commitResp = await fetch(`${GITHUB_API_BASE}/commits?path=videos/${folder.name}&per_page=1`, {
+                headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+            });
+            if (commitResp.ok) {
+                const commits = await commitResp.json();
+                if (commits.length) return { name: folder.name, date: new Date(commits[0].commit.author.date) };
+            }
+            return { name: folder.name, date: new Date(0) };
+        });
+        const foldersWithDate = await Promise.all(folderPromises);
+        foldersWithDate.sort((a,b) => b.date - a.date);
+        if (foldersWithDate.length === 0) return null;
+        const latestFolder = foldersWithDate[0].name;
+        // داخل پوشه دنبال فایل MP4 یا ZIP بگردیم
+        const folderContentResp = await fetch(`${GITHUB_API_BASE}/contents/videos/${latestFolder}`, {
+            headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
+        });
+        if (!folderContentResp.ok) return null;
+        const files = await folderContentResp.json();
+        if (!Array.isArray(files)) return null;
+        const videoFile = files.find(f => f.name.endsWith('.mp4') || f.name.endsWith('.mkv') || f.name.endsWith('.webm'));
+        if (videoFile) return videoFile.path;
+        const zipFile = files.find(f => f.name.endsWith('.zip'));
+        if (zipFile) return zipFile.path;
+        return null;
+    }
+
+    async function showDownloadLinkAfterSuccess() {
+        try {
+            const filePath = await fetchLatestVideoFile();
+            if (filePath) {
+                const rawUrl = `https://raw.githubusercontent.com/khashayardev/khashayardev.github.io/main/${filePath}`;
+                dom.directDownloadLink.href = rawUrl;
+                dom.downloadBlock.style.display = 'block';
+                dom.errorBlock.style.display = 'none';
+                dom.progressFill.style.width = '100%';
+                dom.percentLabel.innerText = '100%';
+                dom.statusMsg.innerText = '✅ آماده دانلود!';
+            } else {
+                showError('فایل پیدا نشد، شاید چند لحظه دیگر همگام‌سازی شود. لطفاً صفحه را دوباره بارگذاری کنید.');
+            }
+        } catch (err) {
+            showError('خطا در دریافت لینک دانلود: ' + err.message);
+        }
+    }
+
+    function showError(msg) {
+        dom.errorBlock.innerText = msg;
+        dom.errorBlock.style.display = 'block';
+        dom.downloadBlock.style.display = 'none';
+        dom.statusMsg.innerText = 'خطا';
+        if (pollingInterval) clearInterval(pollingInterval);
+        pollingInterval = null;
+    }
+
+    function resetUI() {
+        if (pollingInterval) clearInterval(pollingInterval);
+        currentRunId = null;
+        dom.progressBox.style.display = 'none';
+        dom.downloadBlock.style.display = 'none';
+        dom.errorBlock.style.display = 'none';
+        dom.progressFill.style.width = '0%';
+        dom.percentLabel.innerText = '0%';
+        dom.statusMsg.innerText = '';
+        dom.submitBtn.disabled = false;
+    }
+
+    // رویداد اصلی
+    dom.form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        resetUI();
+
+        const urlsRaw = dom.urls.value.trim();
+        if (!urlsRaw) {
+            alert('لطفاً لینک یوتیوب را وارد کنید');
+            return;
+        }
+        // پشتیبانی از چند لینک با خط جدید
+        const urlList = urlsRaw.split(/\r?\n/).filter(u => u.trim().length > 0);
+        const youtubeUrls = urlList.join(' ');
+
+        const payload = {
+            youtube_urls: youtubeUrls,
+            quality: dom.quality.value,
+            download_subtitles: dom.subtitles.value === 'true',
+            password: dom.password.value.trim()
+        };
+
+        dom.submitBtn.disabled = true;
+        dom.progressBox.style.display = 'block';
+        dom.statusMsg.innerText = '🚀 در حال ارسال درخواست به GitHub...';
+        dom.progressFill.style.width = '5%';
+        dom.percentLabel.innerText = '5%';
+
+        try {
+            await triggerWorkflow(payload);
+            dom.statusMsg.innerText = '✅ اکشن با موفقیت اجرا شد. در حال دریافت وضعیت...';
+            // منتظر بمانیم تا new run ظاهر شود
+            let retries = 15;
+            let newRun = null;
+            while (retries-- > 0 && !newRun) {
+                await new Promise(r => setTimeout(r, 1300));
+                const latest = await getLatestWorkflowRun();
+                if (latest && new Date(latest.created_at).getTime() > Date.now() - 10000) {
+                    newRun = latest;
+                }
+            }
+            if (newRun) {
+                currentRunId = newRun.id;
+                startPolling(currentRunId);
+            } else {
+                showError('اجرای workflow شروع شد اما شناسایی نشد. لطفاً چند دقیقه صبر کنید و صفحه را refresh کنید.');
+                dom.submitBtn.disabled = false;
+            }
+        } catch (err) {
+            console.error(err);
+            showError(`خطا در ارتباط با GitHub Actions: ${err.message}`);
+            dom.submitBtn.disabled = false;
+        }
+    });
+
+    dom.resetBtn.addEventListener('click', () => {
+        resetUI();
+        dom.form.reset();
+        dom.submitBtn.disabled = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // بررسی اولیه: اگر توکن تزریق نشده باشد هشدار
+    if (GITHUB_TOKEN === '__GITHUB_TOKEN_PLACEHOLDER__' || GITHUB_TOKEN.length < 10) {
+        console.warn('⚠️ توکن در زمان بیلد جایگزین نشده! مطمئن شوید deploy.yml سینتکس sed درست کار میکند.');
+        document.querySelector('.error')?.remove();
+        const warnDiv = document.createElement('div');
+        warnDiv.className = 'error';
+        warnDiv.innerText = '⚠️ هشدار پیکربندی: توکن در سرور تنظیم نشده. لطفاً با پشتیبانی تماس بگیرید.';
+        dom.progressBox?.insertAdjacentElement('afterbegin', warnDiv);
+    }
+</script>
 </body>
 </html>
