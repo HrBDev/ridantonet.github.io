@@ -5,7 +5,6 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# این permissions خیلی مهمه
 permissions:
   contents: read
   pages: write
@@ -22,25 +21,37 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🔐 Inject GitHub Token
+      - name: 🔐 Inject GitHub Token (Python method)
+        shell: python
         run: |
-          echo "Checking for placeholder..."
-          if grep -q "GITHUB_TOKEN_PLACEHOLDER" index.html; then
-            echo "✅ Placeholder found, injecting token..."
-            sed -i "s|GITHUB_TOKEN_PLACEHOLDER|${{ secrets.DASHBOARD_TOKEN }}|g" index.html
-            echo "✅ Token injected successfully"
-          else
-            echo "⚠️ Placeholder not found. Token might already be injected or file structure changed."
-          fi
+          import os
+          import re
           
-      - name: Verify token injection
-        run: |
-          if grep -q "GITHUB_TOKEN_PLACEHOLDER" index.html; then
-            echo "❌ ERROR: Token was NOT injected!"
-            exit 1
-          else
-            echo "✅ Token injection verified successfully"
-          fi
+          token = os.environ['DASHBOARD_TOKEN']
+          
+          with open('index.html', 'r', encoding='utf-8') as f:
+              content = f.read()
+          
+          # جایگزینی placeholder با توکن واقعی
+          if "GITHUB_TOKEN_PLACEHOLDER" in content:
+              content = content.replace("GITHUB_TOKEN_PLACEHOLDER", token)
+              print("✅ Token injected successfully using Python")
+          else:
+              print("⚠️ Placeholder not found, checking if token already exists...")
+          
+          # Verify
+          if token in content:
+              print("✅ Verification: Token is present in HTML")
+          else:
+              print("❌ ERROR: Token injection failed!")
+              exit(1)
+          
+          with open('index.html', 'w', encoding='utf-8') as f:
+              f.write(content)
+          
+          print("✅ File saved successfully")
+        env:
+          DASHBOARD_TOKEN: ${{ secrets.DASHBOARD_TOKEN }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
