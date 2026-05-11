@@ -5,502 +5,470 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Khashayar Downloader | دانلودر حرفه‌ای یوتیوب</title>
     
-    <!-- فقط Font Awesome و Animate.css و SweetAlert2 (بدون Tailwind برای جلوگیری از تداخل) -->
+    <!-- Font Awesome 6 (Free Icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- Google Font: Vazirmatn (وزیر) -->
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- SweetAlert2 CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.15.10/sweetalert2.min.css" rel="stylesheet">
     
     <style>
+        /* ---------- RESET & GLOBAL ---------- */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            background: linear-gradient(135deg, #0a0f1e 0%, #0c1222 100%);
+            background: radial-gradient(circle at 20% 30%, #0A0C1A, #03050C);
+            font-family: 'Vazirmatn', 'Segoe UI', system-ui, sans-serif;
+            padding: 2rem 1rem;
+            color: #f0f3fa;
             min-height: 100vh;
-            font-family: 'Segoe UI', system-ui, Tahoma, sans-serif;
-            padding: 20px;
         }
-        
-        /* ========== دارک/لایت مود متغیرها ========== */
-        :root {
-            --bg-card: rgba(18, 25, 45, 0.85);
-            --bg-card-light: rgba(30, 41, 59, 0.6);
-            --border-glow: rgba(247, 179, 43, 0.2);
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --accent: #f7b32b;
-            --accent-dark: #f0a500;
-            --success: #10b981;
-            --error: #ef4444;
-        }
-        
+
+        /* Light mode override */
         body.light {
-            --bg-card: rgba(255, 255, 255, 0.9);
-            --bg-card-light: rgba(241, 245, 249, 0.8);
-            --border-glow: rgba(0, 0, 0, 0.1);
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
-        }
-        
-        /* ========== کامپوننت‌ها ========== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .glass-card {
-            background: var(--bg-card);
-            backdrop-filter: blur(16px);
-            border-radius: 28px;
-            border: 1px solid var(--border-glow);
-            padding: 28px;
-            transition: all 0.3s;
-        }
-        
-        .glass-card-sm {
-            background: var(--bg-card-light);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            border: 1px solid var(--border-glow);
-            padding: 20px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(90deg, var(--accent-dark), var(--accent));
-            border: none;
-            padding: 14px 24px;
-            border-radius: 40px;
-            font-weight: 700;
+            background: radial-gradient(circle at 20% 30%, #eef2ff, #e0e7ff);
             color: #0f172a;
+        }
+
+        /* متغیرهای دارک (پیش‌فرض) */
+        :root {
+            --bg-glass: rgba(20, 25, 45, 0.55);
+            --bg-glass-light: rgba(30, 40, 65, 0.45);
+            --border-glass: rgba(255, 215, 100, 0.25);
+            --accent: #FFB347;
+            --accent-glow: rgba(255, 180, 71, 0.4);
+            --text-main: #f1f5f9;
+            --text-muted: #a0afc0;
+            --card-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.4);
+            --transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        body.light {
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --bg-glass-light: rgba(245, 248, 255, 0.85);
+            --border-glass: rgba(0, 0, 0, 0.08);
+            --text-main: #0c1b33;
+            --text-muted: #2c3e66;
+            --card-shadow: 0 15px 35px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ---------- تایپوگرافی و اسکرول ---------- */
+        h1, h2, h3, .btn, .tab, label {
+            letter-spacing: -0.02em;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 12px;
+        }
+        body.light ::-webkit-scrollbar-track {
+            background: #cfddee;
+        }
+
+        /* ---------- کامپوننت شیشه‌ای اپل استایل ---------- */
+        .glass-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 2.5rem;
+            border: 1px solid var(--border-glass);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .glass-card-sm {
+            background: var(--bg-glass-light);
+            backdrop-filter: blur(14px);
+            border-radius: 1.8rem;
+            border: 1px solid var(--border-glass);
+        }
+
+        .btn-neon {
+            background: linear-gradient(105deg, var(--accent), #f59e0b);
+            border: none;
+            font-weight: 700;
+            padding: 0.9rem 1.8rem;
+            border-radius: 3rem;
+            color: #0b1120;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
-            font-size: 16px;
+            transition: 0.2s;
             width: 100%;
+            font-family: 'Vazirmatn', monospace;
         }
-        
-        .btn-primary:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(247, 179, 43, 0.5);
+
+        .btn-neon:hover {
+            transform: scale(1.01);
+            box-shadow: 0 12px 28px var(--accent-glow);
         }
-        
+
         .btn-outline {
             background: transparent;
             border: 1px solid var(--accent);
-            padding: 8px 16px;
-            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
             color: var(--accent);
+            transition: 0.2s;
             cursor: pointer;
-            transition: all 0.2s;
+            font-weight: 500;
         }
-        
         .btn-outline:hover {
             background: var(--accent);
             color: #0f172a;
         }
-        
+
+        /* فیلدهای فرم */
         input, select, textarea {
             width: 100%;
-            padding: 12px 16px;
+            padding: 0.85rem 1rem;
             background: rgba(0, 0, 0, 0.25);
-            border: 1px solid #334155;
-            border-radius: 16px;
-            color: var(--text-primary);
-            font-size: 14px;
-            transition: all 0.2s;
+            border: 1px solid rgba(255,255,240,0.15);
+            border-radius: 1.5rem;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            transition: 0.2s;
+            font-family: 'Vazirmatn', monospace;
         }
-        
         body.light input, body.light select, body.light textarea {
-            background: rgba(0, 0, 0, 0.05);
-            border-color: #cbd5e1;
+            background: rgba(255,255,245,0.85);
+            border-color: #cbd5e6;
             color: #0f172a;
         }
-        
         input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(247, 179, 43, 0.2);
+            box-shadow: 0 0 0 3px var(--accent-glow);
         }
-        
         label {
-            font-size: 13px;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-            display: block;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
         }
-        
-        /* تب‌ها */
+
+        /* تب ها */
         .tabs {
             display: flex;
-            gap: 8px;
-            border-bottom: 1px solid #334155;
-            margin-bottom: 24px;
-            padding-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            border-bottom: 1px solid rgba(255,215,100,0.2);
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
         }
-        
         .tab {
-            padding: 8px 20px;
-            border-radius: 40px;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
             cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text-secondary);
-            font-size: 14px;
+            transition: 0.2s;
+            font-weight: 600;
+            background: rgba(255,255,245,0.02);
+            backdrop-filter: blur(4px);
         }
-        
         .tab.active {
-            background: rgba(247, 179, 43, 0.15);
-            color: var(--accent);
+            background: var(--accent);
+            color: #0b1120;
+            box-shadow: 0 0 12px var(--accent-glow);
         }
-        
         .tab-content {
             display: none;
         }
-        
         .tab-content.active {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeSlide 0.4s ease;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(10px);}
+            to { opacity: 1; transform: translateY(0);}
         }
-        
-        /* کارت آمار */
-        .stat-grid {
+
+        /* آمار کارت ها */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(4,1fr);
+            gap: 1.2rem;
+            margin: 2rem 0;
         }
-        
-        .stat-card {
-            background: var(--bg-card-light);
-            border-radius: 20px;
-            padding: 16px;
+        .stat-item {
+            background: var(--bg-glass-light);
+            border-radius: 1.6rem;
+            padding: 1rem;
             text-align: center;
+            backdrop-filter: blur(10px);
             transition: all 0.2s;
         }
-        
-        .stat-card:hover {
-            transform: translateY(-4px);
-            background: rgba(247, 179, 43, 0.1);
-        }
-        
         .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-primary);
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1.2;
         }
-        
         .stat-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: 4px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
         }
-        
-        /* نوار پیشرفت */
-        .progress-bar {
-            background: #334155;
-            border-radius: 20px;
+
+        /* پیشرفت */
+        .progress-container {
+            background: #1e293b;
+            border-radius: 60px;
             height: 8px;
             overflow: hidden;
         }
-        
         .progress-fill {
-            background: linear-gradient(90deg, var(--accent-dark), var(--accent));
-            width: 0%;
+            background: linear-gradient(90deg, #ffb347, #ff9f2e);
             height: 100%;
-            border-radius: 20px;
+            width: 0%;
             transition: width 0.3s;
+            border-radius: 60px;
         }
-        
+
         /* تاریخچه */
+        .history-list {
+            max-height: 230px;
+            overflow-y: auto;
+        }
         .history-item {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 10px 14px;
-            margin-bottom: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 1.2rem;
+            padding: 0.7rem 1rem;
+            margin-bottom: 0.6rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
+            font-size: 0.8rem;
+            transition: 0.2s;
         }
-        
         .history-item:hover {
-            background: rgba(247, 179, 43, 0.1);
+            background: rgba(255,180,71,0.1);
+            transform: translateX(-3px);
         }
-        
-        /* دکمه تم */
-        .theme-toggle {
+
+        /* سوئیچ تم */
+        .theme-switch {
             cursor: pointer;
-            font-size: 24px;
-            transition: transform 0.3s;
+            font-size: 1.6rem;
+            background: var(--bg-glass-light);
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.2s;
         }
-        
-        .theme-toggle:hover {
-            transform: rotate(15deg);
+
+        /* responsive */
+        @media (max-width: 820px) {
+            .stats-grid { grid-template-columns: repeat(2,1fr); gap: 1rem; }
+            .two-cols { grid-template-columns: 1fr !important; }
         }
-        
-        /* ریسپانسیو */
-        @media (max-width: 768px) {
-            .stat-grid { grid-template-columns: repeat(2, 1fr); }
-            .glass-card { padding: 20px; }
-            .stat-value { font-size: 22px; }
+        @media (max-width: 540px) {
+            .glass-card { padding: 1.25rem; }
+            .stat-value { font-size: 1.5rem; }
         }
-        
-        @media (max-width: 480px) {
-            body { padding: 12px; }
-            .stat-grid { gap: 10px; }
+
+        .two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
         }
-        
-        /* انیمیشن اسکرول */
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        
-        .scroll-reveal.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .mb-4 { margin-bottom: 1rem; }
+        .mt-5 { margin-top: 1.8rem; }
+        .mr-2 { margin-left: 0.5rem; }
+        .gap-3 { gap: 1rem; }
+        .text-center { text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="container">
+<div class="container" style="max-width: 1300px; margin: 0 auto;">
     
-    <!-- هدر -->
-    <div class="flex justify-between items-center mb-6 scroll-reveal" style="display: flex; justify-content: space-between; align-items: center;">
+    <!-- هدر و دکمه تم -->
+    <div class="flex-between mb-4 animate__animated animate__fadeInUp">
         <div>
-            <h1 style="font-size: 28px; font-weight: 800; background: linear-gradient(135deg, #f5e6b0, #f7b32b); -webkit-background-clip: text; background-clip: text; color: transparent;">🎬 Khashayar Downloader</h1>
-            <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px;">دانلود ویدیو از یوتیوب • اینستاگرام • تلگرام — سریع و خودکار</p>
+            <h1 style="font-size: 2.1rem; font-weight: 900; background: linear-gradient(120deg, #FFD89C, #FFB347); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                🎬 Khashayar Downloader
+            </h1>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">دانلود حرفه‌ای از یوتیوب • اینستاگرام • تلگرام — با قدرت GitHub Actions</p>
         </div>
-        <div class="theme-toggle" id="themeToggle">
+        <div class="theme-switch" id="themeToggle">
             <i class="fas fa-moon"></i>
         </div>
     </div>
-    
-    <!-- کارت اصلی -->
-    <div class="glass-card scroll-reveal">
+
+    <!-- کارت اصلی (فرم دانلود + تب ها) -->
+    <div class="glass-card" style="padding: 2rem;">
         
-        <!-- تب‌ها -->
         <div class="tabs">
-            <div class="tab active" data-tab="youtube"><i class="fab fa-youtube" style="color: #ff0000;"></i> یوتیوب</div>
-            <div class="tab" data-tab="instagram"><i class="fab fa-instagram" style="color: #e4405f;"></i> اینستاگرام <span style="font-size: 10px;">(به زودی)</span></div>
-            <div class="tab" data-tab="telegram"><i class="fab fa-telegram" style="color: #0088cc;"></i> تلگرام <span style="font-size: 10px;">(به زودی)</span></div>
+            <div class="tab active" data-tab="youtube"><i class="fab fa-youtube" style="color:#ff3e2e;"></i> یوتیوب</div>
+            <div class="tab" data-tab="instagram"><i class="fab fa-instagram" style="color:#e4405f;"></i> اینستاگرام <span style="font-size: 0.65rem;">(به زودی)</span></div>
+            <div class="tab" data-tab="telegram"><i class="fab fa-telegram" style="color:#34a7e6;"></i> تلگرام <span style="font-size: 0.65rem;">(به زودی)</span></div>
         </div>
-        
-        <!-- محتوای یوتیوب -->
+
+        <!-- ---------- فرم یوتیوب ---------- -->
         <div id="youtubeTab" class="tab-content active">
             <form id="downloadForm">
-                <div style="margin-bottom: 20px;">
-                    <label><i class="fab fa-youtube"></i> لینک یوتیوب</label>
-                    <textarea id="urlInput" rows="2" placeholder="https://youtu.be/...&#10;https://www.youtube.com/watch?v=..."></textarea>
+                <div class="mb-4">
+                    <label><i class="fab fa-youtube"></i> لینک ویدیو (پشتیبانی از چند لینک یا پلی‌لیست)</label>
+                    <textarea id="urlInput" rows="2" placeholder="https://youtu.be/...&#10;https://www.youtube.com/watch?v=...&#10;https://youtube.com/playlist?list=..."></textarea>
                 </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 20px;">
+
+                <div class="two-cols" style="margin-bottom: 1.2rem;">
                     <div>
                         <label><i class="fas fa-video"></i> کیفیت</label>
                         <select id="quality">
-                            <option value="best">✨ بهترین</option>
+                            <option value="best">✨ بهترین (4K/1080p+)</option>
                             <option value="2160">4K (2160p)</option>
-                            <option value="1080">1080p</option>
-                            <option value="720">720p</option>
+                            <option value="1440">1440p (2K)</option>
+                            <option value="1080">1080p Full HD</option>
+                            <option value="720">720p HD</option>
                             <option value="480">480p</option>
-                            <option value="audio">🎵 MP3</option>
+                            <option value="audio">🎵 MP3 (فقط صدا)</option>
                         </select>
                     </div>
                     <div>
-                        <label><i class="fas fa-language"></i> زیرنویس</label>
+                        <label><i class="fas fa-language"></i> زیرنویس (فارسی+انگلیسی)</label>
                         <select id="subtitles">
                             <option value="false">خاموش</option>
-                            <option value="true">روشن (فارسی + انگلیسی)</option>
+                            <option value="true">روشن — خودکار</option>
                         </select>
                     </div>
                     <div>
-                        <label><i class="fas fa-file-archive"></i> فرمت</label>
+                        <label><i class="fas fa-file-archive"></i> فرمت خروجی</label>
                         <select id="format">
-                            <option value="mp4">MP4</option>
+                            <option value="mp4">MP4 (پیش‌فرض)</option>
                             <option value="mkv">MKV</option>
                             <option value="webm">WebM</option>
                         </select>
                     </div>
                 </div>
-                
-                <div style="margin-bottom: 24px;">
+
+                <div class="mb-4">
                     <label><i class="fas fa-lock"></i> رمز ZIP (اختیاری)</label>
-                    <input type="text" id="password" placeholder="در صورت نیاز رمز عبور">
+                    <input type="text" id="password" placeholder="فقط در صورت نیاز به رمزگذاری فایل">
                 </div>
-                
-                <button type="submit" id="submitBtn" class="btn-primary">
-                    <i class="fas fa-download"></i> شروع دانلود
-                </button>
+
+                <button type="submit" id="submitBtn" class="btn-neon"><i class="fas fa-download"></i> شروع دانلود</button>
             </form>
         </div>
-        
-        <!-- اینستاگرام -->
-        <div id="instagramTab" class="tab-content" style="text-align: center; padding: 40px 0;">
-            <i class="fab fa-instagram" style="font-size: 48px; color: #e4405f;"></i>
-            <p style="color: var(--text-secondary); margin-top: 12px;">دانلودر اینستاگرام به زودی اضافه می‌شود</p>
+
+        <!-- پلتفرم های دیگر (موقت) -->
+        <div id="instagramTab" class="tab-content text-center" style="padding: 2rem;">
+            <i class="fab fa-instagram" style="font-size: 3rem; color:#e4405f;"></i>
+            <p class="mt-4" style="color: var(--text-muted);">به زودی امکان دانلود ریلز، پست و استوری اینستاگرام</p>
         </div>
-        
-        <!-- تلگرام -->
-        <div id="telegramTab" class="tab-content" style="text-align: center; padding: 40px 0;">
-            <i class="fab fa-telegram" style="font-size: 48px; color: #0088cc;"></i>
-            <p style="color: var(--text-secondary); margin-top: 12px;">دانلودر تلگرام به زودی اضافه می‌شود</p>
+        <div id="telegramTab" class="tab-content text-center" style="padding: 2rem;">
+            <i class="fab fa-telegram" style="font-size: 3rem; color:#34a7e6;"></i>
+            <p class="mt-4" style="color: var(--text-muted);">کانال‌های عمومی تلگرام — ویدیو و فایل به زودی</p>
         </div>
-        
-        <!-- بخش پیشرفت -->
-        <div id="progressBox" style="display: none; margin-top: 24px;">
-            <div class="glass-card-sm">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                    <span id="statusMsg" style="color: var(--accent); font-size: 13px;"><i class="fas fa-spinner fa-pulse"></i> در حال ارسال...</span>
-                    <span id="percentLabel" style="color: var(--accent); font-weight: 700;">0%</span>
+
+        <!-- جعبه پیشرفت دانلود -->
+        <div id="progressBox" style="display: none; margin-top: 1.8rem;">
+            <div class="glass-card-sm" style="padding: 1.2rem;">
+                <div class="flex-between">
+                    <span id="statusMsg" style="color: var(--accent);"><i class="fas fa-spinner fa-pulse"></i> در حال ارسال درخواست...</span>
+                    <span id="percentLabel" style="font-weight: bold;">0%</span>
                 </div>
-                <div class="progress-bar">
+                <div class="progress-container mt-3">
                     <div id="progressFill" class="progress-fill" style="width: 0%;"></div>
                 </div>
-                <div id="downloadBlock" style="display: none; text-align: center; margin-top: 16px;">
-                    <div style="color: var(--success); margin-bottom: 10px;"><i class="fas fa-check-circle"></i> ویدیو آماده است!</div>
-                    <a id="directDownloadLink" href="#" target="_blank" class="btn-outline" style="display: inline-block; text-decoration: none;"><i class="fas fa-download"></i> دانلود فایل</a>
-                    <button type="button" id="resetBtn" class="btn-outline" style="margin-right: 8px;"><i class="fas fa-redo"></i> جدید</button>
+                <div id="downloadBlock" style="display: none; text-align: center; margin-top: 1rem;">
+                    <div style="color: #10b981;"><i class="fas fa-check-circle"></i> ویدیو آماده دریافت است!</div>
+                    <a id="directDownloadLink" href="#" class="btn-outline" style="display: inline-block; margin-top: 0.8rem;"><i class="fas fa-download"></i> دانلود فایل</a>
+                    <button id="resetBtn" class="btn-outline" style="margin-right: 0.7rem;"><i class="fas fa-redo-alt"></i> جدید</button>
                 </div>
-                <div id="errorBlock" style="display: none; text-align: center; color: var(--error); font-size: 13px; margin-top: 12px;"></div>
+                <div id="errorBlock" style="display: none; margin-top: 0.8rem; color: #ff6b6b; text-align: center;"></div>
             </div>
         </div>
     </div>
-    
-    <!-- آمار -->
-    <div class="stat-grid scroll-reveal">
-        <div class="stat-card">
-            <div class="stat-value" id="totalDownloads">0</div>
-            <div class="stat-label">دانلود امروز</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value" id="totalSize">0 GB</div>
-            <div class="stat-label">حجم کل</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value" id="lastDownloadTime">--:--:--</div>
-            <div class="stat-label">آخرین دانلود</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-value" id="totalItems">0</div>
-            <div class="stat-label">تعداد ویدیوها</div>
-        </div>
+
+    <!-- بخش آمار و تاریخچه / نمودار -->
+    <div class="stats-grid">
+        <div class="stat-item"><div class="stat-value" id="totalDownloads">0</div><div class="stat-label">دانلود امروز</div></div>
+        <div class="stat-item"><div class="stat-value" id="totalSize">0 GB</div><div class="stat-label">حجم کل دانلودها</div></div>
+        <div class="stat-item"><div class="stat-value" id="lastDownloadTime">--:--:--</div><div class="stat-label">آخرین دانلود</div></div>
+        <div class="stat-item"><div class="stat-value" id="totalItems">0</div><div class="stat-label">تعداد ویدیوها</div></div>
     </div>
-    
-    <!-- نمودار و تاریخچه -->
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;" class="scroll-reveal">
-        <div class="glass-card-sm">
-            <h3 style="color: var(--text-primary); font-size: 16px; margin-bottom: 16px;"><i class="fas fa-chart-line" style="color: var(--accent);"></i> آمار هفته گذشته</h3>
-            <canvas id="statsChart" height="180" style="max-height: 180px; width: 100%;"></canvas>
+
+    <div class="two-cols">
+        <!-- نمودار Chart.js -->
+        <div class="glass-card-sm" style="padding: 1.2rem;">
+            <h3 style="font-weight: 700; margin-bottom: 1rem;"><i class="fas fa-chart-line" style="color: var(--accent);"></i> آمار هفتگی</h3>
+            <canvas id="statsChart" height="180"></canvas>
         </div>
-        <div class="glass-card-sm">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="color: var(--text-primary); font-size: 16px;"><i class="fas fa-history" style="color: var(--accent);"></i> تاریخچه</h3>
-                <button id="clearHistoryBtn" class="btn-outline" style="font-size: 11px; padding: 4px 12px;">پاک کردن</button>
+        <!-- تاریخچه دانلود -->
+        <div class="glass-card-sm" style="padding: 1.2rem;">
+            <div class="flex-between">
+                <h3 style="font-weight: 700;"><i class="fas fa-history" style="color: var(--accent);"></i> تاریخچه</h3>
+                <button id="clearHistoryBtn" class="btn-outline" style="padding: 0.2rem 1rem;">پاک کردن</button>
             </div>
-            <div id="historyList" style="max-height: 200px; overflow-y: auto;">
-                <div style="text-align: center; color: var(--text-secondary); padding: 20px;">تاریخی وجود ندارد</div>
+            <div id="historyList" class="history-list mt-4">
+                <div class="text-center" style="color: var(--text-muted); padding: 1rem;">تاریخی ثبت نشده</div>
             </div>
         </div>
     </div>
-    
-    <!-- تنظیمات -->
-    <div class="glass-card-sm scroll-reveal" style="margin-top: 20px;">
-        <h3 style="color: var(--text-primary); font-size: 16px; margin-bottom: 16px;"><i class="fas fa-sliders-h" style="color: var(--accent);"></i> تنظیمات پیشرفته</h3>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 13px; color: var(--text-secondary);">ذخیره خودکار تنظیمات</span>
-                <label class="switch">
-                    <input type="checkbox" id="autoSave" checked>
-                    <span class="slider round"></span>
-                </label>
+
+    <!-- تنظیمات پیشرفته (ذخیره خودکار، صدا، اعلان) -->
+    <div class="glass-card-sm mt-5" style="padding: 1.2rem;">
+        <h3 style="font-weight: 700;"><i class="fas fa-sliders-h"></i> تنظیمات پیشرفته</h3>
+        <div class="two-cols" style="margin-top: 1rem;">
+            <div class="flex-between">
+                <span>💾 ذخیره خودکار تنظیمات</span>
+                <label class="switch"><input type="checkbox" id="autoSave" checked><span class="slider round"></span></label>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 13px; color: var(--text-secondary);">پخش صدا پس از دانلود</span>
-                <label class="switch">
-                    <input type="checkbox" id="soundNotify">
-                    <span class="slider round"></span>
-                </label>
+            <div class="flex-between">
+                <span>🔔 پخش صدا پس از دانلود</span>
+                <label class="switch"><input type="checkbox" id="soundNotify"><span class="slider round"></span></label>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 13px; color: var(--text-secondary);">اعلان دسکتاپ</span>
-                <label class="switch">
-                    <input type="checkbox" id="desktopNotify" checked>
-                    <span class="slider round"></span>
-                </label>
+            <div class="flex-between">
+                <span>🖥️ اعلان دسکتاپ</span>
+                <label class="switch"><input type="checkbox" id="desktopNotify" checked><span class="slider round"></span></label>
             </div>
         </div>
     </div>
-    
-    <footer style="text-align: center; color: var(--text-secondary); font-size: 11px; padding: 24px 0 12px;">
-        ساخته شده با ❤️ توسط Khashayar.one | ورژن 2.0
+
+    <footer class="text-center" style="margin-top: 2.5rem; opacity: 0.6; font-size: 0.7rem;">
+        با ❤️ توسط خشایار — مجهز به ۸ متد دورزدن تحریم • کیفیت‌گیت • زیرنویس خودکار
     </footer>
 </div>
 
 <style>
-    /* سوئیچ */
-    .switch {
-        position: relative;
-        display: inline-block;
-        width: 44px;
-        height: 24px;
-    }
-    .switch input {
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-    .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #334155;
-        transition: 0.3s;
-        border-radius: 24px;
-    }
-    .slider:before {
-        position: absolute;
-        content: "";
-        height: 18px;
-        width: 18px;
-        left: 3px;
-        bottom: 3px;
-        background-color: white;
-        transition: 0.3s;
-        border-radius: 50%;
-    }
-    input:checked + .slider {
-        background-color: var(--accent);
-    }
-    input:checked + .slider:before {
-        transform: translateX(20px);
-    }
-    
-    /* رفع تداخل flex */
-    .flex {
-        display: flex;
-    }
-    .justify-between {
-        justify-content: space-between;
-    }
-    .items-center {
-        align-items: center;
-    }
-    .mb-6 { margin-bottom: 24px; }
-    .mt-6 { margin-top: 24px; }
+    /* سوئیچ اختصاصی */
+    .switch { position: relative; display: inline-block; width: 46px; height: 24px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: 0.3s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--accent); }
+    input:checked + .slider:before { transform: translateX(22px); }
+    .container { max-width: 1300px; margin: 0 auto; padding: 0; }
+    .mt-3 { margin-top: 0.7rem; }
+    .mt-4 { margin-top: 1rem; }
 </style>
 
+<!-- کتابخانه ها -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.9/axios.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.5.0/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.18/dayjs.min.js"></script>
@@ -513,12 +481,12 @@
     const API_URL = 'https://khashayar.one/api/trigger.php';
     let pollingInterval = null;
     
-    // آمار
+    // آمار ذخیره شده در localStorage
     let stats = {
         todayDownloads: parseInt(localStorage.getItem('totalDownloads') || '0'),
         totalSizeGB: parseFloat(localStorage.getItem('totalSize') || '0'),
         lastDownloadTime: localStorage.getItem('lastDownloadTime') || '---',
-        weeklyData: JSON.parse(localStorage.getItem('weeklyData') || '[5,8,12,7,15,22,18]'),
+        weeklyData: JSON.parse(localStorage.getItem('weeklyData') || '[3,7,9,5,12,18,21]'),
         history: JSON.parse(localStorage.getItem('downloadHistory') || '[]')
     };
     
@@ -528,19 +496,17 @@
         desktopNotify: localStorage.getItem('desktopNotify') !== 'false'
     };
     
-    // توابع کمکی
+    // به روز رسانی ui آماری
     function updateStatsUI() {
         document.getElementById('totalDownloads').innerText = stats.todayDownloads;
         document.getElementById('totalSize').innerText = stats.totalSizeGB.toFixed(1);
         document.getElementById('lastDownloadTime').innerText = stats.lastDownloadTime;
         document.getElementById('totalItems').innerText = stats.history.length;
-        
         localStorage.setItem('totalDownloads', stats.todayDownloads);
         localStorage.setItem('totalSize', stats.totalSizeGB);
         localStorage.setItem('lastDownloadTime', stats.lastDownloadTime);
         localStorage.setItem('weeklyData', JSON.stringify(stats.weeklyData));
         localStorage.setItem('downloadHistory', JSON.stringify(stats.history));
-        
         if (window.statsChart) {
             window.statsChart.data.datasets[0].data = stats.weeklyData;
             window.statsChart.update();
@@ -551,29 +517,29 @@
     function renderHistory() {
         const container = document.getElementById('historyList');
         if (!stats.history.length) {
-            container.innerHTML = '<div style="text-align: center; color: var(--text-secondary); padding: 20px;">تاریخی وجود ندارد</div>';
+            container.innerHTML = '<div class="text-center" style="color: var(--text-muted); padding: 1rem;">تاریخی ثبت نشده</div>';
             return;
         }
         container.innerHTML = stats.history.map(item => `
             <div class="history-item">
-                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 150px;"><i class="fab fa-youtube" style="color: #ff0000;"></i> ${item.title || 'ویدیو'}</span>
-                <span style="color: var(--text-secondary); font-size: 11px;">${dayjs(item.date).format('HH:mm')}</span>
+                <span><i class="fab fa-youtube" style="color: #ff3e2e;"></i> ${item.title || 'ویدیو دانلود شده'}</span>
+                <span style="font-size: 0.7rem;">${dayjs(item.date).format('HH:mm • DD MMM')}</span>
             </div>
         `).join('');
     }
     
-    function addToHistory(title) {
-        stats.history.unshift({ title: title?.substring(0, 40) || 'ویدیو', date: new Date().toISOString() });
-        if (stats.history.length > 10) stats.history.pop();
+    function addToHistory(title = 'YouTube Video') {
+        stats.history.unshift({ title: title.substring(0, 40), date: new Date().toISOString() });
+        if (stats.history.length > 12) stats.history.pop();
         updateStatsUI();
     }
     
-    function playSound() {
+    function playBeep() {
         if (!settings.soundNotify) return;
         try {
             const audio = new Audio('https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3');
             audio.volume = 0.2;
-            audio.play().catch(e => console.log);
+            audio.play().catch(()=>{});
         } catch(e) {}
     }
     
@@ -586,52 +552,37 @@
             datasets: [{
                 label: 'تعداد دانلود',
                 data: stats.weeklyData,
-                borderColor: '#f7b32b',
-                backgroundColor: 'rgba(247, 179, 43, 0.1)',
+                borderColor: '#FFB347',
+                backgroundColor: 'rgba(255,180,71,0.1)',
                 borderWidth: 2,
-                tension: 0.3,
+                tension: 0.25,
                 fill: true,
-                pointBackgroundColor: '#f7b32b',
-                pointBorderColor: '#fff'
+                pointBackgroundColor: '#FFB347'
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: true,
-            plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } },
-            scales: {
-                y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8', font: { size: 10 } } },
-                x: { ticks: { color: '#94a3b8', font: { size: 10 } } }
-            }
+            plugins: { legend: { labels: { color: '#a0afc0' } } },
+            scales: { y: { grid: { color: '#2a3650' }, ticks: { color: '#b9c8ff' } }, x: { ticks: { color: '#b9c8ff' } } }
         }
     });
     
-    updateStatsUI();
+    // GSAP انیمیشن ظاهر شدن
+    gsap.fromTo('.glass-card', { opacity:0, y:30 }, { duration:0.7, opacity:1, y:0, ease:'power2.out' });
+    gsap.fromTo('.stats-grid .stat-item', { opacity:0, scale:0.9 }, { duration:0.5, opacity:1, scale:1, stagger:0.1, delay:0.2 });
     
-    // انیمیشن اسکرول
-    const reveals = document.querySelectorAll('.scroll-reveal');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('revealed');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-    reveals.forEach(el => observer.observe(el));
-    
-    // تم
-    const themeToggle = document.getElementById('themeToggle');
+    // دارک/لایت
+    const themeBtn = document.getElementById('themeToggle');
     if (localStorage.getItem('theme') === 'light') document.body.classList.add('light');
-    themeToggle.addEventListener('click', () => {
+    themeBtn.addEventListener('click', () => {
         document.body.classList.toggle('light');
-        localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
-        const icon = themeToggle.querySelector('i');
-        if (document.body.classList.contains('light')) icon.classList.replace('fa-moon', 'fa-sun');
-        else icon.classList.replace('fa-sun', 'fa-moon');
+        const isLight = document.body.classList.contains('light');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        themeBtn.querySelector('i').className = isLight ? 'fas fa-sun' : 'fas fa-moon';
     });
     
-    // تب‌ها
+    // تب ها (یوتیوب / اینستاگرام / تلگرام)
     document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -641,95 +592,152 @@
             document.getElementById(`${target}Tab`).classList.add('active');
             if (target !== 'youtube') {
                 document.getElementById('progressBox').style.display = 'none';
-                Swal.fire({ icon: 'info', title: 'به زودی!', text: `در حال توسعه`, background: '#1e293b', color: '#fff', confirmButtonColor: '#f7b32b', timer: 2000, showConfirmButton: false });
+                Swal.fire({ icon: 'info', title: 'به زودی!', text: 'سرویس دهی این پلتفرم تا هفته آینده', background: '#1e293b', color: '#fff', confirmButtonColor: '#f7b32b' });
             }
         });
     });
     
-    // توابع API
-    async function triggerDownload(payload) {
-        try {
-            const response = await axios.post(API_URL, payload, { headers: { 'Content-Type': 'application/json' }, timeout: 30000 });
-            if (!response.data || response.data.run_id === undefined) {
-                throw new Error('دریافت پاسخ نامعتبر از سرور');
-            }
-            return response.data.run_id;
-        } catch (err) {
-            console.error('Trigger error:', err);
-            throw new Error(err.response?.data?.error || err.message || 'خطا در ارتباط با سرور');
-        }
+    // ---------- ارتباط با trigger.php (API امن) ----------
+    async function triggerWorkflow(payload) {
+        const response = await axios.post(API_URL, payload, { headers: { 'Content-Type': 'application/json' }, timeout: 30000 });
+        if (!response.data || response.data.run_id === undefined) throw new Error('پاسخ نامعتبر سرور');
+        return response.data.run_id;
     }
     
-    async function checkStatus(runId) {
+    async function fetchStatus(runId) {
         try {
-            const response = await axios.get(`${API_URL}?run_id=${runId}`, { timeout: 10000 });
-            return response.data;
+            const res = await axios.get(`${API_URL}?run_id=${runId}`, { timeout: 8000 });
+            return res.data;
         } catch { return null; }
     }
     
-    async function getLatestDownload() {
+    async function getLatestVideo() {
         try {
-            const response = await axios.get(`${API_URL}?get_latest=true`, { timeout: 10000 });
-            return response.data;
+            const res = await axios.get(`${API_URL}?get_latest=true`);
+            return res.data.download_url;
         } catch { return null; }
     }
     
-    function startPolling(runId) {
+    function pollDownload(runId) {
         if (pollingInterval) clearInterval(pollingInterval);
         pollingInterval = setInterval(async () => {
-            const status = await checkStatus(runId);
+            const status = await fetchStatus(runId);
             if (!status) return;
-            
-            let percent = 10;
-            if (status.status === 'in_progress') percent = 45;
-            if (status.status === 'completed') percent = 100;
-            
+            let percent = status.status === 'in_progress' ? 45 : (status.status === 'completed' ? 100 : 15);
             document.getElementById('progressFill').style.width = `${percent}%`;
             document.getElementById('percentLabel').innerText = `${percent}%`;
             document.getElementById('statusMsg').innerHTML = `<i class="fas fa-spinner fa-pulse"></i> ${status.message || 'در حال پردازش...'}`;
-            
             if (status.status === 'completed') {
                 clearInterval(pollingInterval);
                 if (status.success) {
-                    const latest = await getLatestDownload();
-                    if (latest?.download_url) {
-                        document.getElementById('directDownloadLink').href = latest.download_url;
+                    const videoUrl = await getLatestVideo();
+                    if (videoUrl) {
+                        document.getElementById('directDownloadLink').href = videoUrl;
                         document.getElementById('downloadBlock').style.display = 'block';
-                        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> ✅ آماده دانلود!';
+                        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> موفق! ویدیو آماده است';
                         document.getElementById('progressFill').style.width = '100%';
                         document.getElementById('percentLabel').innerText = '100%';
-                        
+                        stats.todayDownloads++;
+                        stats.totalSizeGB += 0.45;
+                        stats.lastDownloadTime = dayjs().format('HH:mm:ss');
+                        const dayOfWeek = new Date().getDay();
+                        stats.weeklyData[dayOfWeek] = (stats.weeklyData[dayOfWeek] || 0) + 1;
+                        addToHistory(document.getElementById('urlInput').value.split('\n')[0]);
+                        updateStatsUI();
+                        playBeep();
+                        if (settings.desktopNotify && Notification.permission === 'granted')
+                            new Notification('Khashayar Downloader', { body: 'دانلود با موفقیت انجام شد!' });
+                        Swal.fire({ icon: 'success', title: 'دانلود کامل شد!', text: 'فایل آماده دریافت می‌باشد', background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347', timer: 2300 });
+                    } else showError('لینک فایل یافت نشد');
+                } else showError(status.error || 'خطا از سمت سرور');
+                document.getElementById('submitBtn').disabled = false;
+            }
+        }, 3000);
+    }
+    
+    function showError(message) {
+        document.getElementById('errorBlock').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+        document.getElementById('errorBlock').style.display = 'block';
+        document.getElementById('downloadBlock').style.display = 'none';
+        document.getElementById('submitBtn').disabled = false;
+        Swal.fire({ icon: 'error', title: 'خطا', text: message, background: '#1e293b', color: '#fff', confirmButtonColor: '#ff6b6b' });
+        if (pollingInterval) clearInterval(pollingInterval);
+    }
+    
+    // ذخیره و بارگذاری تنظیمات
+    function loadUserPrefs() {
+        document.getElementById('autoSave').checked = settings.autoSave;
+        document.getElementById('soundNotify').checked = settings.soundNotify;
+        document.getElementById('desktopNotify').checked = settings.desktopNotify;
+        if (localStorage.getItem('qualityPref')) document.getElementById('quality').value = localStorage.getItem('qualityPref');
+        if (localStorage.getItem('formatPref')) document.getElementById('format').value = localStorage.getItem('formatPref');
+    }
+    function saveUserPrefs() {
+        settings.autoSave = document.getElementById('autoSave').checked;
+        settings.soundNotify = document.getElementById('soundNotify').checked;
+        settings.desktopNotify = document.getElementById('desktopNotify').checked;
+        localStorage.setItem('autoSave', settings.autoSave);
+        localStorage.setItem('soundNotify', settings.soundNotify);
+        localStorage.setItem('desktopNotify', settings.desktopNotify);
+        if (settings.autoSave) {
+            localStorage.setItem('qualityPref', document.getElementById('quality').value);
+            localStorage.setItem('formatPref', document.getElementById('format').value);
+        }
+    }
+    
+    // رویداد اصلی فرم
+    document.getElementById('downloadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        resetUI();
+        saveUserPrefs();
+        const rawUrls = document.getElementById('urlInput').value.trim();
+        if (!rawUrls) {
+            Swal.fire({ icon: 'warning', title: 'لینک یوتیوب را وارد کنید', background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347' });
+            return;
+        }
+        const urls = rawUrls.split(/\r?\n/).filter(u => u.trim());
+        const payload = {
+            youtube_urls: urls.join(' '),
+            quality: document.getElementById('quality').value,
+            download_subtitles: document.getElementById('subtitles').value === 'true',
+            password: document.getElementById('password').value.trim()
+        };
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('progressBox').style.display = 'block';
+        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-paper-plane"></i> ارسال به گیت‌هاب اکشن...';
+        document.getElementById('progressFill').style.width = '5%';
+        document.getElementById('percentLabel').innerHTML = '5%';
+        try {
+            const runId = await triggerWorkflow(payload);
+            if (runId) pollDownload(runId);
+            else {
+                setTimeout(async () => {
+                    const latestUrl = await getLatestVideo();
+                    if (latestUrl) {
+                        document.getElementById('directDownloadLink').href = latestUrl;
+                        document.getElementById('downloadBlock').style.display = 'block';
+                        document.getElementById('statusMsg').innerHTML = '✅ فایل آماده دانلود است';
+                        document.getElementById('progressFill').style.width = '100%';
+                        document.getElementById('percentLabel').innerHTML = '100%';
                         stats.todayDownloads++;
                         stats.totalSizeGB += 0.5;
                         stats.lastDownloadTime = dayjs().format('HH:mm:ss');
                         const day = new Date().getDay();
                         stats.weeklyData[day] = (stats.weeklyData[day] || 0) + 1;
-                        addToHistory(document.getElementById('urlInput').value.split('\n')[0]);
+                        addToHistory(urls[0]);
                         updateStatsUI();
-                        playSound();
-                        if (settings.desktopNotify && Notification.permission === 'granted') {
-                            new Notification('دانلود کامل شد!', { body: 'ویدیو آماده دریافت است' });
-                        }
-                        Swal.fire({ icon: 'success', title: 'دانلود کامل شد!', text: 'ویدیو آماده دریافت است', background: '#1e293b', color: '#fff', confirmButtonColor: '#f7b32b', timer: 2500, showConfirmButton: false });
-                    } else {
-                        showError('فایل پیدا نشد، چند لحظه دیگر تلاش کنید');
-                    }
-                } else {
-                    showError(status.error || 'خطا در دانلود');
-                }
+                        playBeep();
+                        if (settings.desktopNotify && Notification.permission === 'granted') new Notification('Khashayar Downloader', { body: 'دانلود جدید آماده شد!' });
+                        Swal.fire({ icon: 'success', title: 'عملیات موفق', text: 'لینک دانلود آماده است', background: '#1e293b', color: '#fff', confirmButtonColor: '#FFB347' });
+                    } else showError('فایل پیدا نشد. شاید هنوز کامل نشده');
+                    document.getElementById('submitBtn').disabled = false;
+                }, 13000);
             }
-        }, 3000);
-    }
-    
-    function showError(msg) {
-        document.getElementById('errorBlock').innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${msg}`;
-        document.getElementById('errorBlock').style.display = 'block';
-        document.getElementById('downloadBlock').style.display = 'none';
-        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-times-circle"></i> خطا';
-        if (pollingInterval) clearInterval(pollingInterval);
-        Swal.fire({ icon: 'error', title: 'خطا', text: msg, background: '#1e293b', color: '#fff', confirmButtonColor: '#f7b32b' });
-        document.getElementById('submitBtn').disabled = false;
-    }
+        } catch (err) {
+            showError(err.message);
+            document.getElementById('submitBtn').disabled = false;
+        }
+    });
     
     function resetUI() {
         if (pollingInterval) clearInterval(pollingInterval);
@@ -741,132 +749,19 @@
         document.getElementById('submitBtn').disabled = false;
     }
     
-    // تنظیمات
-    function saveSettings() {
-        if (document.getElementById('autoSave').checked !== settings.autoSave) {
-            settings.autoSave = document.getElementById('autoSave').checked;
-            localStorage.setItem('autoSave', settings.autoSave);
-        }
-        if (document.getElementById('soundNotify').checked !== settings.soundNotify) {
-            settings.soundNotify = document.getElementById('soundNotify').checked;
-            localStorage.setItem('soundNotify', settings.soundNotify);
-        }
-        if (document.getElementById('desktopNotify').checked !== settings.desktopNotify) {
-            settings.desktopNotify = document.getElementById('desktopNotify').checked;
-            localStorage.setItem('desktopNotify', settings.desktopNotify);
-        }
-        if (settings.autoSave && document.getElementById('quality')) {
-            localStorage.setItem('qualityPref', document.getElementById('quality').value);
-            localStorage.setItem('formatPref', document.getElementById('format').value);
-        }
-    }
-    
-    function loadSettings() {
-        document.getElementById('autoSave').checked = settings.autoSave;
-        document.getElementById('soundNotify').checked = settings.soundNotify;
-        document.getElementById('desktopNotify').checked = settings.desktopNotify;
-        if (localStorage.getItem('qualityPref')) document.getElementById('quality').value = localStorage.getItem('qualityPref');
-        if (localStorage.getItem('formatPref')) document.getElementById('format').value = localStorage.getItem('formatPref');
-    }
-    
-    // درخواست اعلان
-    if ('Notification' in window && settings.desktopNotify && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-        Notification.requestPermission();
-    }
-    
-    // رویداد اصلی
-    document.getElementById('downloadForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        resetUI();
-        saveSettings();
-        
-        const urlsRaw = document.getElementById('urlInput').value.trim();
-        if (!urlsRaw) {
-            Swal.fire({ icon: 'warning', title: 'لطفاً لینک یوتیوب را وارد کنید', background: '#1e293b', color: '#fff', confirmButtonColor: '#f7b32b', timer: 1500, showConfirmButton: false });
-            return;
-        }
-        
-        const urlList = urlsRaw.split(/\r?\n/).filter(u => u.trim());
-        const payload = {
-            youtube_urls: urlList.join(' '),
-            quality: document.getElementById('quality').value,
-            download_subtitles: document.getElementById('subtitles').value === 'true',
-            password: document.getElementById('password').value.trim()
-        };
-        
-        document.getElementById('submitBtn').disabled = true;
-        document.getElementById('progressBox').style.display = 'block';
-        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-paper-plane"></i> 🚀 در حال ارسال درخواست...';
-        document.getElementById('progressFill').style.width = '5%';
-        document.getElementById('percentLabel').innerText = '5%';
-        
-        try {
-            const runId = await triggerDownload(payload);
-            if (runId) startPolling(runId);
-            else {
-                setTimeout(() => {
-                    document.getElementById('statusMsg').innerHTML = '<i class="fas fa-clock"></i> در صف انتظار...';
-                    document.getElementById('progressFill').style.width = '20%';
-                }, 2000);
-                setTimeout(() => {
-                    document.getElementById('statusMsg').innerHTML = '<i class="fas fa-spinner fa-pulse"></i> در حال پردازش...';
-                    document.getElementById('progressFill').style.width = '40%';
-                }, 5000);
-                setTimeout(() => {
-                    document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> ✅ تقریباً آماده!';
-                    document.getElementById('progressFill').style.width = '80%';
-                }, 10000);
-                setTimeout(async () => {
-                    const latest = await getLatestDownload();
-                    if (latest?.download_url) {
-                        document.getElementById('directDownloadLink').href = latest.download_url;
-                        document.getElementById('downloadBlock').style.display = 'block';
-                        document.getElementById('statusMsg').innerHTML = '<i class="fas fa-check-circle"></i> ✅ آماده دانلود!';
-                        document.getElementById('progressFill').style.width = '100%';
-                        document.getElementById('percentLabel').innerText = '100%';
-                        
-                        stats.todayDownloads++;
-                        stats.totalSizeGB += 0.5;
-                        stats.lastDownloadTime = dayjs().format('HH:mm:ss');
-                        const day = new Date().getDay();
-                        stats.weeklyData[day] = (stats.weeklyData[day] || 0) + 1;
-                        addToHistory(urlList[0]);
-                        updateStatsUI();
-                        playSound();
-                        Swal.fire({ icon: 'success', title: 'دانلود کامل شد!', text: 'ویدیو آماده دریافت است', background: '#1e293b', color: '#fff', confirmButtonColor: '#f7b32b', timer: 2500, showConfirmButton: false });
-                    } else {
-                        showError('لطفاً مجدد تلاش کنید');
-                    }
-                    document.getElementById('submitBtn').disabled = false;
-                }, 15000);
-            }
-        } catch (err) {
-            showError(err.message);
-        }
-    });
-    
     document.getElementById('resetBtn')?.addEventListener('click', () => {
         resetUI();
         document.getElementById('downloadForm').reset();
         document.getElementById('submitBtn').disabled = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    
     document.getElementById('clearHistoryBtn')?.addEventListener('click', () => {
-        Swal.fire({
-            title: 'پاک کردن تاریخچه؟', text: 'این عمل قابل بازگشت نیست', icon: 'warning',
-            background: '#1e293b', color: '#fff', showCancelButton: true,
-            confirmButtonColor: '#f7b32b', cancelButtonColor: '#ef4444'
-        }).then(res => {
-            if (res.isConfirmed) {
-                stats.history = [];
-                updateStatsUI();
-                Swal.fire('پاک شد', '', 'success');
-            }
+        Swal.fire({ title: 'پاک کردن تاریخچه؟', text: 'قابل بازگشت نیست', icon: 'warning', background: '#1e293b', color: '#fff', showCancelButton: true, confirmButtonColor: '#FFB347' }).then(res => {
+            if(res.isConfirmed) { stats.history = []; updateStatsUI(); Swal.fire('پاک شد!','','success'); }
         });
     });
     
-    loadSettings();
+    if (settings.desktopNotify && Notification.permission !== 'granted' && Notification.permission !== 'denied') Notification.requestPermission();
+    loadUserPrefs();
     updateStatsUI();
 </script>
 </body>
