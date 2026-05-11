@@ -2,12 +2,12 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Khashayar Downloader | دانلود خودکار یوتیوب</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>یوتوب دانلودر khashayar.one</title>
     <style>
         * {
             box-sizing: border-box;
-            font-family: system-ui, 'Segoe UI', 'Tahoma', sans-serif;
+            font-family: system-ui, 'Segoe UI', sans-serif;
         }
         body {
             background: linear-gradient(145deg, #0a0f1e 0%, #0c1222 100%);
@@ -25,9 +25,8 @@
             backdrop-filter: blur(12px);
             border-radius: 2rem;
             padding: 2rem 1.8rem;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.4);
             border: 1px solid rgba(255,255,255,0.1);
-            transition: all 0.2s;
         }
         h1 {
             font-size: 2rem;
@@ -37,9 +36,7 @@
             background-clip: text;
             color: transparent;
             text-align: center;
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.3px;
+            margin: 0 0 0.5rem;
         }
         .sub {
             text-align: center;
@@ -48,9 +45,7 @@
             padding-bottom: 0.8rem;
             margin-bottom: 1.8rem;
         }
-        .form-group {
-            margin-bottom: 1.4rem;
-        }
+        .form-group { margin-bottom: 1.4rem; }
         label {
             display: block;
             font-weight: 600;
@@ -66,12 +61,7 @@
             border-radius: 1.2rem;
             color: white;
             font-size: 1rem;
-            transition: all 0.2s;
             outline: none;
-        }
-        input:focus, select:focus, textarea:focus {
-            border-color: #f7b32b;
-            box-shadow: 0 0 0 3px rgba(247,179,43,0.2);
         }
         textarea {
             resize: vertical;
@@ -83,9 +73,7 @@
             gap: 1rem;
             flex-wrap: wrap;
         }
-        .row2 .form-group {
-            flex: 1;
-        }
+        .row2 .form-group { flex: 1; }
         button {
             background: linear-gradient(90deg, #f0a500, #f7b32b);
             border: none;
@@ -97,15 +85,9 @@
             color: #0a0e1a;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 8px 20px rgba(240,165,0,0.3);
             margin-top: 0.5rem;
         }
-        button:active { transform: scale(0.97);}
-        button:disabled {
-            opacity: 0.5;
-            transform: none;
-            cursor: not-allowed;
-        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
         .progress-area {
             background: #0b0f18;
             border-radius: 1.5rem;
@@ -126,12 +108,11 @@
             transition: width 0.3s ease;
         }
         .status-text {
-            font-family: monospace;
-            font-size: 0.85rem;
-            margin-top: 0.6rem;
-            color: #b9c3e6;
             display: flex;
             justify-content: space-between;
+            color: #b9c3e6;
+            margin-top: 0.6rem;
+            font-size: 0.85rem;
         }
         .download-link {
             background: #0f1625;
@@ -139,15 +120,6 @@
             border-radius: 1.5rem;
             margin-top: 1rem;
             text-align: center;
-            word-break: break-all;
-        }
-        .btn-small {
-            background: #2a3a60;
-            color: white;
-            box-shadow: none;
-            font-size: 0.9rem;
-            padding: 0.6rem;
-            margin-top: 0.5rem;
         }
         .error {
             color: #ff9e8f;
@@ -155,7 +127,6 @@
             padding: 0.6rem;
             border-radius: 1rem;
             text-align: center;
-            font-size: 0.85rem;
         }
         .success { color: #a3f0b0; }
         footer {
@@ -174,73 +145,68 @@
 <body>
 <div class="card">
     <h1>🎬 Khashayar Downloader</h1>
-    <div class="sub">دانلود ویدیو از یوتیوب — سریع و خودکار</div>
+   <div class="sub">دانلود ویدیو از یوتیوب</div>
 
     <form id="downloadForm">
         <div class="form-group">
-            <label>🔗 لینک یوتیوب (لینک دوم رو هم میتونید Enter بزنید)</label>
+            <label>🔗 لینک یوتیوب</label>
             <textarea id="urls" rows="2" placeholder="https://youtu.be/...&#10;https://www.youtube.com/watch?v=..." required></textarea>
         </div>
         <div class="row2">
             <div class="form-group">
                 <label>🎬 کیفیت</label>
                 <select id="quality">
-                    <option value="best">✨ بهترین (ترجیحاً 1080+)</option>
+                    <option value="best">✨ بهترین</option>
                     <option value="2160">4K (2160p)</option>
                     <option value="1440">1440p (2K)</option>
-                    <option value="1080">1080p (Full HD)</option>
-                    <option value="720">720p (HD)</option>
+                    <option value="1080">1080p</option>
+                    <option value="720">720p</option>
                     <option value="480">480p</option>
-                    <option value="audio">🎵 MP3 (فقط صوت)</option>
+                    <option value="audio">🎵 MP3</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>📝 زیرنویس (فارسی+انگلیسی)</label>
+                <label>📝 زیرنویس</label>
                 <select id="subtitles">
                     <option value="false">خاموش</option>
-                    <option value="true">روشن (دانلود خودکار)</option>
+                    <option value="true">روشن</option>
                 </select>
             </div>
         </div>
         <div class="form-group">
             <label>🔒 رمز ZIP (اختیاری)</label>
-            <input type="text" id="password" placeholder="در صورت نیاز فایل فشرده رمز داشته باشد">
+            <input type="text" id="password" placeholder="در صورت نیاز رمز">
         </div>
 
         <button type="submit" id="submitBtn">🚀 شروع دانلود</button>
     </form>
 
-    <!-- منطقه وضعیت و پیشرفت -->
     <div id="progressBox" style="display: none;">
         <div class="progress-area">
             <div class="progress-bar-container">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="status-text">
-                <span id="statusMsg">در حال انتظار برای اجرا...</span>
+                <span id="statusMsg">در حال ارسال درخواست...</span>
                 <span id="percentLabel">0%</span>
             </div>
         </div>
         <div id="downloadBlock" style="display: none;" class="download-link">
             <div>✅ ویدیو آماده است!</div>
-            <a id="directDownloadLink" href="#" target="_blank" rel="noopener" class="btn-small" style="display: inline-block; margin-top: 0.8rem;">⬇️ دانلود فایل</a>
-            <button type="button" id="resetBtn" class="btn-small" style="background:#1e2a3a;">🔄 دانلود جدید</button>
+            <a id="directDownloadLink" href="#" target="_blank" style="display: inline-block; margin-top: 0.8rem; background: #2a3a60; padding: 0.6rem 1rem; border-radius: 2rem;">⬇️ دانلود فایل</a>
+            <button type="button" id="resetBtn" style="background:#1e2a3a; margin-top: 0.5rem;">🔄 دانلود جدید</button>
         </div>
         <div id="errorBlock" style="display: none;" class="error"></div>
     </div>
-    <footer>🚀 توسط GitHub Actions | توکن بصورت امن تزریق شده | وضعیت لحظه‌ای</footer>
+    <footer>ساخته شده با ❤️ توسط Khashayar.one</footer>
 </div>
 
 <script>
-    // -------- global variables ----------
-    let currentRunId = null;
+    // API endpoint روی هاست شما
+    const API_URL = 'https://khashayar.one/api/trigger.php';
+    
     let pollingInterval = null;
-    let isWaitingForWorkflow = false;
-
-    const GITHUB_API_BASE = 'https://api.github.com/repos/khashayardev/khashayardev.github.io';
-    // توکن در زمان build توسط workflow (deploy.yml) به صورت جایگزین __GITHUB_TOKEN_PLACEHOLDER__ خواهد شد.
-    // در مرورگر کاربر هرگز مقدار واقعی توکن دیده نمی‌شود چون در زمان دیپلوی تزریق می‌شود.
-    const GITHUB_TOKEN = '__GITHUB_TOKEN_PLACEHOLDER__';
+    let currentRunId = null;
 
     const dom = {
         form: document.getElementById('downloadForm'),
@@ -259,170 +225,69 @@
         password: document.getElementById('password')
     };
 
-    // Helper: trigger workflow_dispatch
-    async function triggerWorkflow(payload) {
-        const response = await fetch(`${GITHUB_API_BASE}/actions/workflows/yt-dl.yml/dispatches`, {
+    async function triggerDownload(payload) {
+        const response = await fetch(API_URL, {
             method: 'POST',
-            headers: {
-                'Authorization': `token ${GITHUB_TOKEN}`,
-                'Accept': 'application/vnd.github.v3+json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ref: 'main',
-                inputs: payload
-            })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
         });
+        
         if (!response.ok) {
-            const errText = await response.text();
-            throw new Error(`GitHub API error: ${response.status} - ${errText}`);
+            const errorText = await response.text();
+            throw new Error(errorText || 'خطا در ارتباط با سرور');
         }
-        // پس از موفقیت, باید latest run را پیدا کنیم
-        return true;
-    }
-
-    // دریافت آخرین run از نوع workflow_dispatch که چند ثانیه قبل trigger شده
-    async function getLatestWorkflowRun() {
-        const response = await fetch(`${GITHUB_API_BASE}/actions/runs?event=workflow_dispatch&per_page=5`, {
-            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-        });
-        if (!response.ok) return null;
+        
         const data = await response.json();
-        if (data.workflow_runs && data.workflow_runs.length > 0) {
-            return data.workflow_runs[0]; // جدیدترین
-        }
-        return null;
+        return data.run_id;
     }
 
-    // دریافت وضعیت یک run خاص و بررسی conclusion و steps
-    async function getRunStatus(runId) {
-        const response = await fetch(`${GITHUB_API_BASE}/actions/runs/${runId}`, {
-            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-        });
+    async function checkStatus(runId) {
+        const response = await fetch(`${API_URL}?run_id=${runId}`);
         if (!response.ok) return null;
-        const run = await response.json();
-        // همچنین برای نمایش مرحله جاری بهتر است jobs را هم بگیریم
-        const jobsResp = await fetch(`${GITHUB_API_BASE}/actions/runs/${runId}/jobs`, {
-            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-        });
-        let currentStepName = '';
-        let stepPercent = null;
-        if (jobsResp.ok) {
-            const jobsData = await jobsResp.json();
-            const job = jobsData.jobs?.find(j => j.name === 'download');
-            if (job && job.steps) {
-                const activeStep = job.steps.find(s => s.status === 'in_progress');
-                if (activeStep) currentStepName = activeStep.name;
-                // تخمین درصد پیشرفت: مراحل کلیدی ما در yml
-                // مراحل ثابت: Setup WARP, Dependencies, Setup Parameters, Download & Process Videos, Subtitles, Push
-                // دانلود و پردازش حدود 70% کار است. برای سادگی تخمین می‌زنیم
-                if (job.status === 'in_progress') {
-                    const totalSteps = 7; // تخمین تعداد گامهای اصلی
-                    let completedSteps = job.steps.filter(s => s.status === 'completed').length;
-                    stepPercent = Math.min(95, Math.floor((completedSteps / totalSteps) * 95));
-                }
-            }
-        }
-        let conclusion = run.status === 'completed' ? run.conclusion : null;
-        return { status: run.status, conclusion, currentStepName, stepPercent };
+        return await response.json();
     }
 
-    // شروع polling هر 2 ثانیه
     function startPolling(runId) {
         if (pollingInterval) clearInterval(pollingInterval);
+        
         pollingInterval = setInterval(async () => {
-            if (!runId) return;
-            const statusData = await getRunStatus(runId);
-            if (!statusData) return;
-
-            const { status, conclusion, currentStepName, stepPercent } = statusData;
-            let percent = 10; // حداقل
-            if (stepPercent) percent = stepPercent;
-            else if (status === 'in_progress') percent = 45;
-            else if (status === 'completed') percent = 100;
-
+            const status = await checkStatus(runId);
+            if (!status) return;
+            
+            let percent = 10;
+            if (status.status === 'in_progress') percent = 45;
+            if (status.status === 'completed') percent = 100;
+            
             dom.progressFill.style.width = `${percent}%`;
             dom.percentLabel.innerText = `${percent}%`;
-
-            let msg = '';
-            if (status === 'in_progress') {
-                msg = currentStepName ? `⏳ ${currentStepName} ...` : 'در حال دانلود و پردازش...';
-            } else if (status === 'completed') {
-                if (conclusion === 'success') {
-                    msg = '✅ دانلود با موفقیت پایان یافت!';
-                    clearInterval(pollingInterval);
-                    pollingInterval = null;
-                    await showDownloadLinkAfterSuccess();
+            dom.statusMsg.innerText = status.message || 'در حال پردازش...';
+            
+            if (status.status === 'completed') {
+                clearInterval(pollingInterval);
+                if (status.success) {
+                    await showDownloadLink();
                 } else {
-                    msg = `❌ خطا در اجرا (${conclusion})`;
-                    clearInterval(pollingInterval);
-                    pollingInterval = null;
-                    showError(`عملیات با شکست مواجه شد. لطفاً دوباره تلاش کنید.`);
+                    showError(status.error || 'خطا در دانلود');
                 }
-            } else {
-                msg = `وضعیت: ${status}`;
             }
-            dom.statusMsg.innerText = msg;
-            if (percent >= 100 && conclusion === 'success') {
-                // ایمنی: لینک دانلود نمایش داده شود
-                await showDownloadLinkAfterSuccess();
-            }
-        }, 2500);
+        }, 3000);
     }
 
-    // یافتن آخرین فایل آپلود شده (بر اساس آخرین commit دایرکتوری videos)
-    async function fetchLatestVideoFile() {
-        const response = await fetch(`${GITHUB_API_BASE}/contents/videos`, {
-            headers: { 'Authorization': `token ${GITHUB_TOKEN}`, 'Accept': 'application/vnd.github.v3+json' }
-        });
-        if (!response.ok) return null;
-        const folders = await response.json();
-        if (!Array.isArray(folders) || folders.length === 0) return null;
-        // جدیدترین پوشه بر اساس commit date (با درخواست commit latest)
-        const folderPromises = folders.map(async (folder) => {
-            const commitResp = await fetch(`${GITHUB_API_BASE}/commits?path=videos/${folder.name}&per_page=1`, {
-                headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-            });
-            if (commitResp.ok) {
-                const commits = await commitResp.json();
-                if (commits.length) return { name: folder.name, date: new Date(commits[0].commit.author.date) };
-            }
-            return { name: folder.name, date: new Date(0) };
-        });
-        const foldersWithDate = await Promise.all(folderPromises);
-        foldersWithDate.sort((a,b) => b.date - a.date);
-        if (foldersWithDate.length === 0) return null;
-        const latestFolder = foldersWithDate[0].name;
-        // داخل پوشه دنبال فایل MP4 یا ZIP بگردیم
-        const folderContentResp = await fetch(`${GITHUB_API_BASE}/contents/videos/${latestFolder}`, {
-            headers: { 'Authorization': `token ${GITHUB_TOKEN}` }
-        });
-        if (!folderContentResp.ok) return null;
-        const files = await folderContentResp.json();
-        if (!Array.isArray(files)) return null;
-        const videoFile = files.find(f => f.name.endsWith('.mp4') || f.name.endsWith('.mkv') || f.name.endsWith('.webm'));
-        if (videoFile) return videoFile.path;
-        const zipFile = files.find(f => f.name.endsWith('.zip'));
-        if (zipFile) return zipFile.path;
-        return null;
-    }
-
-    async function showDownloadLinkAfterSuccess() {
+    async function showDownloadLink() {
         try {
-            const filePath = await fetchLatestVideoFile();
-            if (filePath) {
-                const rawUrl = `https://raw.githubusercontent.com/khashayardev/khashayardev.github.io/main/${filePath}`;
-                dom.directDownloadLink.href = rawUrl;
+            const response = await fetch(`${API_URL}?get_latest=true`);
+            const data = await response.json();
+            if (data.download_url) {
+                dom.directDownloadLink.href = data.download_url;
                 dom.downloadBlock.style.display = 'block';
-                dom.errorBlock.style.display = 'none';
+                dom.statusMsg.innerText = '✅ آماده دانلود!';
                 dom.progressFill.style.width = '100%';
                 dom.percentLabel.innerText = '100%';
-                dom.statusMsg.innerText = '✅ آماده دانلود!';
             } else {
-                showError('فایل پیدا نشد، شاید چند لحظه دیگر همگام‌سازی شود. لطفاً صفحه را دوباره بارگذاری کنید.');
+                showError('فایل پیدا نشد');
             }
-        } catch (err) {
-            showError('خطا در دریافت لینک دانلود: ' + err.message);
+        } catch(err) {
+            showError('خطا در دریافت لینک دانلود');
         }
     }
 
@@ -432,7 +297,6 @@
         dom.downloadBlock.style.display = 'none';
         dom.statusMsg.innerText = 'خطا';
         if (pollingInterval) clearInterval(pollingInterval);
-        pollingInterval = null;
     }
 
     function resetUI() {
@@ -443,11 +307,9 @@
         dom.errorBlock.style.display = 'none';
         dom.progressFill.style.width = '0%';
         dom.percentLabel.innerText = '0%';
-        dom.statusMsg.innerText = '';
         dom.submitBtn.disabled = false;
     }
 
-    // رویداد اصلی
     dom.form.addEventListener('submit', async (e) => {
         e.preventDefault();
         resetUI();
@@ -457,12 +319,11 @@
             alert('لطفاً لینک یوتیوب را وارد کنید');
             return;
         }
-        // پشتیبانی از چند لینک با خط جدید
-        const urlList = urlsRaw.split(/\r?\n/).filter(u => u.trim().length > 0);
-        const youtubeUrls = urlList.join(' ');
 
+        const urlList = urlsRaw.split(/\r?\n/).filter(u => u.trim().length > 0);
+        
         const payload = {
-            youtube_urls: youtubeUrls,
+            youtube_urls: urlList.join(' '),
             quality: dom.quality.value,
             download_subtitles: dom.subtitles.value === 'true',
             password: dom.password.value.trim()
@@ -470,33 +331,16 @@
 
         dom.submitBtn.disabled = true;
         dom.progressBox.style.display = 'block';
-        dom.statusMsg.innerText = '🚀 در حال ارسال درخواست به GitHub...';
+        dom.statusMsg.innerText = '🚀 در حال ارسال درخواست...';
         dom.progressFill.style.width = '5%';
         dom.percentLabel.innerText = '5%';
 
         try {
-            await triggerWorkflow(payload);
-            dom.statusMsg.innerText = '✅ اکشن با موفقیت اجرا شد. در حال دریافت وضعیت...';
-            // منتظر بمانیم تا new run ظاهر شود
-            let retries = 15;
-            let newRun = null;
-            while (retries-- > 0 && !newRun) {
-                await new Promise(r => setTimeout(r, 1300));
-                const latest = await getLatestWorkflowRun();
-                if (latest && new Date(latest.created_at).getTime() > Date.now() - 10000) {
-                    newRun = latest;
-                }
-            }
-            if (newRun) {
-                currentRunId = newRun.id;
-                startPolling(currentRunId);
-            } else {
-                showError('اجرای workflow شروع شد اما شناسایی نشد. لطفاً چند دقیقه صبر کنید و صفحه را refresh کنید.');
-                dom.submitBtn.disabled = false;
-            }
+            const runId = await triggerDownload(payload);
+            currentRunId = runId;
+            startPolling(runId);
         } catch (err) {
-            console.error(err);
-            showError(`خطا در ارتباط با GitHub Actions: ${err.message}`);
+            showError(err.message);
             dom.submitBtn.disabled = false;
         }
     });
@@ -505,18 +349,7 @@
         resetUI();
         dom.form.reset();
         dom.submitBtn.disabled = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
-    // بررسی اولیه: اگر توکن تزریق نشده باشد هشدار
-    if (GITHUB_TOKEN === '__GITHUB_TOKEN_PLACEHOLDER__' || GITHUB_TOKEN.length < 10) {
-        console.warn('⚠️ توکن در زمان بیلد جایگزین نشده! مطمئن شوید deploy.yml سینتکس sed درست کار میکند.');
-        document.querySelector('.error')?.remove();
-        const warnDiv = document.createElement('div');
-        warnDiv.className = 'error';
-        warnDiv.innerText = '⚠️ هشدار پیکربندی: توکن در سرور تنظیم نشده. لطفاً با پشتیبانی تماس بگیرید.';
-        dom.progressBox?.insertAdjacentElement('afterbegin', warnDiv);
-    }
 </script>
 </body>
 </html>
