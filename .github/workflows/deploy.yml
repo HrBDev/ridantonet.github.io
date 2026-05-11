@@ -1,0 +1,31 @@
+name: "📄 Deploy with Token"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Inject Token into index.html
+        run: |
+          # جایگزین کردن placeholder با توکن واقعی
+          sed -i "s|__GITHUB_TOKEN_PLACEHOLDER__|${{ secrets.GH_PAT }}|g" index.html
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: main
+          force_orphan: false
