@@ -102,7 +102,7 @@ jobs:
           deno --version
           pip3 install --upgrade yt-dlp --quiet
 
-      - uses: FedericoCarboni/setup-ffmpeg@v3
+      - uses: HrBDev/setup-ffmpeg@37062fbf7149fc5578d6c57e08aed62458b375d6
         id: setup-ffmpeg
         with:
           # A specific version to download, may also be "release" or a specific version
