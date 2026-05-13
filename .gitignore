@@ -46,50 +46,11 @@ build/
 *.secret
 credentials.json
 
-# ── Large Binary Files ─────────────────────────
-*.mp4
-*.mp3
-*.webm
-*.mkv
-*.avi
-*.mov
-*.flv
-*.wmv
-*.m4a
-*.aac
-*.ogg
-*.flac
-*.wav
-
-# ── Archive Files ──────────────────────────────
-*.zip
-*.rar
-*.7z
-*.tar
-*.gz
-*.bz2
-*.xz
-*.zst
-
 # ── Temporary Download Files ───────────────────
 *.part
 *.ytdl
 *.crdownload
 *.partial
-
-# ── Subtitle Files ─────────────────────────────
-*.vtt
-*.srt
-*.ass
-*.ssa
-*.ttml
-
-# ── Thumbnail Cache ────────────────────────────
-*.jpg
-*.jpeg
-*.png
-*.webp
-*.gif
 
 # ── Python Cache ───────────────────────────────
 __pycache__/
