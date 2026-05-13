@@ -1,11 +1,11 @@
 # ============================================================
-# yt-dl.yml — Khashayar YouTube Downloader (Final Version)
-# Repository: khashayardev.github.io
+# yt-dl.yml — YouTube Downloader
+# Repository: ridantonet.github.io
 # Combining best practices: 8 bypass methods + Quality Gate +
 # Resilient sanitize + Clean README generation
 # ============================================================
 
-name: "🎬 Khashayar YouTube Downloader"
+name: "🎬 YouTube Downloader"
 
 on:
   workflow_dispatch:
@@ -58,7 +58,6 @@ jobs:
       - name: "📥 Checkout Repository"
         uses: actions/checkout@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       # ── Step 2: Git Config ────────────────────────────
@@ -536,7 +535,7 @@ jobs:
           
           if git diff --cached --quiet; then echo "No changes"; exit 0; fi
           
-          git commit -m "[khashayar.one] 📥 New download(s) [skip ci]" --quiet || true
+          git commit -m "📥 New download(s) [skip ci]" --quiet || true
           
           for i in $(seq 1 10); do
             if timeout 120 git push --force origin HEAD:"$BRANCH" 2>&1; then
@@ -548,7 +547,7 @@ jobs:
               git reset --hard origin/"$BRANCH" --quiet
               cp -r "$BACKUP_DIR"/* videos/ 2>/dev/null || true
               git add -f videos/
-              git commit -m "[khashayar.one] 📥 Retry push [skip ci]" --quiet || true
+              git commit -m " 📥 Retry push [skip ci]" --quiet || true
             fi
           done
           
