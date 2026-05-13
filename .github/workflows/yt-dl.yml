@@ -526,8 +526,6 @@ jobs:
             echo "⚠️ No files to push"; exit 0
           fi
           
-          git fetch origin "$BRANCH" --quiet
-          git reset --hard origin/"$BRANCH" --quiet
           mkdir -p videos
           cp -r "$BACKUP_DIR"/* videos/ 2>/dev/null || true
 
