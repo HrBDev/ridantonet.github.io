@@ -2,12 +2,6 @@
 # .gitignore — Khashayar YouTube Downloader
 # ============================================================
 
-# ── Downloaded Videos ──────────────────────────
-# Ignore all video files, keep folder structure
-/videos/*
-!/videos/.gitkeep
-!/videos/README.md
-
 # ── Operating System Files ─────────────────────
 .DS_Store
 .DS_Store?
