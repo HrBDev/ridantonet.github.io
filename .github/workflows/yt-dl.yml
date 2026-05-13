@@ -47,7 +47,7 @@ env:
 jobs:
   download:
     name: "⬇️ Download & Store"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 180
     permissions:
       contents: write
@@ -94,7 +94,7 @@ jobs:
       - name: "📦 Install Dependencies"
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq python3-pip zip p7zip-full curl jq bc unzip
+          sudo apt-get install -y -qq bc
           curl -fsSL https://deno.land/install.sh | sh
           export DENO_INSTALL="$HOME/.deno"
           export PATH="$DENO_INSTALL/bin:$PATH"
