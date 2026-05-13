@@ -47,7 +47,7 @@ env:
 jobs:
   download:
     name: "⬇️ Download & Store"
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 180
     permissions:
       contents: write
@@ -515,42 +515,8 @@ jobs:
           fi
           
       # ── Step 9: Push ──────────────────────────────────
-      - name: "📤 Push to Repository"
-        id: push
-        run: |
-          #!/bin/bash
-          BACKUP_DIR="${{ env.BACKUP_DIR }}"
-          BRANCH="${{ env.BRANCH }}"
-          DOWNLOADED_COUNT="${{ env.DOWNLOADED_COUNT }}"
-          
-          if [ "$DOWNLOADED_COUNT" -eq 0 ] || [ ! -d "$BACKUP_DIR" ]; then
-            echo "⚠️ No files to push"; exit 0
-          fi
-          
-          git fetch origin "$BRANCH" --quiet
-          git reset --hard origin/"$BRANCH" --quiet
-          mkdir -p videos
-          cp -r "$BACKUP_DIR"/* videos/ 2>/dev/null || true
-          git add -f videos/
-          
-          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
-          
-          git commit -m "📥 New download(s) [skip ci]" --quiet || true
-          
-          for i in $(seq 1 10); do
-            if timeout 120 git push --force origin HEAD:"$BRANCH" 2>&1; then
-              echo "✅ Pushed (attempt $i)"; break
-            else
-              [ $i -ge 10 ] && echo "🚫 All push attempts failed" && exit 1
-              sleep $((3 + RANDOM % 10))
-              git fetch origin "$BRANCH" --quiet
-              git reset --hard origin/"$BRANCH" --quiet
-              cp -r "$BACKUP_DIR"/* videos/ 2>/dev/null || true
-              git add -f videos/
-              git commit -m " 📥 Retry push [skip ci]" --quiet || true
-            fi
-          done
-          
-          echo "════════════════════════════════════════"
-          echo "  ✅ Complete | 🌐 $PROJECT_URL"
-          echo "════════════════════════════════════════"
+      - uses: EndBug/add-and-commit@v10
+        with:
+          default_author: github_actions
+          new_branch: downloads
+          message: 📥 New download(s) [skip ci]
