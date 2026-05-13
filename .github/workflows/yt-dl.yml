@@ -40,8 +40,7 @@ on:
         default: ""
 
 env:
-  PROJECT_NAME: "Khashayar Downloader"
-  PROJECT_URL: "https://khashayar.one"
+  PROJECT_NAME: "Youtube Downloader"
   SPLIT_SIZE_MB: 45
 
 jobs:
@@ -228,7 +227,7 @@ jobs:
               THUMB_MD="<div align=\"center\"><img src=\"https://github.com/${RO}/${RN}/raw/${BR}/videos/${FENC}/thumbnail.jpg\" alt=\"Thumbnail\" width=\"400\" /></div>"
             fi
             [ -n "$PASS" ] && PASS_STATUS="🔒 Yes"
-            
+          
             echo "# ${VN}" > "$RF"
             echo "" >> "$RF"
             [ -n "$THUMB_MD" ] && echo "${THUMB_MD}" >> "$RF" && echo "" >> "$RF" && echo "<br>" >> "$RF" && echo "" >> "$RF"
@@ -259,7 +258,7 @@ jobs:
           download_video() {
             local METHOD=$1 URL=$2 TMP_DIR=$3
             echo "  🔄 Method $METHOD..."
-            
+          
             if [ "$QUALITY" = "audio" ]; then
               COMMON_FLAGS="--extract-audio --audio-format mp3 --audio-quality 0 --write-thumbnail --convert-thumbnails jpg --no-cache-dir --output ${TMP_DIR}/%(title)s.%(ext)s --no-part --no-playlist --retries 5 --fragment-retries 5 --no-check-certificates --concurrent-fragments 8 --buffer-size 16K --http-chunk-size 10M --progress --newline"
             elif [ "$QUALITY" = "best" ]; then
@@ -267,7 +266,7 @@ jobs:
             else
               COMMON_FLAGS="--merge-output-format mp4 --write-thumbnail --convert-thumbnails jpg --no-cache-dir --output ${TMP_DIR}/%(title)s.%(ext)s --no-part --no-playlist --retries 5 --fragment-retries 5 --no-check-certificates --concurrent-fragments 8 --buffer-size 16K --http-chunk-size 10M --progress --newline"
             fi
-            
+          
             case $METHOD in
               1) yt-dlp --proxy "socks5://127.0.0.1:1080" --format "$FORMAT" $COMMON_FLAGS --extractor-args "youtube:player_client=web" --js-runtimes deno --remote-components ejs:github --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" --add-header "Accept-Language:en-US,en;q=0.9" "$URL" ;;
               2) yt-dlp --proxy "socks5://127.0.0.1:1080" --format "$FORMAT" $COMMON_FLAGS --extractor-args "youtube:player_client=web" --js-runtimes deno --remote-components ejs:npm --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" --add-header "Accept-Language:en-US,en;q=0.9" "$URL" ;;
@@ -287,25 +286,25 @@ jobs:
           for URL in "${URL_LIST[@]}"; do
             URL_INDEX=$((URL_INDEX + 1))
             URL=$(normalize_youtube_url "$URL")
-            
+          
             echo ""
             echo "════════════════════════════════════════════"
             echo "  📥 [$URL_INDEX/$TOTAL_URLS] $URL"
             echo "════════════════════════════════════════════"
-            
+          
             TMP_DIR="tmp_dl_${URL_INDEX}_$$"
             mkdir -p "$TMP_DIR"
-            
+          
             # نمایش فرمت‌های موجود برای debugging
             echo "🔍 Available formats:"
             yt-dlp -F --proxy "socks5://127.0.0.1:1080" --js-runtimes deno --remote-components ejs:github "$URL" 2>/dev/null || echo "  (could not list formats)"
             echo ""
-            
+          
             DOWNLOAD_SUCCESS=false
             for METHOD in 1 2 3 4 5 6 7 8; do
               if download_video $METHOD "$URL" "$TMP_DIR"; then
                 echo "  ✅ Downloaded (method $METHOD)!"
-                
+          
                 # ⭐ Quality Gate — reject if resolution too low
                 QUALITY_OK=true
                 if [ "$QUALITY" != "best" ] && [ "$QUALITY" != "audio" ]; then
@@ -326,7 +325,7 @@ jobs:
                     fi
                   done
                 fi
-                
+          
                 if [ "$QUALITY_OK" = true ]; then
                   DOWNLOAD_SUCCESS=true; break
                 else
@@ -339,33 +338,33 @@ jobs:
                 sleep 2
               fi
             done
-            
+          
             if [ "$DOWNLOAD_SUCCESS" = false ]; then
               echo "  🚫 All methods failed"
               FAILED_COUNT=$((FAILED_COUNT + 1))
               rm -rf "$TMP_DIR"
               continue
             fi
-            
+          
             find "$TMP_DIR" -name "*.part" -delete 2>/dev/null || true
-            
+          
             for FILE in "$TMP_DIR"/*; do
               [ -f "$FILE" ] || continue
               [[ "$FILE" == *.jpg ]] || [[ "$FILE" == *.webp ]] && continue
-              
+          
               SIZE=$(stat -c%s "$FILE" 2>/dev/null || echo 0)
               BASENAME=$(basename "$FILE")
               FILENAME_NO_EXT="${BASENAME%.*}"
               EXT="${BASENAME##*.}"
-              
+          
               set +e; FILENAME_NO_EXT=$(sanitize_name "$FILENAME_NO_EXT"); set -e
-              
+          
               echo "  📦 $BASENAME ($(( SIZE / 1024 / 1024 ))MB)"
-              
+          
               FINAL_FOLDER=$(get_unique_folder "$FILENAME_NO_EXT")
               FINAL_PATH="$BACKUP_DIR/$FINAL_FOLDER"
               mkdir -p "$FINAL_PATH"
-              
+          
               # Thumbnail
               THUMB_FILE=$(ls "$TMP_DIR"/*.jpg 2>/dev/null | head -1)
               [ -z "$THUMB_FILE" ] && THUMB_FILE="/tmp/saved_thumb_${URL_INDEX}.jpg"
@@ -373,10 +372,10 @@ jobs:
                 cp "$THUMB_FILE" "$FINAL_PATH/thumbnail.jpg" 2>/dev/null
                 echo "  🖼️ Thumbnail saved"
               fi
-              
+          
               echo "${FILENAME_NO_EXT}|${FINAL_FOLDER}" >> /tmp/video_info.txt
               FOLDER_ENCODED=$(urlencode "$FINAL_FOLDER")
-              
+          
               if [ "$SIZE" -gt "$SPLIT_BYTES" ]; then
                 echo "  📦 Splitting (${SPLIT_SIZE_MB}MB parts)..."
                 if [ -n "$ZIP_PASSWORD" ]; then
@@ -395,7 +394,7 @@ jobs:
                 fi
               fi
             done
-            
+          
             rm -rf "$TMP_DIR" /tmp/saved_thumb_${URL_INDEX}.jpg 2>/dev/null
             DOWNLOADED_COUNT=$((DOWNLOADED_COUNT + 1))
             echo "  ✅ Done [$URL_INDEX/$TOTAL_URLS]"
@@ -427,14 +426,14 @@ jobs:
             sub_count() { find "$SDIR" -type f \( -name "*.vtt" -o -name "*.srt" \) 2>/dev/null | wc -l; }
             fa_count()  { find "$SDIR" -type f \( -name "*.fa.vtt" -o -name "*.fa.srt" \) 2>/dev/null | wc -l; }
             en_count()  { find "$SDIR" -type f \( -name "*.en.vtt" -o -name "*.en.srt" \) 2>/dev/null | wc -l; }
-            
+          
             case $MODE in
               all) SFLAGS="--write-sub --sub-langs fa,en" ;;
               fa-auto) SFLAGS="--write-auto-sub --sub-langs fa" ;;
               en-auto) SFLAGS="--write-auto-sub --sub-langs en" ;;
               auto-both) SFLAGS="--write-auto-sub --sub-langs en,fa" ;;
             esac
-            
+          
             for METHOD in 1 2 3 4 5 6 7 8; do
               case $METHOD in
                 1) yt-dlp --proxy "socks5://127.0.0.1:1080" --extractor-args "youtube:player_client=web" --js-runtimes deno --remote-components ejs:github --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" --add-header "Accept-Language:en-US,en;q=0.9" $SFLAGS --sub-format vtt/srt/best --convert-subs vtt --skip-download --no-playlist --no-check-certificates --output "${OUT}" "$SURL" 2>&1 || true ;;
@@ -446,7 +445,7 @@ jobs:
                 7) yt-dlp --extractor-args "youtube:player_client=mweb" $SFLAGS --sub-format vtt/srt/best --convert-subs vtt --skip-download --no-playlist --no-check-certificates --output "${OUT}" "$SURL" 2>&1 || true ;;
                 8) yt-dlp --proxy "socks5://127.0.0.1:1080" --extractor-args "youtube:player_client=android" --user-agent "Mozilla/5.0 (Linux; Android 12; SM-S906N Build/QP1A.190711.020) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36" $SFLAGS --sub-format vtt/srt/best --convert-subs vtt --skip-download --no-playlist --no-check-certificates --output "${OUT}" "$SURL" 2>&1 || true ;;
               esac
-              
+          
               if [ "$MODE" = "auto-both" ]; then
                 [ "$(en_count)" -gt 0 ] && [ "$(fa_count)" -gt 0 ] && return 0
               else
@@ -462,24 +461,24 @@ jobs:
             URL_INDEX=$((URL_INDEX + 1))
             URL="${URL_LIST[$((URL_INDEX - 1))]}"
             [ -z "$FOLDER_NAME" ] && continue
-            
+          
             SUB_DIR="$BACKUP_DIR/$FOLDER_NAME/subtitle"
             mkdir -p "$SUB_DIR"
             OUT_TMPL="${SUB_DIR}/%(title)s"
-            
+          
             echo "📝 Subtitles: $FOLDER_NAME"
-            
+          
             sub_download "all" "$OUT_TMPL" "$URL" || true
-            
+          
             EN_COUNT=$(find "$SUB_DIR" -type f \( -name "*.en.vtt" -o -name "*.en.srt" \) 2>/dev/null | wc -l)
             FA_COUNT=$(find "$SUB_DIR" -type f \( -name "*.fa.vtt" -o -name "*.fa.srt" \) 2>/dev/null | wc -l)
-            
+          
             if [ "$EN_COUNT" -eq 0 ] || [ "$FA_COUNT" -eq 0 ]; then
               sub_download "auto-both" "$OUT_TMPL" "$URL" || true
               [ "$(find "$SUB_DIR" -type f -name '*.en.vtt' -o -name '*.en.srt' 2>/dev/null | wc -l)" -eq 0 ] && sub_download "en-auto" "$OUT_TMPL" "$URL" || true
               [ "$(find "$SUB_DIR" -type f -name '*.fa.vtt' -o -name '*.fa.srt' 2>/dev/null | wc -l)" -eq 0 ] && sub_download "fa-auto" "$OUT_TMPL" "$URL" || true
             fi
-            
+          
             SUB_COUNT=$(find "$SUB_DIR" -type f 2>/dev/null | wc -l)
             if [ "$SUB_COUNT" -gt 0 ]; then
               ZIP_PATH="$BACKUP_DIR/$FOLDER_NAME/subtitle.zip"
@@ -498,7 +497,7 @@ jobs:
         run: |
           docker stop warp 2>/dev/null || true
           docker rm warp 2>/dev/null || true
-          
+
       # ── Step 8.5: Delete files older than 5 minutes ──────────────────  ⬅️ اینجا اضافه کن
       - name: "🗑️ Delete old video files (older than 5 minutes)"
         if: always()
@@ -513,8 +512,25 @@ jobs:
               done
             fi
           fi
-          
+
       # ── Step 9: Push ──────────────────────────────────
+      - name: "Move to repo"
+        id: move
+        run: |
+          #!/bin/bash
+          BACKUP_DIR="${{ env.BACKUP_DIR }}"
+          BRANCH="${{ env.BRANCH }}"
+          DOWNLOADED_COUNT="${{ env.DOWNLOADED_COUNT }}"
+          
+          if [ "$DOWNLOADED_COUNT" -eq 0 ] || [ ! -d "$BACKUP_DIR" ]; then
+            echo "⚠️ No files to push"; exit 0
+          fi
+          
+          git fetch origin "$BRANCH" --quiet
+          git reset --hard origin/"$BRANCH" --quiet
+          mkdir -p videos
+          cp -r "$BACKUP_DIR"/* videos/ 2>/dev/null || true
+
       - uses: EndBug/add-and-commit@v10
         with:
           default_author: github_actions
