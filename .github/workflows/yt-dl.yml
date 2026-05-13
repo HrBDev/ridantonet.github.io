@@ -59,19 +59,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      # ── Step 2: Git Config ────────────────────────────
-      - name: "⚙️ Configure Git"
-        run: |
-          git config --global http.postBuffer 524288000
-          git config --global http.maxRequestBuffer 100M
-          git config --global core.compression 0
-          git config --global pack.windowMemory 256m
-          git config --global pack.packSizeLimit 100m
-          git config --global pack.threads 1
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      # ── Step 3: Cloudflare WARP ───────────────────────
+      # ── Step 2: Cloudflare WARP ───────────────────────
       - name: "🌐 Setup Cloudflare WARP"
         run: |
           docker network create warp-net 2>/dev/null || true
@@ -88,7 +76,7 @@ jobs:
             if echo "$RESULT" | grep -qE "warp=(on|plus)"; then echo "✅ WARP active!"; break; else sleep 5; fi
           done
 
-      # ── Step 4: Dependencies ───────────────────────────
+      # ── Step 3: Dependencies ───────────────────────────
       - name: "📦 Install Dependencies"
         run: |
           sudo apt-get update -qq
@@ -116,7 +104,7 @@ jobs:
           # for windows releases. Defaults to "static"
           linking-type: static
 
-      # ── Step 5: Setup Parameters ──────────────────────
+      # ── Step 4: Setup Parameters ──────────────────────
       - name: "🔧 Setup Download Parameters"
         id: setup
         env:
@@ -164,11 +152,10 @@ jobs:
           echo "SPLIT_BYTES=$(( $SPLIT_SIZE_MB * 1024 * 1024 ))" >> $GITHUB_ENV
           echo "✅ Setup complete"
 
-      # ── Step 6: Download & Process Videos ──────────────
+      # ── Step 5: Download & Process Videos ──────────────
       - name: "⬇️ Download & Process Videos"
         id: download
         run: |
-          #!/bin/bash
           set -e
           
           BACKUP_DIR="${{ env.BACKUP_DIR }}"
@@ -252,7 +239,6 @@ jobs:
             echo "" >> "$RF"
             echo "---" >> "$RF"
             echo "" >> "$RF"
-            echo "*Downloaded via [khashayar.one](https://khashayar.one)*" >> "$RF"
           }
           
           download_video() {
@@ -408,12 +394,11 @@ jobs:
           echo "DOWNLOADED_COUNT=$DOWNLOADED_COUNT" >> $GITHUB_ENV
           echo "FAILED_COUNT=$FAILED_COUNT" >> $GITHUB_ENV
 
-      # ── Step 7: Subtitles (if enabled) ─────────────────
+      # ── Step 6: Subtitles (if enabled) ─────────────────
       - name: "📝 Download Subtitles"
         if: ${{ github.event.inputs.download_subtitles == 'true' }}
         run: |
-          #!/bin/bash
-          set +e
+          set -e
           BACKUP_DIR="${{ env.BACKUP_DIR }}"
           REPO_OWNER="${{ env.REPO_OWNER }}"
           REPO_NAME="${{ env.REPO_NAME }}"
@@ -491,14 +476,14 @@ jobs:
           done < /tmp/video_info.txt
           exit 0
 
-      # ── Step 8: Stop WARP ─────────────────────────────
+      # ── Step 7: Stop WARP ─────────────────────────────
       - name: "🛑 Stop WARP"
         if: always()
         run: |
           docker stop warp 2>/dev/null || true
           docker rm warp 2>/dev/null || true
 
-      # ── Step 8.5: Delete files older than 5 minutes ──────────────────  ⬅️ اینجا اضافه کن
+      # ── Step 7.5: Delete files older than 5 minutes ──────────────────
       - name: "🗑️ Delete old video files (older than 5 minutes)"
         if: always()
         run: |
@@ -513,11 +498,10 @@ jobs:
             fi
           fi
 
-      # ── Step 9: Push ──────────────────────────────────
+      # ── Step 8: Commit & Push ──────────────────────────────────
       - name: "Move to repo"
         id: move
         run: |
-          #!/bin/bash
           BACKUP_DIR="${{ env.BACKUP_DIR }}"
           BRANCH="${{ env.BRANCH }}"
           DOWNLOADED_COUNT="${{ env.DOWNLOADED_COUNT }}"
